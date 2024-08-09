@@ -13,5 +13,6 @@
 
 void *handle_malloc(long object_size);
 const char* combineFilePath(const char* basePath, const char* extension);
-char *add_new_file(char *file_name,char *ending);
+FILE *open_new_file(char *file_name,char *ending, char *mode);
+char *add_new_file(char *file_name, char *ending);
 #endif

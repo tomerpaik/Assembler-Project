@@ -1,6 +1,9 @@
 #include "first_pass.h"
+#include "errors.h"
+#include "lexer.h"
 
-int first_pass() {
-    printf("first pass\n");
-    return (1);
+int  first_pass(char * am_file) {
+
+
+    return 1;
 }

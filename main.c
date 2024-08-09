@@ -23,7 +23,8 @@ int main(int argc, char *argv[]) {
         /*Execute the macro preprocessor on the ".as" file.*/
         if (!pre_assembler(argv[argc])) {
             /*If it failed, move to the next file.*/
-            remove()
+            const char *filePath = combineFilePath(argv[argc], ".am");
+            remove(filePath);
             continue;
         }
 

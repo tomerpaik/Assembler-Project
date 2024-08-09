@@ -16,8 +16,8 @@ typedef struct {
 } HashTable;
 
 HashTable* create_hash_table(size_t size);
-void insert_macro(HashTable* table, const char* key, const char* value);
-char* search_macro(HashTable* table, const char* key);
+void insert_table(HashTable* table, const char* key, const char* value);
+char* search_table(HashTable* table, const char* key);
 void free_hash_table(HashTable* table);
 
 #endif

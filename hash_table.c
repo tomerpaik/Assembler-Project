@@ -1,4 +1,4 @@
-#include "macros_table.h"
+#include "hash_table.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -24,7 +24,7 @@ HashTable* create_hash_table(size_t size) {
     return table;
 }
 
-void insert_macro(HashTable* table, const char* key, const char* value) {
+void insert_table(HashTable* table, const char* key, const char* value) {
     unsigned int index = hash(key, table->size);
     HashNode* new_node;
     new_node = handle_malloc(sizeof(HashNode));
@@ -39,7 +39,7 @@ void insert_macro(HashTable* table, const char* key, const char* value) {
     table->buckets[index] = new_node;
 }
 
-char* search_macro(HashTable* table, const char* key) {
+char* search_table(HashTable* table, const char* key) {
     unsigned int index;
     HashNode* node;
     index = hash(key, table->size);
