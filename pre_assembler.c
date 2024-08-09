@@ -66,8 +66,12 @@ int process_macros(FILE * inputFile, FILE * outputFile, HashTable* macroTable){
                 return 0;
             }
             inMacroFlag = 0;
-            if (is_valid_macro_name(macroName)) {                       /*checks whether macro name is an instructuion register or opcode*/
-                insert_table(macroTable, macroName, macroBody);
+            if (is_valid_macro_name(macroName)) {                   /*checks whether macro name is an instructuion register or opcode*/
+                printf("Macro Name: %s\n", macroName);
+                if(in_table(macroTable, macroName)) {
+                    insert_table(macroTable, macroName, macroBody);
+                }
+
             }else {
                 return 0;
             }
@@ -86,6 +90,7 @@ int process_macros(FILE * inputFile, FILE * outputFile, HashTable* macroTable){
             }
 
             macroReplaced = 0; /*line was not a macro call so there was nothing to replace within macro */
+            macroBody[0] = '\0';
             free(line_copy); /*freeing new alocated line*/
         }
     }

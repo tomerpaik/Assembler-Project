@@ -20,4 +20,13 @@ add_executable(assembler pre_assembler.c
         lexer.c
         lexer.h
         globals.h
+        pre_assembler.h
+        lexer.h
+        linked_list.h
+        main.h
+        hash_table.h
+        globals.h
+        general.h
+        first_pass.h
+        errors.h
 )

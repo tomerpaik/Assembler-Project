@@ -53,6 +53,10 @@ char* search_table(HashTable* table, const char* key) {
     return NULL;
 }
 
+/*TODO: check that macr did not set twice*/
+int in_table(HashTable* table, const char* value) {
+    return 1;
+}
 void free_hash_table(HashTable* table) {
     size_t i;
     for (i = 0; i < table->size; i++) {
