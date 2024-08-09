@@ -4,7 +4,8 @@
 #include "lexer.h"
 #include "globals.h"
 #include "errors.h"
-#include "general.h"
+#include "general_functions.h"
+
 /* Define the opcodes */
 op_code OPCODES[] = {
         {"mov",  2},

@@ -1,7 +1,6 @@
 #include "pre_assembler.h"
-#include "general.h"
-#include <ctype.h>
-#include <string.h>
+#include "general_functions.h"
+#include "globals.h"
 #include "lexer.h"
 
 

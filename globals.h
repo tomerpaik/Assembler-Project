@@ -1,5 +1,12 @@
-#ifndef LABRATORY_C_FINAL_PROJECT_GLOBALS_H
-#define LABRATORY_C_FINAL_PROJECT_GLOBALS_H
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
+#define MAX_LINE_LENGTH 82
+#define INPUT_EXTENSION ".as"
+#define OUTPUT_EXTENSION ".am"
+#define MACRO_START "macr"
+#define MACRO_END "endmacr"
+#define TABLE_SIZE 100
 /*The File contain all the global values in the program*/
 
 /* Maximum length of a label in command line  */
@@ -36,22 +43,5 @@
 #define MAX_NUM ((1 << (WORD_LEN-1)) - 1)
 
 #define MIN_NUM (-(1 << (WORD_LEN-1)))
-
-typedef struct location {
-    char *file_name;
-    int line_num;
-} location;
-
-
-/* Define a line struct*/
-typedef struct line_data {
-    /*The file name will help us to print relevant errors*/
-    char *file_name;
-    /*The line number will helps us to track the current line number and to print errors*/
-    short number;
-    /*The content of the line*/
-    char *data;
-
-} line_data;
 
 #endif

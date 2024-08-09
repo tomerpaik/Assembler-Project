@@ -1,12 +1,7 @@
 #ifndef MACRO_DEFINER_H
 #define MACRO_DEFINER_H
 #include "hash_table.h"
-#define MAX_LINE_LENGTH 82
-#define INPUT_EXTENSION ".as"
-#define OUTPUT_EXTENSION ".am"
-#define MACRO_START "macr"
-#define MACRO_END "endmacr"
-#define TABLE_SIZE 100
+#include "general_functions.h"
 
 /* Function to combine two strings */
 int pre_assembler(char * as_file);

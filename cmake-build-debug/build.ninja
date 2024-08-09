@@ -79,8 +79,8 @@ build CMakeFiles/assembler.dir/main.c.obj: C_COMPILER__assembler_unscanned_Debug
   OBJECT_DIR = CMakeFiles\assembler.dir
   OBJECT_FILE_DIR = CMakeFiles\assembler.dir
 
-build CMakeFiles/assembler.dir/general.c.obj: C_COMPILER__assembler_unscanned_Debug C$:/Users/ROY$ KAGAN/CLionProjects/assembler/general.c || cmake_object_order_depends_target_assembler
-  DEP_FILE = CMakeFiles\assembler.dir\general.c.obj.d
+build CMakeFiles/assembler.dir/general_functions.c.obj: C_COMPILER__assembler_unscanned_Debug C$:/Users/ROY$ KAGAN/CLionProjects/assembler/general_functions.c || cmake_object_order_depends_target_assembler
+  DEP_FILE = CMakeFiles\assembler.dir\general_functions.c.obj.d
   FLAGS = -g -std=gnu90 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\assembler.dir
   OBJECT_FILE_DIR = CMakeFiles\assembler.dir
@@ -97,6 +97,12 @@ build CMakeFiles/assembler.dir/lexer.c.obj: C_COMPILER__assembler_unscanned_Debu
   OBJECT_DIR = CMakeFiles\assembler.dir
   OBJECT_FILE_DIR = CMakeFiles\assembler.dir
 
+build CMakeFiles/assembler.dir/symbole_table.c.obj: C_COMPILER__assembler_unscanned_Debug C$:/Users/ROY$ KAGAN/CLionProjects/assembler/symbole_table.c || cmake_object_order_depends_target_assembler
+  DEP_FILE = CMakeFiles\assembler.dir\symbole_table.c.obj.d
+  FLAGS = -g -std=gnu90 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\assembler.dir
+  OBJECT_FILE_DIR = CMakeFiles\assembler.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target assembler
@@ -105,7 +111,7 @@ build CMakeFiles/assembler.dir/lexer.c.obj: C_COMPILER__assembler_unscanned_Debu
 #############################################
 # Link the executable assembler.exe
 
-build assembler.exe: C_EXECUTABLE_LINKER__assembler_Debug CMakeFiles/assembler.dir/pre_assembler.c.obj CMakeFiles/assembler.dir/linked_list.c.obj CMakeFiles/assembler.dir/hash_table.c.obj CMakeFiles/assembler.dir/first_pass.c.obj CMakeFiles/assembler.dir/main.c.obj CMakeFiles/assembler.dir/general.c.obj CMakeFiles/assembler.dir/errors.c.obj CMakeFiles/assembler.dir/lexer.c.obj
+build assembler.exe: C_EXECUTABLE_LINKER__assembler_Debug CMakeFiles/assembler.dir/pre_assembler.c.obj CMakeFiles/assembler.dir/linked_list.c.obj CMakeFiles/assembler.dir/hash_table.c.obj CMakeFiles/assembler.dir/first_pass.c.obj CMakeFiles/assembler.dir/main.c.obj CMakeFiles/assembler.dir/general_functions.c.obj CMakeFiles/assembler.dir/errors.c.obj CMakeFiles/assembler.dir/lexer.c.obj CMakeFiles/assembler.dir/symbole_table.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\assembler.dir

@@ -1,4 +1,4 @@
-#include "general.h"
+#include "general_functions.h"
 #include "errors.h"
 
 
@@ -40,7 +40,6 @@ FILE * open_new_file(char *file_name, char *ending, char * mode) {
     strcat(new_file_name, ending);
     file = fopen(new_file_name, mode);
     if (file == NULL) {
-        printf("mode: %s\n", mode);
         if (!strcmp(mode, "r")) {
             print_internal_error(ERROR_CODE_8);
         }else {

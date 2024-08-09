@@ -9,7 +9,7 @@
  */
 
 int main(int argc, char *argv[]) {
-    char *as_file, *am_file;
+    char *as_file, *am_path;
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <file1> <file2> ... <fileN>\n", argv[0]);
         return 0;
@@ -30,9 +30,10 @@ int main(int argc, char *argv[]) {
 
         printf("Start first pass\n");
         /* Generate a new file with the ".am" extension by adding it to the input filename.*/
-        am_file = add_new_file(argv[argc], ".am");
+        am_path = argv[argc];
+
         /*Execute the first pass, and then the second on the ".am" file.*/
-        if (first_pass(am_file)) {
+        if (first_pass(am_path)) {
             /*If it failed, move to the next file.*/
             continue;
         }

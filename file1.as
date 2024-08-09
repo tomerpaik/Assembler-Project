@@ -3,7 +3,7 @@ LOOP: prn #48
 macr  macr_name
  cmp r3, #-6
  bne END
-endmacr
+endmacr tomer
  lea STR, r6
  inc r6
  mov *r6, K

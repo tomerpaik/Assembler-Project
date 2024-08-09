@@ -13,8 +13,8 @@ add_executable(assembler pre_assembler.c
         first_pass.h
         main.c
         main.h
-        general.h
-        general.c
+        general_functions.h
+        general_functions.c
         errors.c
         errors.h
         lexer.c
@@ -26,7 +26,9 @@ add_executable(assembler pre_assembler.c
         main.h
         hash_table.h
         globals.h
-        general.h
+        general_functions.h
         first_pass.h
         errors.h
+        symbole_table.c
+        symbole_table.h
 )

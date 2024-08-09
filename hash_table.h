@@ -1,6 +1,6 @@
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
-#include "general.h"
+#include "general_functions.h"
 #define MAX_MACRO_NAME_LENGTH 100
 #define MAX_MACRO_BODY 100
 
