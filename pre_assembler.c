@@ -3,11 +3,13 @@
 #include "globals.h"
 #include "lexer.h"
 
-
+/*TODO: more text after macro call, Maro define more than once ERROR_CODE_13, ERROR_CODE_4, ERROR_CODE_15
+ *The Line is too long IMPORTANT
+ */
 int pre_assembler(char * file_name) {
     FILE *as_file , *am_file;
-    HashTable* macroTable;
-    macroTable = create_hash_table(TABLE_SIZE);
+    Macro_Table* macroTable;
+    macroTable = create_macro_table(TABLE_SIZE);
 
     /*error handleing trouble opening the file*/
     as_file = open_new_file(file_name, ".as", "r");
@@ -17,7 +19,7 @@ int pre_assembler(char * file_name) {
     am_file = open_new_file(file_name, ".am", "w");
 
     if (process_macros(as_file, am_file, macroTable)) {
-        free_hash_table(macroTable);
+        free_macro_table(macroTable);
         return 1;
     }
 
@@ -26,7 +28,7 @@ int pre_assembler(char * file_name) {
     return 0;
 
 }
-int process_macros(FILE * inputFile, FILE * outputFile, HashTable* macroTable){
+int process_macros(FILE * inputFile, FILE * outputFile, Macro_Table* macroTable){
     /*Initialize Varibals*/
     char line[MAX_LINE_LENGTH];
     char macroName[MAX_MACRO_NAME_LENGTH];
@@ -49,6 +51,9 @@ int process_macros(FILE * inputFile, FILE * outputFile, HashTable* macroTable){
     macroBody[0] = '\0';
     /*running on the file */
     while (fgets(line, MAX_LINE_LENGTH, inputFile)) {
+        if (strcmp(line, "\n") == 0) { /*blank line*/
+            continue;
+        }
         macr_offset = is_macr(line); /*checks if the first word is "macr" define*/
         if (macr_offset) {
             macro_name_offset = get_macro_name(line, macroName, macr_offset);
@@ -66,9 +71,8 @@ int process_macros(FILE * inputFile, FILE * outputFile, HashTable* macroTable){
             }
             inMacroFlag = 0;
             if (is_valid_macro_name(macroName)) {                   /*checks whether macro name is an instructuion register or opcode*/
-                printf("Macro Name: %s\n", macroName);
-                if(in_table(macroTable, macroName)) {
-                    insert_table(macroTable, macroName, macroBody);
+                if(is_in_macro_table(macroTable, macroName)) {
+                    insert_macro_table(macroTable, macroName, macroBody);
                 }
 
             }else {
@@ -79,8 +83,8 @@ int process_macros(FILE * inputFile, FILE * outputFile, HashTable* macroTable){
         } else {                                                  /*regular line (not a macro content or define of a macro */
             line_copy = strdup(line);                            /*creating line to manipulate without damaging the source line */
             token = strtok(line_copy, " \t\n");            /*gets the content from the first line to the end allow us to grab the macro call(name)*/
-            if (token && search_table(macroTable, token)) {    /*serching the macro name in the hash table*/
-                macroContent = search_table(macroTable, token);
+            if (token && search_macro_table(macroTable, token)) {    /*serching the macro name in the hash table*/
+                macroContent = search_macro_table(macroTable, token);
                 fputs(macroContent, outputFile);              /*macro set in new file instead of macro call*/
                 macroReplaced = 1;
             }

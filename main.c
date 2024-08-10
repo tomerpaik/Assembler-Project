@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 
     while (--argc > 0) {
         /* Generate a new file with the ".as" extension by adding it to the input filename.*/
-        printf("Start pre-proc\n");
+        printf("Start pre-proc %s\n", argv[argc]);
 
 
         /*Execute the macro preprocessor on the ".as" file.*/
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
             continue;
         }
 
-        printf("Start first pass\n");
+        printf("Start first pass %s\n", argv[argc]);
         /* Generate a new file with the ".am" extension by adding it to the input filename.*/
         am_path = argv[argc];
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 
         /*Free allocated memory*/
         free(as_file);
-        free(am_file);
+        free(am_path);
     }
     printf("end\n");
     return 0;

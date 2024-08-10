@@ -86,5 +86,42 @@ int what_reg(char *str) {
     return -1; /* Return -1 if the string does not match any known registers */
 }
 
+void get_first_word(char * line, char * first_word) {
+    /* Allocate enough space for the first word */
+    int offset = 0;
+    sscanf(line, "%s%n", first_word, &offset);
+}
+
+int legal_label(char *str, int *error_code) {
+    if (str == NULL) {
+        return 0;
+    }
+
+    /* If str is in one of the following - the label name is not valid */
+    if (strlen(str) > MAX_LABEL_LENGTH || !isalpha(*str) || what_reg(str) >= 0) {
+        *error_code = ERROR_CODE_44; /* Illegal label declaration */
+        return 0;
+    }
+
+    if (what_opcode(str) < 0) {
+        while (*(++str) != '\0' && (isalpha(*str) || isdigit(*str))) {;
+        }
+        if (*(str) == ':' && *(str + 1) == '\0') {
+            *str = '\0';
+            return 1;
+        } else {
+            *error_code = ERROR_CODE_44; /* Illegal label declaration */
+        }
+    }
+
+    return 0;
+}
+
+int is_comment(char * line) {
+    return 0;
+}
+
+
+
 
 

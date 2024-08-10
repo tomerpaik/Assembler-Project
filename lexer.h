@@ -99,4 +99,10 @@ int what_opcode(char *str);
 **/
 int what_reg(char *str);
 
+void get_first_word(char * line, char * first_word);
+
+int is_comment(char * line);
+
+int legal_label(char *str, int *error_code);
+
 #endif

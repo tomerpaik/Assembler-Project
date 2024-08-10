@@ -1,7 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define MAX_LINE_LENGTH 82
+#define MAX_LINE_LENGTH 81
 #define INPUT_EXTENSION ".as"
 #define OUTPUT_EXTENSION ".am"
 #define MACRO_START "macr"

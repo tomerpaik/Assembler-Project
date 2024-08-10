@@ -20,12 +20,12 @@ Error errors[] = {
         {ERROR_CODE_8,  "Failed to open file for reading"},
         {ERROR_CODE_9,  "Error - macro without name definition"},
         {ERROR_CODE_10, "Error - extra text after macro name definition"},
-        {ERROR_CODE_11, "Setting a position in a file failed"},
+        {ERROR_CODE_11, "Setting a position in a file failed"}, /*NO NEED*/
         {ERROR_CODE_12, "endmacr with extra text"},
         {ERROR_CODE_13, "Macro has more than one definition"},
-        {ERROR_CODE_14, "Failed to copy file during macros expansion"},
+        {ERROR_CODE_14, "Failed to copy file during macros expansion"}, /*NO NEED*/
         {ERROR_CODE_15, "Macros expansion in an .as file failed"},
-        {ERROR_CODE_16, "Macro call before declaration"},
+        {ERROR_CODE_16, "Macro call before declaration"}, /*NO NEED*/
         {ERROR_CODE_17, "Illegal name for a macro"},
         {-1,            ""},
         {-1,            ""},
