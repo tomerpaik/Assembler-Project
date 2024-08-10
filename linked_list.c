@@ -3,15 +3,12 @@
 #include <string.h>
 #include <stdio.h>
 
-struct Node {
-    char *key; /* Line identifier */
-    void *value; /* Line data */
-    struct Node* next;
-};
+#include "general_functions.h"
+
 
 Node create_node(char *key, void *value) {
     Node new;
-    new = (Node)malloc(sizeof(struct Node));
+    new = (Node)handle_malloc(sizeof(struct Node));
 
     if (new == NULL) {
         fprintf(stderr, "Node Memory allocation failed\n");
@@ -24,24 +21,30 @@ Node create_node(char *key, void *value) {
 
     return new;
 }
+void insert_node(Node * root, char *key, char *value) {
+    Node new_node = create_node(key, value);
 
-void addLine(Node const source, const char *line) {
-    Node current = source;
-    Node new_node;
-    char *line_copy;
-    line_copy = (char *)malloc(strlen(line) + 1);
-    if (line_copy == NULL) {
-        printf( "Line Memory allocation failed\n");
-        exit(1);
+    if (*root == NULL) {
+        *root = new_node;
+    } else {
+        Node temp = *root;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = new_node;
     }
-    strcpy(line_copy, line);
-    new_node = create_node("", (void *)(line_copy));
+}
 
-    while (current->next != NULL) {
-        current = current->next;
+
+void * search_linked(Node root, char* key) {
+    Node temp = root;
+    while (temp != NULL) {
+        if (strcmp(temp->key, key) == 0) {
+            return temp->value;
+        }
+        temp = temp->next;
     }
-
-    current->next = new_node;
+    return 0;
 }
 
 void *get_value(Node const source) {
@@ -65,7 +68,6 @@ void printList(Node const source) {
         i++;
     }
 }
-
 void freeList(Node const head) {
     Node current = head;
     Node next;

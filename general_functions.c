@@ -61,3 +61,23 @@ const char* combineFilePath(const char* basePath, const char* extension) {
 
     return combinedPath;
 }
+
+/**
+ * Duplicates a string by allocating memory and copying the original string's content.
+ *
+ * @param src The source string to duplicate.
+ * @return A pointer to the newly allocated string containing a copy of the source string.
+ *         Returns NULL if memory allocation fails.
+ */
+void * my_strdup(const char* src) {
+    char* dup;
+    size_t len;
+    /* Calculate the length of the source string, including the null terminator */
+    len = strlen(src) + 1;
+    /* Allocate memory for the duplicated string */
+    dup = (char*)handle_malloc(len);
+    /* Copy the content of the source string to the newly allocated memory */
+    strcpy(dup, src);
+
+    return dup; /* Return the duplicated string */
+}

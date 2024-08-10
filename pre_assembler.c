@@ -8,8 +8,7 @@
  */
 int pre_assembler(char * file_name) {
     FILE *as_file , *am_file;
-    Macro_Table* macroTable;
-    macroTable = create_macro_table(TABLE_SIZE);
+    hash_table macro_table = {NULL};
 
     /*error handleing trouble opening the file*/
     as_file = open_new_file(file_name, ".as", "r");
@@ -18,8 +17,8 @@ int pre_assembler(char * file_name) {
     }
     am_file = open_new_file(file_name, ".am", "w");
 
-    if (process_macros(as_file, am_file, macroTable)) {
-        free_macro_table(macroTable);
+    if (process_macros(as_file, am_file, macro_table)) {
+        /*free_macro_table(macroTable);*/
         return 1;
     }
 
@@ -28,7 +27,7 @@ int pre_assembler(char * file_name) {
     return 0;
 
 }
-int process_macros(FILE * inputFile, FILE * outputFile, Macro_Table* macroTable){
+int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
     /*Initialize Varibals*/
     char line[MAX_LINE_LENGTH];
     char macroName[MAX_MACRO_NAME_LENGTH];
@@ -45,14 +44,11 @@ int process_macros(FILE * inputFile, FILE * outputFile, Macro_Table* macroTable)
     /*replace macro*/
     char *line_copy;
     char *token;
-
-
-
     macroBody[0] = '\0';
     /*running on the file */
     while (fgets(line, MAX_LINE_LENGTH, inputFile)) {
         if (strcmp(line, "\n") == 0) { /*blank line*/
-            continue;
+            continue; /*continue to the next line of the file if line is empty */
         }
         macr_offset = is_macr(line); /*checks if the first word is "macr" define*/
         if (macr_offset) {
@@ -65,26 +61,29 @@ int process_macros(FILE * inputFile, FILE * outputFile, Macro_Table* macroTable)
             }else { /*after_M_name_offset = 0 -> there is no macro name */
                 return 0;
             }
-        } else if (is_endmacr_offset = is_endmacr(line)) {
+        } else if ((is_endmacr_offset = is_endmacr(line))) {
             if (is_macro_additional_after_endmacr(line, is_endmacr_offset)) {
                 return 0;
             }
             inMacroFlag = 0;
-            if (is_valid_macro_name(macroName)) {                   /*checks whether macro name is an instructuion register or opcode*/
-                if(is_in_macro_table(macroTable, macroName)) {
-                    insert_macro_table(macroTable, macroName, macroBody);
-                }
-
+            if (is_valid_macro_name(macroName)) {
+                /*checks whether macro name is an instructuion register or opcode*/
+                /*if (search_table(macroTable, macroName) != 0) {*/
+                insert_table(macroTable, macroName, macroBody);
+                /*else {
+                    /*print_internal_error(ERROR_CODE_13);
+                    return 0;
+                }*/
             }else {
                 return 0;
             }
         } else if (inMacroFlag) {                                   /*in macro flag when we recognized macr and not endmacr means we are in the macro content*/
-            strcat(macroBody, line);                               /*copping line (one of macro content lines) into macroBody array */
+            strcat(macroBody, line);                               /*adding line (one of macro content lines) into macroBody array */
         } else {                                                  /*regular line (not a macro content or define of a macro */
-            line_copy = strdup(line);                            /*creating line to manipulate without damaging the source line */
-            token = strtok(line_copy, " \t\n");            /*gets the content from the first line to the end allow us to grab the macro call(name)*/
-            if (token && search_macro_table(macroTable, token)) {    /*serching the macro name in the hash table*/
-                macroContent = search_macro_table(macroTable, token);
+            line_copy = my_strdup(line);                            /*creating line to manipulate without damaging the source line */
+            token = strtok(line_copy, " \t\n"); /*TODO: if after macro name more txt */          /*gets the content from the first line to the end allow us to grab the macro call(name)*/
+            if (token && search_table(macroTable, token)) {    /*serching the macro name in the hash table*/
+                macroContent = search_table(macroTable, token);
                 fputs(macroContent, outputFile);              /*macro set in new file instead of macro call*/
                 macroReplaced = 1;
             }

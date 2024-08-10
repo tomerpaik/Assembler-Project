@@ -77,8 +77,3 @@ void print_internal_error(int error_code) {
     printf("~~ERROR: ID:%d~~ | %s\n", error_code, errors[error_code].error_msg);
 }
 
-/*void print_external_error(int error_code, location file) {
-    /* Print the error code number, file name, assembly line number and the error message */
-    /*printf("~~ERROR: ID:%d~~ in %s at line:%d | there is error: %s\n", error_code, \
-    file.file_name, file.line_num, errors[error_code].error_msg);
-}*/

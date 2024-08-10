@@ -7,8 +7,8 @@ add_executable(assembler pre_assembler.c
         pre_assembler.h
         linked_list.h
         linked_list.c
-        macro_table.c
-        macro_table.h
+        hash_table.c
+        hash_table.h
         first_pass.c
         first_pass.h
         main.c
@@ -24,11 +24,9 @@ add_executable(assembler pre_assembler.c
         lexer.h
         linked_list.h
         main.h
-        macro_table.h
+        hash_table.h
         globals.h
         general_functions.h
         first_pass.h
         errors.h
-        symbole_table.c
-        symbole_table.h
 )
