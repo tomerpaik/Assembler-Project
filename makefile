@@ -12,7 +12,7 @@ all: $(OFILES)
 .PHONEY: clean val
 
 clean:
-	rm -rf *.o
+	del -rf *.o
 
 val:
 	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler input

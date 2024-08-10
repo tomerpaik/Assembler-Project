@@ -9,7 +9,7 @@
  */
 
 int main(int argc, char *argv[]) {
-    char *as_file, *am_path;
+    char *am_path;
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <file1> <file2> ... <fileN>\n", argv[0]);
         return 0;
@@ -39,7 +39,6 @@ int main(int argc, char *argv[]) {
         }
 
         /*Free allocated memory*/
-        free(as_file);
         free(am_path);
     }
     printf("end\n");
