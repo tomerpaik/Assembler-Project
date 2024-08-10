@@ -3,7 +3,7 @@ LOOP: prn #48
 macr  macr_name
  cmp r3, #-6
  bne END
-endmacr tomer
+endmacr
  lea STR, r6
  inc r6
  mov *r6, K
@@ -15,4 +15,6 @@ STR: .string "abcd"
 LIST: .data 6, -9
       .data -100
 K: .data 31
-macr_name
+macr_name assa
+
+.string "abcd"

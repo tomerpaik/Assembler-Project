@@ -1,4 +1,4 @@
-#include "hash_table.h"
+#include "macro_table.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,8 +11,8 @@ static unsigned int hash(const char* key, size_t size) {
     return hash % size;
 }
 
-HashTable* create_hash_table(size_t size) {
-    HashTable* table;
+Macro_Table* create_macro_table(size_t size) {
+    Macro_Table* table;
     table = handle_malloc(sizeof(HashNode*));
     table->buckets = (HashNode**)calloc(size, sizeof(HashNode*));
     if (table->buckets == NULL) {
@@ -24,7 +24,7 @@ HashTable* create_hash_table(size_t size) {
     return table;
 }
 
-void insert_table(HashTable* table, const char* key, const char* value) {
+void insert_macro_table(Macro_Table* table, const char* key, const char* value) {
     unsigned int index = hash(key, table->size);
     HashNode* new_node;
     new_node = handle_malloc(sizeof(HashNode));
@@ -39,7 +39,7 @@ void insert_table(HashTable* table, const char* key, const char* value) {
     table->buckets[index] = new_node;
 }
 
-char* search_table(HashTable* table, const char* key) {
+char* search_macro_table(Macro_Table* table, const char* key) {
     unsigned int index;
     HashNode* node;
     index = hash(key, table->size);
@@ -54,10 +54,10 @@ char* search_table(HashTable* table, const char* key) {
 }
 
 /*TODO: check that macr did not set twice*/
-int in_table(HashTable* table, const char* value) {
+int is_in_macro_table(Macro_Table* table, const char* value) {
     return 1;
 }
-void free_hash_table(HashTable* table) {
+void free_macro_table(Macro_Table* table) {
     size_t i;
     for (i = 0; i < table->size; i++) {
         HashNode* node = table->buckets[i];
