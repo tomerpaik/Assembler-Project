@@ -9,6 +9,9 @@ int first_pass(char * am_path) {
     char line_copy[MAX_LINE_LENGTH];
     am_file = open_new_file(am_path, ".am", "r");
     line_num = 0;
+    if (!check_line_length(am_path,".am", MAX_LINE_LENGTH)) {
+        return 0;
+    }
 
     /* Initialize  symbol table */
     /*TODO: check first if there is a line with more than Max characters*/

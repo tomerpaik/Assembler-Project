@@ -1,6 +1,6 @@
 MAIN: add r3, LIST
 LOOP: prn #48
-macr  macr_name
+macr  name 0
  cmp r3, #-6
  bne END
 endmacr
@@ -15,6 +15,5 @@ STR: .string "abcd"
 LIST: .data 6, -9
       .data -100
 K: .data 31
-macr_name
-
+name 7
 .string "abcd"

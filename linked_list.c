@@ -15,8 +15,8 @@ Node create_node(char *key, void *value) {
         exit(1);
     }
 
-    new->key = key;
-    new->value = value;
+    new->key = my_strdup(key);
+    new->value = my_strdup(value);
     new->next = NULL;
 
     return new;

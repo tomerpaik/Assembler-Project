@@ -3,13 +3,15 @@
 #include "globals.h"
 #include "lexer.h"
 
-/*TODO: more text after macro call, Maro define more than once ERROR_CODE_13, ERROR_CODE_4, ERROR_CODE_15
+/*TODO: ERROR_CODE_4, ERROR_CODE_15
  *The Line is too long IMPORTANT
  */
 int pre_assembler(char * file_name) {
     FILE *as_file , *am_file;
     hash_table macro_table = {NULL};
-
+    if (!check_line_length(file_name,".as", MAX_LINE_LENGTH)) {
+        return 0;
+    }
     /*error handleing trouble opening the file*/
     as_file = open_new_file(file_name, ".as", "r");
     if (as_file == NULL) {
@@ -35,7 +37,6 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
     int inMacroFlag = 0;
     int macroReplaced = 0;
     char *macroContent;
-
     /*check macro*/
     int macro_name_offset = 0;
     int macr_offset = 0;
@@ -43,37 +44,42 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
 
     /*replace macro*/
     char *line_copy;
-    char *token;
+    char *first_non_macroLine_word;
     macroBody[0] = '\0';
     /*running on the file */
     while (fgets(line, MAX_LINE_LENGTH, inputFile)) {
-        if (strcmp(line, "\n") == 0) { /*blank line*/
-            continue; /*continue to the next line of the file if line is empty */
-        }
         macr_offset = is_macr(line); /*checks if the first word is "macr" define*/
         if (macr_offset) {
             macro_name_offset = get_macro_name(line, macroName, macr_offset);
             if (macro_name_offset) {
                 inMacroFlag = 1;
-                if (is_additional_text_after_macro_name(line, macro_name_offset + macr_offset)) {
+                if (is_macro_additional_after_key(line, macro_name_offset + macr_offset)) {
+                    print_internal_error(ERROR_CODE_10);
                     return 0;
                 }
             }else { /*after_M_name_offset = 0 -> there is no macro name */
                 return 0;
             }
         } else if ((is_endmacr_offset = is_endmacr(line))) {
-            if (is_macro_additional_after_endmacr(line, is_endmacr_offset)) {
+            if (is_macro_additional_after_key(line, is_endmacr_offset)) {
+                print_internal_error(ERROR_CODE_12);
                 return 0;
             }
             inMacroFlag = 0;
-            if (is_valid_macro_name(macroName)) {
-                /*checks whether macro name is an instructuion register or opcode*/
-                /*if (search_table(macroTable, macroName) != 0) {*/
-                insert_table(macroTable, macroName, macroBody);
-                /*else {
-                    /*print_internal_error(ERROR_CODE_13);
+            if (is_valid_macro_name(macroName)) { /*checks whether macro name is an instructuion register or opcode*/
+                if (search_table(macroTable, macroName) == 0) { /*cheacks that Macro is not define more than once*/
+                    if (!is_macr(macroName)) {
+                        insert_table(macroTable, macroName, macroBody);
+                        macroBody[0] = '\0'; /*resets macro body content*/
+                    }else {
+                        print_internal_error(ERROR_CODE_11);
+                        return 0;
+                    }
+                }
+                else {
+                    print_internal_error(ERROR_CODE_13);
                     return 0;
-                }*/
+                }
             }else {
                 return 0;
             }
@@ -81,9 +87,13 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
             strcat(macroBody, line);                               /*adding line (one of macro content lines) into macroBody array */
         } else {                                                  /*regular line (not a macro content or define of a macro */
             line_copy = my_strdup(line);                            /*creating line to manipulate without damaging the source line */
-            token = strtok(line_copy, " \t\n"); /*TODO: if after macro name more txt */          /*gets the content from the first line to the end allow us to grab the macro call(name)*/
-            if (token && search_table(macroTable, token)) {    /*serching the macro name in the hash table*/
-                macroContent = search_table(macroTable, token);
+            first_non_macroLine_word = strtok(line_copy, " \t\n");          /*gets the content from the first line to the end allow us to grab the macro call(name)*/
+            if (first_non_macroLine_word && search_table(macroTable, first_non_macroLine_word)) {    /*serching the macro name in the hash table*/
+                if (is_macro_additional_after_key(line, get_macro_call(first_non_macroLine_word))) {
+                    print_internal_error(ERROR_CODE_16); /* additional text after macro call*/
+                    return 0;
+                }
+                macroContent = search_table(macroTable, first_non_macroLine_word);
                 fputs(macroContent, outputFile);              /*macro set in new file instead of macro call*/
                 macroReplaced = 1;
             }
@@ -91,52 +101,29 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
                 fputs(line, outputFile);
             }
 
+
             macroReplaced = 0; /*line was not a macro call so there was nothing to replace within macro */
             macroBody[0] = '\0';
             free(line_copy); /*freeing new alocated line*/
         }
     }
-
     fclose(inputFile);
     fclose(outputFile);
     return 1;
 }
 
 
-int is_additional_text_after_macro_name(char *line, int total_offset) {
-    /* Move the pointer to the character immediately after the macro name */
-    line += total_offset;
-
-    /* Skip any spaces or tabs after the macro name */
-    while (*line != '\0' && (*line == ' ' || *line == '\t')) {
-        line++;
-    }
-
-    /* If we encounter anything other than a newline or end of the string, there's additional text */
-    if (*line != '\0' && *line != '\n') {
-        print_internal_error(ERROR_CODE_10);
-        return 1; /* Additional characters found */
-    }
-
-    return 0; /* No additional characters found */
-}
-int is_macro_additional_after_endmacr(char *line, int offset) {
-
+int is_macro_additional_after_key(char *line, int offset) {
     /* Move the pointer to the character immediately after "endmacr" */
     line += offset;
-
     /* Skip any spaces or tabs after "endmacr" */
     while (*line == ' ' || *line == '\t') {
         line++;
     }
-
     /* Check if there's no additional characters after "endmacr" */
     if (*line == '\0' || *line == '\n') {
         return 0; /* Valid "endmacr" with no additional text */
     }
-
-    print_internal_error(ERROR_CODE_12);
-
     return 1; /* Additional characters found */
 }
 int is_valid_macro_name(char *name) {
@@ -181,5 +168,11 @@ int get_macro_name(const char *line, char *macroName, int macr_offset) {
         return 0; /* Return 0 if no word was found */
     }
     return macro_name_offset;
+}
+int get_macro_call(const char *line) {
+    char macro_call[MAX_LINE_LENGTH];
+    int macro_call_offset = 0;
+    sscanf(line, "%s%n",macro_call, &macro_call_offset);
+    return macro_call_offset;
 }
 

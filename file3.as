@@ -1,5 +1,9 @@
 MAIN: add r3, LIST
 LOOP: prn #48
+  macr  roy sdd
+ cmp r3, #-6
+ bne END
+            endmacr
  lea STR, r6
  inc r6
  mov *r6, K
@@ -7,20 +11,8 @@ LOOP: prn #48
  dec K
  jmp LOOP
 END: stop
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
 STR: .string "abcd"
- cmp r3, #-6
- bne END
 LIST: .data 6, -9
       .data -100
 K: .data 31
- THIS IS  roy content
- roy is roy content
+roy ood

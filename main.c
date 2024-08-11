@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
             /*If it failed, move to the next file.*/
             const char *filePath = combineFilePath(argv[argc], ".am");
             remove(filePath);
+            print_internal_error(ERROR_CODE_15);
             continue;
         }
 

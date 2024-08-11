@@ -6,6 +6,7 @@
 #include "errors.h"
 #include "globals.h"
 
+int check_line_length(char* file_name, char * ending,  int max_length);
 void *handle_malloc(long object_size);
 const char* combineFilePath(const char* basePath, const char* extension);
 FILE *open_new_file(char *file_name,char *ending, char *mode);
