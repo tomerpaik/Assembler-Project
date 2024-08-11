@@ -20,7 +20,7 @@ int pre_assembler(char * file_name) {
     am_file = open_new_file(file_name, ".am", "w");
 
     if (process_macros(as_file, am_file, macro_table)) {
-        /*free_macro_table(macroTable);*/
+        free_table(macro_table);    /*free_macro_table(macroTable);*/
         return 1;
     }
 
