@@ -1,8 +1,6 @@
 #ifndef LINKED_LISTS_H
 #define LINKED_LISTS_H
 
-#define MAX_LINE_LENGTH 82
-
 struct Node {
     char *key; /* Line identifier */
     void *value; /* Line data */

@@ -81,3 +81,23 @@ void * my_strdup(const char* src) {
 
     return dup; /* Return the duplicated string */
 }
+
+int check_line_length(char* file_name, char * ending,  int max_length) {
+    FILE *file = open_new_file(file_name, ending, "r");
+
+    char *line = handle_malloc(max_length + 2);  /* +2 to detect lines that exceed the limit */
+    int line_number = 0;
+    int is_valid = 1;
+
+    while (fgets(line, max_length + 2, file)) {
+        line_number++;
+        if (strlen(line) > max_length) {
+            printf("In File: %s Line %d exceeds the maximum allowed length of %d characters.\n", file_name, line_number, max_length);
+            is_valid = 0;
+        }
+    }
+
+    free(line);
+    fclose(file);
+    return is_valid;
+}
