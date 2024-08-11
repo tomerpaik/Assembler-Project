@@ -76,4 +76,3 @@ void print_internal_error(int error_code) {
     /* Print the error code number and the error message */
     printf("~~ERROR: ID:%d~~ | %s\n", error_code, errors[error_code].error_msg);
 }
-

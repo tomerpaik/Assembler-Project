@@ -35,3 +35,12 @@ void print_table(hash_table table) {
         }
     }
 }
+
+void free_table(hash_table table) {
+    int i = 0;
+    for (i = 0; i < TABLE_SIZE; i++) {
+        if(table[i] != NULL) {
+            freeList(table[i]);
+        }
+    }
+}
