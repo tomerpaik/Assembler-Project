@@ -68,8 +68,9 @@ void printList(Node const source) {
         i++;
     }
 }
-void freeList(Node const head) {
-    Node current = head;
+
+void freeList(Node root) {
+    Node current = root;
     Node next;
 
     while (current != NULL) {
@@ -80,4 +81,3 @@ void freeList(Node const head) {
         current = next;
     }
 }
-
