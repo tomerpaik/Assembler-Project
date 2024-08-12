@@ -1,8 +1,14 @@
 MAIN: add r3, LIST
 LOOP: prn #48
-macr  name 0
- cmp r3, #-6
- bne END
+macr    or r
+ hello its me
+endmacr
+macr    player
+ or is a great kid
+ 0909090909
+ poled
+ jsk0e
+ he;lo
 endmacr
  lea STR, r6
  inc r6
@@ -10,10 +16,11 @@ endmacr
  sub r1, r4
  dec K
  jmp LOOP
+player
 END: stop
 STR: .string "abcd"
 LIST: .data 6, -9
       .data -100
 K: .data 31
-name 7
 .string "abcd"
+or
