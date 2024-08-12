@@ -19,9 +19,9 @@ int main(int argc, char *argv[]) {
         /* Generate a new file with the ".as" extension by adding it to the input filename.*/
         printf("Start pre-proc %s\n", argv[argc]);
 
-
+        hash_table macro_table = {0};
         /*Execute the macro preprocessor on the ".as" file.*/
-        if (!pre_assembler(argv[argc])) {
+        if (!pre_assembler(argv[argc], macro_table)){
             /*If it failed, move to the next file.*/
             const char *filePath = combineFilePath(argv[argc], ".am");
             remove(filePath);

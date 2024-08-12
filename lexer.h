@@ -3,10 +3,11 @@
 
 /* Represents an operation code with its associated opcode and argument count */
 typedef struct op_code {
- char opcode;    /* The opcode corresponding to the operation */
- int arg_num;     /* The number of arguments for the operation */
- char source_address; /*possible addressing system for source opernad*/
- char * destination_address; /*possible addressing system for target opernad*/
+    char *opcode;    /* The opcode corresponding to the operation */
+    int arg_num;     /* The number of arguments for the operation */
+    char * source_address; /*possible addressing system for source opernad*/
+    char * destination_address; /*possible addressing system for target opernad*/
+
 } op_code;
 
 /* Represents different parts of a command */
@@ -84,7 +85,7 @@ int is_instr(char *str);
  * @return Returns an integer representing the index of the opcode in the `OPCODES` array.
  *         If the string does not match any opcode or is NULL, it returns -1.
  **/
-int opcode_num(char *str);
+int what_opcode(char *str);
 
 
 /**
