@@ -1,9 +1,14 @@
 MAIN: add r3, LIST
 LOOP: prn #48
-macr    or
- or is a great kid.
- 999
- be like or
+macr    or r
+ hello its me
+endmacr
+macr    player
+ or is a great kid
+ 0909090909
+ poled
+ jsk0e
+ he;lo
 endmacr
  lea STR, r6
  inc r6
@@ -11,6 +16,7 @@ endmacr
  sub r1, r4
  dec K
  jmp LOOP
+player
 END: stop
 STR: .string "abcd"
 LIST: .data 6, -9
