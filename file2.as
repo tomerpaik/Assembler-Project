@@ -5,7 +5,7 @@ macr  roy
 
  roy is roy content
 endmacr
-macr  roy1 more_tet
+macr  roy1
 
 endmacr
 macr  roy2
