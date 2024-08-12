@@ -2,18 +2,11 @@ MAIN: add r3, LIST
 LOOP: prn #48
 macr  roy
  THIS IS  roy content
+
  roy is roy content
 endmacr
-macr  roy1
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
-  movvvvvv
+macr  roy1 more_tet
+
 endmacr
 macr  roy2
  cmp r3, #-6

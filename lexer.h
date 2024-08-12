@@ -5,6 +5,9 @@
 typedef struct op_code {
     char *opcode;    /* The opcode corresponding to the operation */
     int arg_num;     /* The number of arguments for the operation */
+    char * source_address; /*possible addressing system for source opernad*/
+    char * destination_address; /*possible addressing system for target opernad*/
+
 } op_code;
 
 /* Represents different parts of a command */

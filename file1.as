@@ -1,8 +1,9 @@
 MAIN: add r3, LIST
 LOOP: prn #48
-macr  name 0
- cmp r3, #-6
- bne END
+macr    or
+ or is a great kid.
+ 999
+ be like or
 endmacr
  lea STR, r6
  inc r6
@@ -15,5 +16,5 @@ STR: .string "abcd"
 LIST: .data 6, -9
       .data -100
 K: .data 31
-name 7
 .string "abcd"
+or
