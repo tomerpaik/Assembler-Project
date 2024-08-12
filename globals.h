@@ -20,7 +20,7 @@
 /* arbitrary very big number for line length */
 #define BIG_NUMBER_CONST 1000
 
-#define OPCODES_COUNT 16
+#define NUMBER_OF_OPCODES 16
 
 #define REG_COUNT 8
 

@@ -8,22 +8,22 @@
 
 /* Define the opcodes */
 op_code OPCODES[] = {
-        {"mov",  2},
-        {"cmp",  2},
-        {"add",  2},
-        {"sub",  2},
-        {"not",  1},
-        {"clr",  1},
-        {"lea",  2},
-        {"inc",  1},
-        {"dec",  1},
-        {"jmp",  1},
-        {"bne",  1},
-        {"red",  1},
-        {"prn",  1},
-        {"jsr",  1},
-        {"rts",  0},
-        {"stop", 0}
+        {"mov",  2, "0123", "123"},
+        {"cmp",  2, "0123", "0123"},
+        {"add",  2, "0123", "123"},
+        {"sub",  2, "0123", "123"},
+        {"lea",  2, "1", "123"},
+        {"clr",  1, "", "123"},
+        {"not",  1, "", "123"},
+        {"inc",  1, "", "123"},
+        {"dec",  1, "", "123"},
+        {"jmp",  1, "", "12"},
+        {"bne",  1, "", "12"},
+        {"red",  1, "", "123"},
+        {"prn",  1, "", "0123"},
+        {"jsr",  1, "", "12"},
+        {"rts",  0, "", ""},
+        {"stop", 0, "", ""}
 };
 /* Define the registers */
 char *REGS[] = {"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7"};
@@ -51,16 +51,15 @@ int is_instr(char *str) {
 }
 
 
-int what_opcode(char *str) {
+int opcode_num(char *str) {
     int i;
 
-    /* Return -1 if the string is NULL */
+    /* Return -1 if the str is NULL */
     if (str == NULL) {
         return -1;
     }
 
-    /* Iterate through the list of known opcodes and compare the string with each opcode in the list */
-    for (i = 0; i < OPCODES_COUNT; i++) {
+    for (i = 0; i < NUMBER_OF_OPCODES; i++) {
         if (strcmp(str, OPCODES[i].opcode) == 0) {
             return i; /* Return the index of the matching opcode */
         }
@@ -103,7 +102,7 @@ int legal_label(char *str, int *error_code) {
         return 0;
     }
 
-    if (what_opcode(str) < 0) {
+    if (opcode_num(str) < 0) {
         while (*(++str) != '\0' && (isalpha(*str) || isdigit(*str))) {;
         }
         if (*(str) == ':' && *(str + 1) == '\0') {
@@ -120,8 +119,3 @@ int legal_label(char *str, int *error_code) {
 int is_comment(char * line) {
     return 0;
 }
-
-
-
-
-
