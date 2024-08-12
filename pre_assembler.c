@@ -127,7 +127,7 @@ int is_macro_additional_after_key(char *line, int offset) {
     return 1; /* Additional characters found */
 }
 int is_valid_macro_name(char *name) {
-    if(is_instr(name) || what_opcode(name) >= 0 || what_reg(name) >=0) {
+    if(is_instr(name) || opcode_num(name) >= 0 || what_reg(name) >=0) {
         print_internal_error(ERROR_CODE_17); /*TODO: shoud be external print*/
         return 0;
     }
