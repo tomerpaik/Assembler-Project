@@ -1,11 +1,8 @@
 #ifndef LABRATORY_C_FINAL_PROJECT_ERRORS_H
 #define LABRATORY_C_FINAL_PROJECT_ERRORS_H
-
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "errors_handle.h"
 
 enum  project_error {
      GENERIC_NO_E,
@@ -13,7 +10,6 @@ enum  project_error {
      ERROR_CODE_2,
      ERROR_CODE_3,
      GENERIC_File_NEXIST,
-     ERROR_CODE_5,
      GENERIC_Line_TooLONG,
      GENERIC_Faild_OpenFile_W,
      GENERIC_Faild_OpenFile_R,
@@ -22,10 +18,11 @@ enum  project_error {
      macro_name_MACR,
      Macro_ETA_endmacr,
      Macro_double_define,
-     ERROR_CODE_14,
      ERROR_CODE_15,
      Macro_ETA_MacroCall,
      Macro_nameis_Reg_Op_Inst,
+     Macro_nameis_oor,
+
      firstPassError_success,   /* no error */
     /* label errors */
      firstPassError_label_invalid_name,   /* invalid label name */

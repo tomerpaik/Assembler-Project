@@ -99,7 +99,6 @@ int legal_label(char *str, int *error_code) {
 
     /* If str is in one of the following - the label name is not valid */
     if (strlen(str) > MAX_LABEL_LENGTH || !isalpha(*str) || what_reg(str) >= 0) {
-        *error_code = ERROR_CODE_44; /* Illegal label declaration */
         return 0;
     }
 
@@ -110,7 +109,6 @@ int legal_label(char *str, int *error_code) {
             *str = '\0';
             return 1;
         } else {
-            *error_code = ERROR_CODE_44; /* Illegal label declaration */
         }
     }
 

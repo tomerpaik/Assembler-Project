@@ -1,0 +1,38 @@
+# Ignore build directories
+cmake-build-debug/
+cmake-build-release/
+
+# Ignore CMake cache and temporary files
+CMakeCache.txt
+CMakeFiles/
+*.ncb
+*.suo
+*.user
+*.userosscache
+*.suo
+*.pdb
+*.idb
+*.dmp
+*.log
+*.tmp
+*.swp
+*.class
+*.jar
+*.pyc
+
+# Ignore object files
+*.o
+
+# Ignore compiled binary files
+*.exe
+*.out
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Ignore other files
+*.cache
+*.tmp
+*.swp

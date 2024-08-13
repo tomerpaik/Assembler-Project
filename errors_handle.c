@@ -1,7 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdarg.h>
 #include "errors_handle.h"
 
 
@@ -22,16 +18,8 @@ project_errors errors[] = {
     {ERROR_CODE_15, "Macros expansion in an .as file failed"},
     {Macro_ETA_MacroCall, "Macro call with extra text"},
     {Macro_nameis_Reg_Op_Inst, "Illegal name for a macro"}, /*TODO: seperate to either reg_op_etc*/
-    /*.define errors*/
-    {firstPassError_define_name_expected, "constant name expected"},
-    {firstPassError_define_unexpected_chars, "unexpected characters at end of line"},
-    {firstPassError_define_expected_equal_sign, "equal sign expected"},
-    {firstPassError_define_value_expected, "constant value expected"},
-    {firstPassError_define_invalid_name, "invalid name for a constant"},
-    {firstPassError_define_saved_keyword, "can't use a saved keyword as a constant's name"},
-    {firstPassError_define_name_taken, "the constant's name is already used"},
-    {firstPassError_define_value_nan, "constant value must be an immediate whole number"},
-    {firstPassError_define_macro_name, "can't define a constant with the same name as a macro"},
+    {Macro_nameis_oor, "Macro Name is out of range"},
+    {firstPassError_success, "No Error Found"},
     /*label errors*/
     {firstPassError_label_invalid_name, "invalid name for a label"},
     {firstPassError_label_const_definition, "can't define a constant in the same line as a label"},
@@ -61,6 +49,7 @@ project_errors errors[] = {
     {firstPassError_entry_argument_expected, "missing argument"},
     {firstPassError_entry_invalid_lbl_name, "invalid label name for entry argument"},
     {firstPassError_entry_extra_chars, "extra characters following .entry argument"},
+    {firstPassError_entry_define_label, "-----------------------"},
     /*commands errors*/
     {firstPassError_command_not_found, "invalid command"},
     {firstPassError_command_expected_operand, "operand expected"},
@@ -79,8 +68,17 @@ project_errors errors[] = {
     {firstPassError_command_operand_number, "a number operand has to follow a #"},
     {firstPassError_command_operand_macro, "macro can't be used as an operand"},
     {firstPassError_command_operand_saved, "operand cannot be a saved keyword"},
+    /*.define errors*/
+    {firstPassError_define_name_expected, "constant name expected"},
+    {firstPassError_define_unexpected_chars, "unexpected characters at end of line"},
+    {firstPassError_define_expected_equal_sign, "equal sign expected"},
+    {firstPassError_define_value_expected, "constant value expected"},
+    {firstPassError_define_invalid_name, "invalid name for a constant"},
+    {firstPassError_define_saved_keyword, "can't use a saved keyword as a constant's name"},
+    {firstPassError_define_name_taken, "the constant's name is already used"},
+    {firstPassError_define_value_nan, "constant value must be an immediate whole number"},
+    {firstPassError_define_macro_name, "can't define a constant with the same name as a macro"},
 
-    {firstPassError_success, "No Error Found"}
 };
 
 

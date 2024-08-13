@@ -1,9 +1,6 @@
 MAIN: add r3, LIST
 LOOP: prn #48
-macr    or
- hello its me
-endmacr
-macr    or
+macr    ordssdssssssssssssssssssssssssssssssssssss
  hello its me
 endmacr
  lea STR, r6
