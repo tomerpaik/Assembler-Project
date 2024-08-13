@@ -82,10 +82,12 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
         }
 
     }
+    fclose(inputFile);
+    fclose(outputFile);
     return 1;
 }
 int is_valid_macro_name(char *name) {
-    if(is_instr(name) || opcode_num(name) >= 0 || what_reg(name) >=0) {
+    if(is_instruction(name) || opcode_num(name) >= 0 || register_num(name) >=0) {
         print_internal_error(ERROR_CODE_17); /*TODO: shoud be external print*/
         return 0;
     }
