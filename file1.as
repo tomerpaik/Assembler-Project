@@ -3,15 +3,8 @@ LOOP: prn #48
 macr    or
  hello its me
 endmacr
-macr    player
- or is a great kid
- 0909090909
- poled
- jsk0e
- he;lo
-endmacr
 macr    or
- this is ko
+ hello its me
 endmacr
  lea STR, r6
  inc r6

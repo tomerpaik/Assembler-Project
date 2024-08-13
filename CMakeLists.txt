@@ -15,8 +15,7 @@ add_executable(assembler pre_assembler.c
         main.h
         general_functions.h
         general_functions.c
-        errors.c
-        errors.h
+        errors_handle.c
         lexer.c
         lexer.h
         globals.h
@@ -28,5 +27,5 @@ add_executable(assembler pre_assembler.c
         globals.h
         general_functions.h
         first_pass.h
-        errors.h
+        errors_handle.h
 )
