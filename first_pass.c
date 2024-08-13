@@ -1,17 +1,17 @@
 #include "first_pass.h"
 
-int first_pass(char * am_path) {
+int first_pass(char * am_path, hash_table macro_table) {
     FILE * am_file;
     char line[MAX_LINE_LENGTH], first_word[MAX_LINE_LENGTH], symbol_name[MAX_LINE_LENGTH];
     int error = 0;
     int symbol_flag = 0, offset = 0;
     int line_num = 0;
     am_file = open_new_file(am_path, ".am", "r");
-    printf("start first\n");
     /* Initialize  symbol table */
     while (fgets(line, MAX_LINE_LENGTH, am_file)) {
         line_num++;
         /*printf("line number: %d line is: %s", line_num, line);*/
+
         /*initial variables*/
         symbol_flag = 0;
         error = 0;
@@ -19,9 +19,10 @@ int first_pass(char * am_path) {
         sscanf(line, "%s%n", first_word, &offset);
 
         printf("line: %d, first word: %s\n", line_num, first_word);
-        if(is_symbol(first_word, &error)) {
+        if(is_symbol(first_word, &error, macro_table)) {
             printf("found symbol\n");
         }
+
     }
 
     fclose(am_file);
@@ -34,7 +35,7 @@ int first_pass(char * am_path) {
 
 }
 
-int is_symbol(char *word, int *error) {
+int is_symbol(char *word, int *error, hash_table macro_table) {
     int word_len = strlen(word);
     char *symbol_name = substring(my_strdup(word), 0, word_len-1);
 

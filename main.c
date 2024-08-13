@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
         am_path = argv[argc];
 
         /*Execute the first pass, and then the second on the ".am" file.*/
-        if (first_pass(am_path)) {
+        if (first_pass(am_path, macro_table)) {
             /*If it failed, move to the next file.*/
             continue;
         }

@@ -120,17 +120,17 @@ int is_comment(char * line) {
 
 char* substring(char *source, int start, int end) {
     int length = strlen(source);
+    char *substr = (char*)handle_malloc((end + 1) * sizeof(char));
+    int i;
 
     if (start < 0 || start > length || end < 0) {
         return NULL;
     }
 
-    char *substr = (char*)handle_malloc((end + 1) * sizeof(char));
     if (substr == NULL) {
         return NULL;
     }
 
-    int i;
     for (i = 0; i < end && (start + i) < length; i++) {
         substr[i] = source[start + i];
     }

@@ -1,0 +1,32 @@
+#Ignore build directories
+cmake-build-debug/
+cmake-build-release/
+
+#Ignore CMake cache and temporary files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+build.ninja
+*.ninja
+.log
+
+#Ignore specific CMake files and directories
+cmake-build-debug/.cmake/
+cmake-build-debug/.json
+cmake-build-debug/Testing/Temporary/
+
+#Ignore compiled binary files
+*.exe
+*.out
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+#Ignore object files
+*.o
+
+#Ignore other temporary files
+*.tmp
+*.swp
