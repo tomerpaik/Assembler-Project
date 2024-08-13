@@ -28,6 +28,7 @@ project_errors errors[] = {
     {firstPassError_label_empty_line, "can't define a label on an empty line"},
     {firstPassError_label_macro_name, "can't define a label with the same name as a macro"},
     {firstPassError_label_no_whitespace, "missing a space after label definition"},
+    {firstPassError_label_invalid_length, "label long is out off range"},
     /*.data errors*/
     {firstPassError_data_nan, "arguments of a data instruction must be immediate numbers or constants"},
     {firstPassError_data_comma_expected, "comma expected between arguments"},

@@ -87,7 +87,7 @@ int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_ta
     fclose(outputFile);
     return 1;
 }
-int is_valid_macro_name(char *name) {
+int is_valid_macro_name(char *name, int line_num, char * file_name) {
     if(is_instruction(name) || opcode_num(name) >= 0 || register_num(name) >=0) {
         print_error(Macro_nameis_Reg_Op_Inst, line_num, file_name); /*TODO: shoud be external print*/
         return 0;

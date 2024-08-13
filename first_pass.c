@@ -48,7 +48,6 @@ int is_symbol(char *word, int *error, hash_table macro_table) {
     /*check valid len*/
     if(word_len > 32){
         *error = 1;
-        printf("Error: valid len\n");
     }
     /*check if symbol is a save word - instruction*/
     if(is_instruction(symbol_name)) {

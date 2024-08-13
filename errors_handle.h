@@ -32,6 +32,7 @@ enum  project_error {
      firstPassError_label_empty_line, /* label defined on an empty line */
      firstPassError_label_macro_name, /* there's a macro with the same name as the label */
      firstPassError_label_no_whitespace, /* missing space after label declaration */
+     firstPassError_label_invalid_length, /*label is too long*/
 
     /* .data errors */
      firstPassError_data_nan, /* .data argument is not a number */
