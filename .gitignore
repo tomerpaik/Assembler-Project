@@ -1,6 +1,11 @@
 # Ignore build directories
 cmake-build-debug/
 cmake-build-release/
+cmake-build-debug/
+*.exe
+*.log
+*.ninja
+
 
 # Ignore CMake cache and temporary files
 CMakeCache.txt
