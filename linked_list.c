@@ -38,6 +38,7 @@ void insert_node(Node * root, char *key, char *value) {
 
 void * search_linked(Node root, char* key) {
     Node temp = root;
+    printf("in search linked\n");
     while (temp != NULL) {
         if (strcmp(temp->key, key) == 0) {
             return temp->value;

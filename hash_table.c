@@ -22,6 +22,7 @@ void* search_table(hash_table table, char* key) {
     unsigned int index = hash(key);  /* Compute the index */
     return search_linked(table[index], key);
 }
+
 void print_table(hash_table table) {
     int i = 0;
     for (i = 0; i < TABLE_SIZE; i++) {

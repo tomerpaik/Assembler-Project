@@ -70,7 +70,7 @@ int lines_too_long(char *file_name);
  * @return Returns an integer. If the string matches one of the known instructions, it returns 1.
  *         Otherwise, if the string does not match any instruction or is NULL, it returns 0.
  */
-int is_instr(char *str);
+int is_instruction(char *str);
 
 
 /**
@@ -85,7 +85,7 @@ int is_instr(char *str);
  * @return Returns an integer representing the index of the opcode in the `OPCODES` array.
  *         If the string does not match any opcode or is NULL, it returns -1.
  **/
-int what_opcode(char *str);
+int opcode_num(char *str);
 
 
 /**
@@ -100,12 +100,14 @@ int what_opcode(char *str);
  * @return Returns an integer representing the index of the register in the `REGS` array.
  *         If the string does not match any register or is NULL, it returns -1.
 **/
-int what_reg(char *str);
+int register_num(char *str);
 
 void get_first_word(char * line, char * first_word);
 
 int is_comment(char * line);
 
 int legal_label(char *str, int *error_code);
+
+char* substring(char *source, int start, int end);
 
 #endif
