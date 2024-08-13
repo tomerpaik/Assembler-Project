@@ -29,11 +29,10 @@ op_code OPCODES[] = {
 char *REGS[] = {"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7"};
 
 /* Define the instructions */
-char *INSTUCTIONS[] = {".data", ".string", ".extern", ".entry"};
+char *INSTRUCTIONS[] = {".data", ".string", ".extern", ".entry"};
 
-
-
-int is_instr(char *str) {
+/*check if str is instruction*/
+int is_instruction(char *str) {
     int i;
 
     /* Return 0 if the string is NULL */
@@ -41,9 +40,9 @@ int is_instr(char *str) {
         return 0;
     }
 
-    /* Iterate through the list of known instructions and compare the string with each instruction in the list */
+    /* Iterate through the list of known instructions and check if str is an instruction*/
     for (i = 0; i < INSTRUCTIONS_COUNT; i++) {
-        if (strcmp(str, INSTUCTIONS[i]) == 0) {
+        if (strcmp(str, INSTRUCTIONS[i]) == 0) {
             return 1; /* Return 1 if the string matches an instruction */
         }
     }
@@ -58,7 +57,7 @@ int opcode_num(char *str) {
     if (str == NULL) {
         return -1;
     }
-
+    /*check if there is op matching to str*/
     for (i = 0; i < NUMBER_OF_OPCODES; i++) {
         if (strcmp(str, OPCODES[i].opcode) == 0) {
             return i; /* Return the index of the matching opcode */
@@ -66,9 +65,8 @@ int opcode_num(char *str) {
     }
     return -1; /* Return -1 if the string does not match any known opcodes */
 }
-
-
-int what_reg(char *str) {
+/*if str is a register returns the register number, if not returns: -1*/
+int register_num(char *str) {
     int i;
 
     /* Return -1 if the string is NULL */
@@ -77,14 +75,14 @@ int what_reg(char *str) {
     }
 
     /* Iterate through the list of known registers and compare the string with each register in the list */
-    for (i = 0; i < REG_COUNT; i++) {
+    for (i = 0; i < NUMBER_OF_REG; i++) {
         if (strcmp(str, REGS[i]) == 0) {
             return i; /* Return the index of the matching register */
         }
     }
     return -1; /* Return -1 if the string does not match any known registers */
 }
-
+/*gets the first word in the line*/
 void get_first_word(char * line, char * first_word) {
     /* Allocate enough space for the first word */
     int offset = 0;
@@ -97,7 +95,7 @@ int legal_label(char *str, int *error_code) {
     }
 
     /* If str is in one of the following - the label name is not valid */
-    if (strlen(str) > MAX_LABEL_LENGTH || !isalpha(*str) || what_reg(str) >= 0) {
+    if (strlen(str) > MAX_LABEL_LENGTH || !isalpha(*str) || register_num(str) >= 0) {
         *error_code = ERROR_CODE_44; /* Illegal label declaration */
         return 0;
     }
@@ -118,4 +116,25 @@ int legal_label(char *str, int *error_code) {
 
 int is_comment(char * line) {
     return 0;
+}
+
+char* substring(char *source, int start, int end) {
+    int length = strlen(source);
+
+    if (start < 0 || start > length || end < 0) {
+        return NULL;
+    }
+
+    char *substr = (char*)handle_malloc((end + 1) * sizeof(char));
+    if (substr == NULL) {
+        return NULL;
+    }
+
+    int i;
+    for (i = 0; i < end && (start + i) < length; i++) {
+        substr[i] = source[start + i];
+    }
+
+    substr[i] = '\0';
+    return substr;
 }

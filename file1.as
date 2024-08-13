@@ -1,6 +1,6 @@
-MAIN: add r3, LIST
-LOOP: prn #48
-macr    or r
+1MAIN: add r3, LIST
+LOO*P: prn #48
+macr    or
  hello its me
 endmacr
 macr    player
@@ -17,9 +17,9 @@ endmacr
  dec K
  jmp LOOP
 player
-END: stop
-STR: .string "abcd"
-LIST: .data 6, -9
+r1: stop
+mov: .string "abcd"
+.data: .data 6, -9
       .data -100
 K: .data 31
 .string "abcd"

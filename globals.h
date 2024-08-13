@@ -22,7 +22,7 @@
 
 #define NUMBER_OF_OPCODES 16
 
-#define REG_COUNT 8
+#define NUMBER_OF_REG 8
 
 #define WORD_LEN 12
 
