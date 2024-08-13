@@ -93,6 +93,10 @@ int is_valid_macro_name(char *name, int line_num, char * file_name) {
         print_error(macro_name_MACR, line_num, file_name);
         return 0;
     }
+    if(strlen(name) > MAX_MACRO_NAME_LENGTH) {
+        print_error(Macro_nameis_oor, line_num, file_name);
+        return 0;
+    }
     return 1;
 }
 void add_to_macro_body(hash_table table, char *line, char *macroName, int *macro_len) {

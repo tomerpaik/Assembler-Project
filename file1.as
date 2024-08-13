@@ -1,17 +1,7 @@
 MAIN: add r3, LIST
 LOOP: prn #48
-macr    or
+macr    ordssdssssssssssssssssssssssssssssssssssss
  hello its me
-endmacr
-macr    player
- or is a great kid
- 0909090909
- poled
- jsk0e
- he;lo
-endmacr
-macr    or
- this is ko
 endmacr
  lea STR, r6
  inc r6
