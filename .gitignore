@@ -1,32 +1,19 @@
 # Ignore build directories
 cmake-build-debug/
 cmake-build-release/
-cmake-build-debug/
-*.exe
-*.log
-*.ninja
-
 
 # Ignore CMake cache and temporary files
 CMakeCache.txt
 CMakeFiles/
-*.ncb
-*.suo
-*.user
-*.userosscache
-*.suo
-*.pdb
-*.idb
-*.dmp
+cmake_install.cmake
+build.ninja
+*.ninja
 *.log
-*.tmp
-*.swp
-*.class
-*.jar
-*.pyc
 
-# Ignore object files
-*.o
+# Ignore specific CMake files and directories
+cmake-build-debug/.cmake/
+cmake-build-debug/*.json
+cmake-build-debug/Testing/Temporary/
 
 # Ignore compiled binary files
 *.exe
@@ -37,7 +24,9 @@ CMakeFiles/
 *.so
 *.dylib
 
-# Ignore other files
-*.cache
+# Ignore object files
+*.o
+
+# Ignore other temporary files
 *.tmp
 *.swp
