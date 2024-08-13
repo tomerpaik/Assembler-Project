@@ -85,8 +85,8 @@ build CMakeFiles/assembler.dir/general_functions.c.obj: C_COMPILER__assembler_un
   OBJECT_DIR = CMakeFiles\assembler.dir
   OBJECT_FILE_DIR = CMakeFiles\assembler.dir
 
-build CMakeFiles/assembler.dir/errors.c.obj: C_COMPILER__assembler_unscanned_Debug C$:/Users/ROY$ KAGAN/CLionProjects/assembler/errors.c || cmake_object_order_depends_target_assembler
-  DEP_FILE = CMakeFiles\assembler.dir\errors.c.obj.d
+build CMakeFiles/assembler.dir/errors_handle.c.obj: C_COMPILER__assembler_unscanned_Debug C$:/Users/ROY$ KAGAN/CLionProjects/assembler/errors_handle.c || cmake_object_order_depends_target_assembler
+  DEP_FILE = CMakeFiles\assembler.dir\errors_handle.c.obj.d
   FLAGS = -g -std=gnu90 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\assembler.dir
   OBJECT_FILE_DIR = CMakeFiles\assembler.dir
@@ -105,7 +105,7 @@ build CMakeFiles/assembler.dir/lexer.c.obj: C_COMPILER__assembler_unscanned_Debu
 #############################################
 # Link the executable assembler.exe
 
-build assembler.exe: C_EXECUTABLE_LINKER__assembler_Debug CMakeFiles/assembler.dir/pre_assembler.c.obj CMakeFiles/assembler.dir/linked_list.c.obj CMakeFiles/assembler.dir/hash_table.c.obj CMakeFiles/assembler.dir/first_pass.c.obj CMakeFiles/assembler.dir/main.c.obj CMakeFiles/assembler.dir/general_functions.c.obj CMakeFiles/assembler.dir/errors.c.obj CMakeFiles/assembler.dir/lexer.c.obj
+build assembler.exe: C_EXECUTABLE_LINKER__assembler_Debug CMakeFiles/assembler.dir/pre_assembler.c.obj CMakeFiles/assembler.dir/linked_list.c.obj CMakeFiles/assembler.dir/hash_table.c.obj CMakeFiles/assembler.dir/first_pass.c.obj CMakeFiles/assembler.dir/main.c.obj CMakeFiles/assembler.dir/general_functions.c.obj CMakeFiles/assembler.dir/errors_handle.c.obj CMakeFiles/assembler.dir/lexer.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\assembler.dir

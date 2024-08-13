@@ -3,7 +3,7 @@
 #include <ctype.h>
 #include "lexer.h"
 #include "globals.h"
-#include "errors.h"
+#include "errors_handle.h"
 #include "general_functions.h"
 
 /* Define the opcodes */

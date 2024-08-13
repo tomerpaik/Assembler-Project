@@ -1,5 +1,5 @@
 #include "general_functions.h"
-#include "errors.h"
+#include "errors_handle.h"
 
 
 void cleanup() {
@@ -9,7 +9,7 @@ void cleanup() {
 void *handle_malloc(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
-        print_internal_error(ERROR_CODE_1);
+        print_generic_error(GENERIC_Allocation_Faild);
     }
     return object_ptr;
 }
@@ -41,9 +41,9 @@ FILE * open_new_file(char *file_name, char *ending, char * mode) {
     file = fopen(new_file_name, mode);
     if (file == NULL) {
         if (!strcmp(mode, "r")) {
-            print_internal_error(ERROR_CODE_8);
+            print_generic_error(GENERIC_Faild_OpenFile_R);
         }else {
-            print_internal_error(ERROR_CODE_7);
+            print_generic_error(GENERIC_Faild_OpenFile_W);
         }
         return NULL;
     }

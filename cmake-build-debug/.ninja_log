@@ -1,3 +1,11 @@
 # ninja log v6
-14	228	7441496335132662	CMakeFiles/assembler.dir/main.c.obj	2b38e044fcbd19a7
-230	408	7441496337295290	assembler.exe	792454d8dbf623bc
+57	612	7452351628627246	CMakeFiles/assembler.dir/linked_list.c.obj	575d0a381863340b
+89	593	7452351628935473	CMakeFiles/assembler.dir/main.c.obj	2b38e044fcbd19a7
+50	611	7452351628559298	CMakeFiles/assembler.dir/pre_assembler.c.obj	5da5bf4b790a7254
+128	259	7451939946765754	assembler.exe	24cb08546e475925
+98	614	7452351629034249	CMakeFiles/assembler.dir/general_functions.c.obj	a3ad804757d159d0
+67	615	7452351628724713	CMakeFiles/assembler.dir/hash_table.c.obj	70f24cad58c278c7
+77	605	7452351628824961	CMakeFiles/assembler.dir/first_pass.c.obj	52726330925c4f38
+797	1170	7451809311044827	CMakeFiles/assembler.dir/errors.c.obj	8cfb18247da9d92e
+606	744	7452351634109191	CMakeFiles/assembler.dir/lexer.c.obj	df883394080af49
+6	484	7452351806630109	build.ninja	7e70748f8a840e54

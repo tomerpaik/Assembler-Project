@@ -8,7 +8,7 @@ int pre_assembler(char * file_name, hash_table macro_table) {
     }
     am_file = open_new_file(file_name, ".am", "w");
 
-    if (process_macros(as_file, am_file, macro_table)) {
+    if (process_macros(as_file, am_file, file_name, macro_table)) {
         free_table(macro_table);    /*free_macro_table(macroTable);*/
         return 1;
     }
@@ -16,7 +16,7 @@ int pre_assembler(char * file_name, hash_table macro_table) {
     fclose(am_file);
     return 0;
 }
-int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
+int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_table macroTable){
     /*Initialize Varibals*/
     char line[MAX_LINE_LENGTH];
     char word[MAX_LINE_LENGTH];
@@ -43,28 +43,28 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
         if (!strcmp(word, MACRO_START)) {
             inMacroFlag = 1;
             if (!sscanf(line + offset, "%s%n", macroName, &macro_name_offset)) { /*scanf returns 0 means no name was found*/
-                print_internal_error(ERROR_CODE_9);
+                print_error(Macro_Without_Name, line_num, file_name);
                 return 0;
             }
             if (!is_empty_after_key(line + macro_name_offset + offset)) { /*more text after macro name*/
-                print_internal_error(ERROR_CODE_10);
+                print_error(Macro_ETA_MacroName, line_num, file_name);
                 return 0;
             }
-            if (!is_valid_macro_name(macroName)) {
+            if (!is_valid_macro_name(macroName, line_num, file_name)) {
                 return 0;
             }
             if (search_table(macroTable, macroName) == 0) {
                 total_body_length = 0;
                 insert_table(macroTable, macroName, "");
             }else {
-                print_internal_error(ERROR_CODE_13);
+                print_error(Macro_double_define, line_num, file_name );
                 return 0;
             }
         }
         else if (!strcmp(word, MACRO_END)) {
             inMacroFlag = 0;
             if (!is_empty_after_key(line + offset)) {
-                print_internal_error(ERROR_CODE_12);
+                print_error(Macro_ETA_endmacr, line_num, file_name);
                 return 0;
             }
         }
@@ -73,7 +73,7 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
         }
         else if(search_table(macroTable, word)){ /*check if first word is macro call*/
             if (!is_empty_after_key(line + offset)) {
-                print_internal_error(ERROR_CODE_16);
+                print_error(Macro_ETA_MacroCall, line_num, file_name);
                 return 0;
             }
             fputs((char*)search_table(macroTable, word), outputFile);
@@ -84,13 +84,13 @@ int process_macros(FILE * inputFile, FILE * outputFile, hash_table macroTable){
     }
     return 1;
 }
-int is_valid_macro_name(char *name) {
+int is_valid_macro_name(char *name, int line_num, char * file_name) {
     if(is_instr(name) || what_opcode(name) >= 0 || what_reg(name) >=0) {
-        print_internal_error(ERROR_CODE_17); /*TODO: shoud be external print*/
+        print_error(Macro_nameis_Reg_Op_Inst, line_num, file_name); /*TODO: shoud be external print*/
         return 0;
     }
     if (!strcmp(name, MACRO_START)) {
-        print_internal_error(ERROR_CODE_11);
+        print_error(macro_name_MACR, line_num, file_name);
         return 0;
     }
     return 1;
