@@ -7,7 +7,7 @@ int first_pass(char * am_path) {
     int symbol_flag = 0, offset = 0;
     int line_num = 0;
     am_file = open_new_file(am_path, ".am", "r");
-
+    printf("start first\n");
     /* Initialize  symbol table */
     while (fgets(line, MAX_LINE_LENGTH, am_file)) {
         line_num++;
