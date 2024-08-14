@@ -17,5 +17,5 @@ void *handle_malloc(long object_size);
 FILE *open_new_file(char *file_name,char *ending, char *mode);
 char *add_new_file(char *file_name, char *ending);
 void* my_strdup(const char* src);
-int is_empty_after_key(char *str);
+int is_empty_after_key(const char *str);
 #endif

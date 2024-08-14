@@ -110,4 +110,6 @@ int legal_label(char *str, int *error_code);
 
 char* substring(char *source, int start, int end);
 
+int is_valid_ascci(char c);
+
 #endif

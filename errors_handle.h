@@ -15,7 +15,7 @@ enum  project_error {
      GENERIC_Faild_OpenFile_R,
      Macro_Without_Name,
      Macro_ETA_MacroName,
-     macro_name_MACR,
+     macro_name_MACR_ENDMACR,
      Macro_ETA_endmacr,
      Macro_double_define,
      ERROR_CODE_15,
