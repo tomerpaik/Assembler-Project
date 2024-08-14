@@ -8,7 +8,7 @@
 typedef Node hash_table[TABLE_SIZE];
 
 unsigned int hash(const char* key);
-void insert_table(hash_table table, char* key, char* value);
+void insert_table(hash_table table, char* key, void* value);
 void* search_table(hash_table table, char* key);
 int is_in_table(hash_table table, char* key);
 void print_table(hash_table table);
