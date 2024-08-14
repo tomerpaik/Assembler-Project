@@ -9,7 +9,7 @@ int pre_assembler(char * file_name, hash_table macro_table) {
     am_file = open_new_file(file_name, ".am", "w");
 
     if (process_macros(as_file, am_file, file_name, macro_table)) {
-        free_table(macro_table);    /*free_macro_table(macroTable);*/
+        /*free_table(macro_table);*/    /*free_macro_table(macroTable);*/
         return 1;
     }
     fclose(as_file);
@@ -104,25 +104,16 @@ int is_valid_macro_name(char *name, int line_num, char * file_name) {
 }
 void add_to_macro_body(hash_table table, char *line, char *macroName, int *macro_len) {
     char *macro_val = (char*)search_table(table, macroName);
+    char *save_macro_val = (char*)search_table(table, macroName);
     int new_len = *macro_len + strlen(line) + 1;
     char *after_realloc_body = realloc(macro_val, new_len);
     if (after_realloc_body == NULL) {
         printf("Error: Realloc failed\n");
+        free(macro_val);
         return;
     }
 
     strcat(after_realloc_body, line);
-    set_body_value(table, macroName, after_realloc_body);
+    *save_macro_val = *after_realloc_body;
     *macro_len = new_len;
-}
-void set_body_value(hash_table table, char *macroName, char *new_macro_val) {
-    unsigned int index = hash(macroName);
-    Node node = table[index];
-    while (node != NULL) {
-        if (strcmp(node->key, macroName) == 0) {
-            node->value = new_macro_val;
-            break;
-        }
-        node = node->next;
-    }
 }

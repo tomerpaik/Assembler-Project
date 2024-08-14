@@ -25,7 +25,12 @@ enum  project_error {
 
      firstPassError_success,   /* no error */
     /* label errors */
+     /* invalid label name */
      firstPassError_label_invalid_name,   /* invalid label name */
+     firstPassError_label_invalid_name_starts_with_numbers,   /*label name starting with number */
+     firstPassError_label_invalid_name_is_inst,   /* label name is insruction */
+     firstPassError_label_invalid_name_is_reg,   /* invalid label name is reg*/
+     firstPassError_label_invalid_name_is_opcode,   /* invalid label name is reg*/
      firstPassError_label_const_definition,   /* constant defined in a label */
      firstPassError_label_saved_keyword,  /* the label's name is a saved keyword */
      firstPassError_label_name_taken, /* name of label taken */

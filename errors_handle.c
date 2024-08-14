@@ -22,6 +22,10 @@ project_errors errors[] = {
     {firstPassError_success, "No Error Found"},
     /*label errors*/
     {firstPassError_label_invalid_name, "invalid name for a label"},
+    {firstPassError_label_invalid_name_starts_with_numbers, "label name starting with number"},
+    {firstPassError_label_invalid_name_is_inst, "label name is insruction"},
+    {firstPassError_label_invalid_name_is_reg, "invalid label name is reg"},
+    {firstPassError_label_invalid_name_is_opcode, "invalid label name is opcode"},
     {firstPassError_label_const_definition, "can't define a constant in the same line as a label"},
     {firstPassError_label_saved_keyword, "can't use a saved keyword as a label's name"},
     {firstPassError_label_name_taken, "a symbol with this name already exists"},
@@ -92,6 +96,6 @@ void print_error(enum project_error code, int srcline, char srcfile[]) {
 }
 
 void print_generic_error(enum project_error code) {
-    printf("%s\n", errors[code].message);
+    printf("GENERIC %s\n", errors[code].message);
 }
 

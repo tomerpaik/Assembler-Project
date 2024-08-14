@@ -10,21 +10,16 @@
 
 int main(int argc, char *argv[]) {
     char *am_path;
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <file1> <file2> ... <fileN>\n", argv[0]);
-        return 0;
-    }
+    char *filePath;
 
     while (--argc > 0) {
-        /* Generate a new file with the ".as" extension by adding it to the input filename.*/
-        printf("Start pre-proc %s\n", argv[argc]);
-
         hash_table macro_table = {0};
-        /*Execute the macro preprocessor on the ".as" file.*/
+        printf("Start pre-proc %s\n", argv[argc]);
         if (!pre_assembler(argv[argc], macro_table)){
             /*If it failed, move to the next file.*/
-            const char *filePath = combineFilePath(argv[argc], ".am");
+            filePath = add_new_file(argv[argc], ".am");
             remove(filePath);
+            free(filePath);
             continue;
         }
 
@@ -40,7 +35,9 @@ int main(int argc, char *argv[]) {
 
         /*Free allocated memory*/
         free(am_path);
+        free_table(macro_table);
     }
+
     printf("end\n");
     return 0;
 }
