@@ -45,12 +45,14 @@ enum  project_error {
      firstPassError_data_const_not_found, /* constant referenced was not found */
      firstPassError_data_argument_expected,   /* argument expected in data */
      firstPassError_data_oor, /* the data argument was out of range for a byte */
+     firstPassError_data_empty_line, /*after .data line is empty */
 
     /* .string errors */
      firstPassError_string_expected_quotes,   /* quotes missing after .string */
      firstPassError_string_expected_end_quotes,   /* quotes missing at end of .string definition */
      firstPassError_string_extra_chars,   /* extra characters after closing quotes */
      firstPassError_string_not_printable, /* a character in the string is not printable */
+     firstPassError_string_empty_line, /*after .string line is empty */
 
     /* .extern errors */
      firstPassError_extern_argument_expected, /* missing argument */

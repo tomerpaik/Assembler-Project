@@ -10,6 +10,7 @@ void *handle_malloc(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
         print_generic_error(GENERIC_Allocation_Faild);
+        exit(1);
     }
     return object_ptr;
 }

@@ -11,9 +11,14 @@ endmacr
  jmp LOOP
 player
 E*ND: stop
-stop: .string "abcd"
+LAO: .string "abcd"
 r7: .data 6, -9
       .data -100
-or: .data 31
+.data 31 56
+.string "abcd
+.string abcd"
+.string "a*bcd"
+.string "a\nbcd"
+.string "a\0bcd"
 .string "abcd"
 or

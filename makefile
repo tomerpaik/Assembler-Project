@@ -11,8 +11,17 @@ all: $(OFILES)
 
 .PHONEY: clean val
 
+# Detect OS
+ifeq ($(OS),Windows_NT)
+    # Windows
+    DEL := del /Q
+else
+    # Unix-like (macOS, Linux)
+    DEL := rm -f
+endif
+
 clean:
-	rm -rf *.o
+	$(DEL) *.o
 
 val:
 	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler input

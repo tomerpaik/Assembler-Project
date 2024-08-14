@@ -112,4 +112,6 @@ char* substring(char *source, int start, int end);
 
 int is_valid_ascci(char c);
 
+int is_empty_line(const char *line);
+
 #endif
