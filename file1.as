@@ -20,5 +20,5 @@ r7: .data 6, -9
 .string "a*bcd"
 .string "a\nbcd"
 .string "a\0bcd"
-.string "abcd"
+.string "ab"cd"
 or

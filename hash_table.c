@@ -13,7 +13,7 @@ unsigned int hash(const char* key) {
     return hash % TABLE_SIZE;
 }
 
-void insert_table(hash_table table, char* key, char* value) {
+void insert_table(hash_table table, char* key, void* value) {
     unsigned int index = hash(key);  /* Compute the index */
     insert_node(&table[index], key, value);  /* Pass a pointer to the node */
 }

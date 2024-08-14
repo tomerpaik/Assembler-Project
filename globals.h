@@ -7,6 +7,8 @@
 #define MACRO_START "macr"
 #define MACRO_END "endmacr"
 #define TABLE_SIZE 100
+
+#define MAX_MEMORY_SPACE 4096
 /*The File contain all the global values in the program*/
 
 /* Maximum length of a label in command line  */
