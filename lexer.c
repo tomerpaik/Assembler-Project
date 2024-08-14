@@ -136,3 +136,7 @@ char* substring(char *source, int start, int end) {
     substr[i] = '\0';
     return substr;
 }
+
+int is_valid_ascci(char c) {
+    return (c >= 32 && c <= 126);
+}

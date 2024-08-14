@@ -92,8 +92,8 @@ int is_valid_macro_name(char *name, int line_num, char * file_name) {
         print_error(Macro_nameis_Reg_Op_Inst, line_num, file_name); /*TODO: shoud be external print*/
         return 0;
     }
-    if (!strcmp(name, MACRO_START)) {
-        print_error(macro_name_MACR, line_num, file_name);
+    if (!strcmp(name, MACRO_START) && !strcmp(name, MACRO_END)) {
+        print_error(macro_name_MACR_ENDMACR, line_num, file_name);
         return 0;
     }
     if(strlen(name) > MAX_MACRO_NAME_LENGTH) {

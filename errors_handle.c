@@ -12,7 +12,7 @@ project_errors errors[] = {
     {GENERIC_Faild_OpenFile_R,  "Failed to open file for reading"},
     {Macro_Without_Name,  "Error - macro without name definition"},
     {Macro_ETA_MacroName, "Error - extra text after macro name definition"},
-    {macro_name_MACR, "Macro name is called like macro defenition -macr-"},
+    {macro_name_MACR_ENDMACR, "Macro name is called like macro defenition -macr-/-endmacr"},
     {Macro_ETA_endmacr, "endmacr with extra text"},
     {Macro_double_define, "Macro has more than one definition"},
     {ERROR_CODE_15, "Macros expansion in an .as file failed"},

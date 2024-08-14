@@ -83,7 +83,7 @@ int line_length_valid(char* line, int line_num) {
     return is_valid;
 }
 
-int is_empty_after_key(char *str) {
+int is_empty_after_key(const char *str) {
     while (isspace(*str)) {
         str++;
     }

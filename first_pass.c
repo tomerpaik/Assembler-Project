@@ -7,8 +7,9 @@ int first_pass(char * am_path, hash_table macro_table) {
     int old_error = 0;
     int error_found = 0;
     enum project_error current_error;
-    int symbol_flag = 0, offset = 0;
+    int symbol_flag = 0, offset = 0, after_label_offset = 0;
     int line_num = 0;
+
     am_file = open_new_file(am_path, ".am", "r");
     /* Initialize  symbol table */
     while (fgets(line, MAX_LINE_LENGTH, am_file)) {
@@ -18,6 +19,7 @@ int first_pass(char * am_path, hash_table macro_table) {
         /*initial variables*/
         symbol_flag = 0;
         old_error = 0;
+        offset = 0;
 
         sscanf(line, "%s%n", first_word, &offset);
 
@@ -30,14 +32,34 @@ int first_pass(char * am_path, hash_table macro_table) {
                 continue;
             }
             symbol_flag = 1;
+            sscanf(line + offset, "%s%n", first_word, &after_label_offset);
+            offset += after_label_offset;
         }
-        if (first_word[0] == '.') { /*word is starting with "." so it can be .string/.data/.extern/.entry*/
-            if ((current_error = is_data_string(first_word)) != firstPassError_success) {
+
+        /*DATA IMAGE SECTION*/
+        if((strcmp(first_word, ".data") == 0)){
+            if((current_error = valid_data(line + offset)) != firstPassError_success) {
+                print_error(current_error, line_num, am_path);
+                error_found = 1;
+                continue;;
+            }
+            /*printf("line: %d, added data\n", line_num);*/
+            /*add data to datalist*/
+            /*if(symbol_flag){
+                /*puts DC in symbole value#1#
+            }*/
+        }
+        if(strcmp(first_word, ".string") == 0){
+            if((current_error = valid_string(line + offset)) != firstPassError_success) {
                 print_error(current_error, line_num, am_path);
                 error_found = 1;
             }
+            /*add string to datalist*/
         }
 
+
+
+        /*CODE IMAGE SECTION*/
     }
 
     fclose(am_file);
@@ -69,6 +91,41 @@ enum project_error valid_symbol(char *word, hash_table macro_table) {
     return firstPassError_success;
 }
 
-enum project_error is_data_string(char *word) {
-    return firstPassError_success;
+enum project_error valid_data(char *line){
+    const char *ptr = line;
+
+    while (*ptr) {  /* Loop to check all the numbers after ".data" */
+        while (isspace(*ptr)) ptr++;    /* Skip any whitespace */
+        if (*ptr == '+' || *ptr == '-') ptr++; /* Check if the first character is a digit or an optional +/- sign */
+        if (!isdigit(*ptr)) return firstPassError_data_nan; /* Ensure the current character is a digit */
+
+        while (isdigit(*ptr)) ptr++;    /* Continue scanning digits */
+        while (isspace(*ptr)) ptr++;    /* Skip any whitespace */
+        if (*ptr == ',') {  /* If a comma is found, move to the next number */
+            ptr++;
+            while (isspace(*ptr)) ptr++;     /* Ensure there's a number after the comma */
+            if (!isdigit(*ptr) && *ptr != '+' && *ptr != '-') return firstPassError_data_argument_expected; /* Check if the next character is a digit or a sign */
+        } else if (*ptr != '\0') return firstPassError_data_comma_expected; /* Invalid if there's any other character */
+
+    }
+    return firstPassError_success;; /* Valid instruction */
+}
+
+enum project_error valid_string(char *line) {
+    const char *ptr = line;
+    const char *startQuote;
+    const char *endQuote;
+
+    while (isspace(*ptr)) ptr++; /* Skip any leading whitespace */
+    startQuote = strchr(ptr, '"'); /* Find the first quote */
+    if (startQuote == NULL) return firstPassError_string_expected_quotes; /* Error if no starting quote found */
+    endQuote = startQuote;
+    while (*(endQuote = strchr(endQuote + 1, '"')) != '\0') {/* Find the last quote */}
+    if (startQuote == endQuote) return firstPassError_string_expected_end_quotes; /* Error if no ending quote */
+    if (is_empty_after_key(endQuote)) return firstPassError_string_extra_chars; /* Error if there are extra characters after the string */
+    for (ptr = startQuote + 1; ptr < endQuote; ptr++) {
+        if (!isprint(*ptr)) return firstPassError_string_not_printable; /* Error if the string contains non-printable characters */
+    }
+
+    return firstPassError_success; /* Valid instruction */
 }
