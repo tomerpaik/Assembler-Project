@@ -140,3 +140,19 @@ char* substring(char *source, int start, int end) {
 int is_valid_ascci(char c) {
     return (c >= 32 && c <= 126);
 }
+
+/**
+ * is_empty_line - Checks if a line is empty or contains only whitespace characters.
+ * @line: The string to check.
+ *
+ * Return: 1 if the line is empty or only contains whitespace, 0 otherwise.
+ */
+int is_empty_line(const char *line) {
+    while (*line != '\0') {  /* Iterate over each character in the line */
+        if (!isspace((unsigned char)*line)) {
+            return 0;  /* Found a non-whitespace character */
+        }
+        line++;
+    }
+    return 1;  /* Line is empty or only contains whitespace */
+}

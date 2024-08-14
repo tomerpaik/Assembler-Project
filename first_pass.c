@@ -58,6 +58,9 @@ int first_pass(char * am_path, hash_table macro_table) {
         }
 
 
+        /* TODO
+        current_error = firstPassError_label_empty_line;
+        */
 
         /*CODE IMAGE SECTION*/
     }
@@ -93,6 +96,7 @@ enum project_error valid_symbol(char *word, hash_table macro_table) {
 
 enum project_error valid_data(char *line){
     const char *ptr = line;
+    if(is_empty_line(line)) return firstPassError_string_empty_line;
 
     while (*ptr) {  /* Loop to check all the numbers after ".data" */
         while (isspace(*ptr)) ptr++;    /* Skip any whitespace */
@@ -112,20 +116,20 @@ enum project_error valid_data(char *line){
 }
 
 enum project_error valid_string(char *line) {
-    const char *ptr = line;
-    const char *startQuote;
-    const char *endQuote;
+    char *start_ptr = line;
+    char *end_ptr = line+strlen(line)-1;
 
-    while (isspace(*ptr)) ptr++; /* Skip any leading whitespace */
-    startQuote = strchr(ptr, '"'); /* Find the first quote */
-    if (startQuote == NULL) return firstPassError_string_expected_quotes; /* Error if no starting quote found */
-    endQuote = startQuote;
-    while (*(endQuote = strchr(endQuote + 1, '"')) != '\0') {/* Find the last quote */}
-    if (startQuote == endQuote) return firstPassError_string_expected_end_quotes; /* Error if no ending quote */
-    if (is_empty_after_key(endQuote)) return firstPassError_string_extra_chars; /* Error if there are extra characters after the string */
-    for (ptr = startQuote + 1; ptr < endQuote; ptr++) {
-        if (!isprint(*ptr)) return firstPassError_string_not_printable; /* Error if the string contains non-printable characters */
+    if(is_empty_line(line)) return firstPassError_string_empty_line;
+
+    while (isspace(*start_ptr)) start_ptr++;
+    while (isspace(*end_ptr)) end_ptr--;
+
+    if (*start_ptr != '\"') return firstPassError_string_expected_quotes;
+    if (*end_ptr != '\"') return firstPassError_string_expected_end_quotes;
+
+    while (start_ptr < end_ptr) {
+        if (!isprint(*start_ptr)) return firstPassError_string_not_printable;
+        start_ptr ++;
     }
-
-    return firstPassError_success; /* Valid instruction */
+    return firstPassError_success;
 }

@@ -39,11 +39,13 @@ project_errors errors[] = {
     {firstPassError_data_const_not_found, "constant was not found"},
     {firstPassError_data_argument_expected, "argument expected"},
     {firstPassError_data_oor, "data argument out of range for a byte"},
+    {firstPassError_data_empty_line, "data instuction is empty"},
     /*.string errors*/
     {firstPassError_string_expected_quotes, "expected '\"' to start the string"},
     {firstPassError_string_expected_end_quotes, "expected '\"' to terminate the string"},
     {firstPassError_string_extra_chars, "extra characters after closing '\"'"},
     {firstPassError_string_not_printable, "string is not printable"},
+    {firstPassError_string_empty_line, "string instuction is empty"},
     /*.extern/entry errors*/
     {firstPassError_extern_argument_expected, "missing argument"},
     {firstPassError_extern_invalid_lbl_name, "invalid label name for extern argument"},
