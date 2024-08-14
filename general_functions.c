@@ -16,7 +16,9 @@ void *handle_malloc(long object_size) {
 
 char *add_new_file(char *file_name, char *ending) {
     char *c, *new_file_name;
+    printf("file name %s\n", file_name);
     new_file_name = handle_malloc(MAX_LINE_LENGTH * sizeof(char));
+    printf("file name after %p\n", new_file_name);
     strcpy(new_file_name, file_name);
     /* deleting the file name if a '.' exists and forth */
     if ((c = strchr(new_file_name, '.')) != NULL) {
@@ -39,6 +41,7 @@ FILE * open_new_file(char *file_name, char *ending, char * mode) {
     /* adds the ending of the new file name */
     strcat(new_file_name, ending);
     file = fopen(new_file_name, mode);
+    free(new_file_name);
     if (file == NULL) {
         if (!strcmp(mode, "r")) {
             print_generic_error(GENERIC_Faild_OpenFile_R);
@@ -50,17 +53,6 @@ FILE * open_new_file(char *file_name, char *ending, char * mode) {
     return file;
 }
 
-const char* combineFilePath(const char* basePath, const char* extension) {
-    char* combinedPath;
-    const size_t basePathLen = strlen(basePath);
-    const size_t extensionLen = strlen(extension);
-    combinedPath = handle_malloc(basePathLen + extensionLen + 1);
-
-    strcpy(combinedPath, basePath);
-    strcat(combinedPath, extension);
-
-    return combinedPath;
-}
 
 /**
  * Duplicates a string by allocating memory and copying the original string's content.

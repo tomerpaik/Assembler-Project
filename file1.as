@@ -1,6 +1,6 @@
-MAIN: add r3, LIST
-LOOP: prn #48
-macr    ordssdssssssssssssssssssssssssssssssssssss
+MAIN add r3, LIST
+1OOP: prn #48
+macr    or
  hello its me
 endmacr
  lea STR, r6
@@ -10,10 +10,10 @@ endmacr
  dec K
  jmp LOOP
 player
-END: stop
-STR: .string "abcd"
-LIST: .data 6, -9
+E*ND: stop
+stop: .string "abcd"
+r7: .data 6, -9
       .data -100
-K: .data 31
+or: .data 31
 .string "abcd"
 or

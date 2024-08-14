@@ -23,6 +23,13 @@ void* search_table(hash_table table, char* key) {
     return search_linked(table[index], key);
 }
 
+int is_in_table(hash_table table, char* key) {
+    if (search_table(table, key) !=0) {
+        return 1;
+    }
+    return 0;
+}
+
 void print_table(hash_table table) {
     int i = 0;
     for (i = 0; i < TABLE_SIZE; i++) {
