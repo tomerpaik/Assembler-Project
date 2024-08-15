@@ -62,6 +62,7 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
             if((current_error = valid_string(line + offset,string_args)) != firstPassError_success) {
                 print_error(current_error, line_num, am_path);
                 error_found = 1;
+                continue;
             }
             /*add string to datalist*/
 
@@ -224,7 +225,7 @@ int append_to_data_image(short encoded_value) {
 
 void print_symbol_table(hash_table table) {
     int i;
-    Symbol *symbol;
+    Symbol symbol;
 
     printf("| Symbol Name | Count | Flag |\n");
     printf("|-------------|-------|------|\n");
@@ -233,7 +234,7 @@ void print_symbol_table(hash_table table) {
         if (table[i] != NULL) {
             Node current = table[i];
             while (current != NULL) {
-                symbol = (Symbol *)(current->value);
+                symbol = (Symbol )(current->value);
 
                 printf("Debug: Symbol Address: %p, Count Address: %p, Flag Address: %p\n",
                         symbol, &symbol->count, &symbol->flag);
