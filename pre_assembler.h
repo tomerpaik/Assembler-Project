@@ -11,4 +11,5 @@ int process_macros(FILE * inputFile, FILE * outputFile, char * file_name, hash_t
 int is_valid_macro_name(char *name, int line_num, char * file_name);
 void add_to_macro_body(hash_table macro_table, char * line, char * macroName, int * macro_len);
 void print_macro_table(hash_table table);
+void update_table_value(hash_table table, char* key, char* new_value);
 #endif /* MACRO_DEFINER_H */

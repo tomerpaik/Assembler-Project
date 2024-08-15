@@ -22,6 +22,7 @@ enum  project_error {
      ERROR_CODE_15,
      Macro_ETA_MacroCall,
      Macro_nameis_Reg_Op_Inst,
+     Macro_namestart_with_numbers,
      Macro_nameis_oor,
 
      firstPassError_success,   /* no error */
@@ -57,52 +58,12 @@ enum  project_error {
      firstPassError_string_empty_line, /*after .string line is empty */
 
     /* .extern errors */
-     firstPassError_extern_argument_expected, /* missing argument */
-     firstPassError_extern_invalid_lbl_name,  /* the .extern parameter is not a valid name for a label */
-     firstPassError_extern_extra_chars,   /* extra characters at the end of an extern instruction */
-     firstPassError_extern_label_exists,  /* the label is already defined in the file */
-     firstPassError_extern_saved_keyword, /* extern label is a saved keyword */
-     firstPassError_extern_define_label,  /* a label is defined in the beginning of an extern instruction (warning) */
-     firstPassError_extern_exists, /* this label was already declared as extern (warning) */
-     firstPassError_extern_macro_name,    /* there's a macro with the same name as the .extern argument */
-
     /* .entry errors */
-     firstPassError_entry_argument_expected, /* missing argument */
-     firstPassError_entry_invalid_lbl_name,   /* the .entry argument is not a valid name for a label */
-     firstPassError_entry_saved_keyword, /* argument name is a system keyword */
-     firstPassError_entry_macro_name, /* entry argument is a macro name */
-     firstPassError_entry_extra_chars,    /* extra characters at the end of an entry instruction */
-     firstPassError_entry_define_label,   /* a label is defined in the beginning of an entry instruction (warning) */
 
     /* command errors */
-     firstPassError_command_not_found,  /* invalid operator name */
-     firstPassError_command_expected_operand,   /* expected an operand */
-     firstPassError_command_invalid_immediate,  /* the immediate operand was invalid */
-     firstPassError_command_expected_closing_sqr_bracks,    /* expected closing square brackets */
-     firstPassError_command_expected_index, /* index was not found between square brackets */
-     firstPassError_command_invalid_index,  /* the given index (in square brackets) was invalid */
-     firstPassError_command_invalid_label_name, /* label name in operand has an invalid name */
-     firstPassError_command_invalid_addr_method,    /* invalid addressing method */
-     firstPassError_command_invalid_operand,    /* operand expected for command */
-     firstPassError_command_expected_comma, /* expected comma to seperate operands */
-     firstPassError_command_immediate_oor,  /* immediate operand was out of range */
-     firstPassError_command_index_oor,  /* constant index was out of range */
-     firstPassError_command_too_many_operands, /* too many operands for an command */
-     firstPassError_command_extra_chars,    /* extra characters at the end of the line */
-     firstPassError_command_operand_number, /* a number operand that doesn't follow # */
-     firstPassError_command_operand_macro,   /* a macro was used as an operand */
-     firstPassError_command_operand_saved,   /* cannot be a saved keyword */
+     firstPassError_command_not_found  /* invalid operator name */
 
-     /* .define errors */
-     firstPassError_define_name_expected, /* name expected */
-     firstPassError_define_unexpected_chars,  /* unexpected chars at the end of a define statement */
-     firstPassError_define_expected_equal_sign,   /* expected after constant name */
-     firstPassError_define_value_expected,    /* expected value for constant */
-     firstPassError_define_invalid_name,  /* the constant's name was invalid */
-     firstPassError_define_saved_keyword, /* the constant's name is a saved keyword */
-     firstPassError_define_name_taken,    /* name of constant taken */
-     firstPassError_define_value_nan, /* value is not a number */
-     firstPassError_define_macro_name    /* there's a macro with the same name as the constant */
+
 };
 typedef struct {
  enum project_error code;

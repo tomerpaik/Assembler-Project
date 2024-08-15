@@ -29,36 +29,6 @@ typedef struct inst_parts {
 
 
 /**
- * @brief Reads an entry or extern directive from a string.
- *
- * The function reads an entry or extern directive from a given string. It tokenizes the string, extracts
- * relevant information, and populates an inst_parts structure with the parsed data. The function handles
- * memory allocation for the inst_parts structure and returns a pointer to it. It also updates the error_code
- * in case of errors.
- *
- * @param str: The input string containing an entry or extern directive.
- * @param error_code: A pointer to an integer to hold the error code if an error occurs.
- * @return Returns a pointer to an inst_parts structure containing the parsed data, or NULL on error.
- */
-inst_parts *read_entry_or_extern(char *str ,int *error_code);
-
-
-/**
- * @brief This function checks whether any line in the provided file exceeds the maximum length limit.
- *
- * It scans through each line of the file, and if it encounters a line longer than `MAX_LINE_LENGTH`,
- * it prints an external error using `ERROR_CODE_30` and sets a flag indicating a long line was found.
- *
- * @param file_name A pointer to a character string representing the file name.
- *
- * @return Returns an integer. If any line in the file exceeds `MAX_LINE_LENGTH`, it returns 1.
- *         Otherwise, it returns 0 indicating all lines are within the limit.
- *
- */
-int lines_too_long(char *file_name);
-
-
-/**
  * @brief Checks if the provided string is an instruction.
  *
  * This function compares the provided string with a list of known instructions.
@@ -102,7 +72,7 @@ int opcode_num(char *str);
 **/
 int register_num(char *str);
 
-void get_first_word(char * line, char * first_word);
+int get_first_word(char * line, char * first_word);
 
 int is_comment(char * line);
 
@@ -114,6 +84,6 @@ int is_valid_ascci(char c);
 
 int is_empty_line(const char *line);
 
-char* word_without_spaces(char * word);
+char* str_without_spaces(char * word);
 
 #endif

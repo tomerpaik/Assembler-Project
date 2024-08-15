@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     while (--argc > 0) {
         hash_table macro_table = {0};
         hash_table symbol_table = {0};
-        printf(""BOLD"********* Starting Pre-Proccesor %s*********\n"RESET"", argv[argc]);
+        printf(""BOLD"********* Starting Pre-Proccesor %s********* \n"RESET"", argv[argc]);
         if (!pre_assembler(argv[argc], macro_table)){
             /*If it failed, move to the next file.*/
             filePath = add_new_file(argv[argc], ".am");

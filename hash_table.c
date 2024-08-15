@@ -44,6 +44,22 @@ void print_table(hash_table table) {
     }
 }
 
+void update_table_value(hash_table table, char* key, char* new_value) {
+    unsigned int index = hash(key);
+    Node temp = table[index];
+
+    while (temp != NULL) {
+        if (strcmp(temp->key, key) == 0) {
+            temp->value = new_value;
+            return;
+        }
+        temp = temp->next;
+    }
+
+    printf("Error: Key '%s' not found in the table\n", key);
+}
+
+
 void free_table(hash_table table) {
     int i = 0;
     for (i = 0; i < TABLE_SIZE; i++) {

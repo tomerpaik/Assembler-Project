@@ -6,7 +6,7 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
     FILE * am_file;
     char line[MAX_LINE_LENGTH], first_word[MAX_LINE_LENGTH], symbol_name[MAX_LABEL_LENGTH];
     int error_found = 0;
-    enum project_error current_error = GENERIC_NO_E;
+    enum project_error current_error = 0;
     int symbol_flag, offset, after_label_offset, line_num = 0;
 
     am_file = open_new_file(am_path, ".am", "r");
@@ -57,7 +57,7 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
             }
 
         }
-        if(strcmp(first_word, ".string") == 0){
+        else if(strcmp(first_word, ".string") == 0){
             if((current_error = valid_string(line + offset)) != firstPassError_success) {
                 print_error(current_error, line_num, am_path);
                 error_found = 1;
@@ -74,6 +74,20 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
 
 
         /*CODE IMAGE SECTION*/
+        else if(opcode_num(first_word) == -1) {
+            current_error = firstPassError_command_not_found;
+            print_error(current_error, line_num, am_path);
+            error_found = 1;
+        }else {
+
+        }
+
+        /*if((current_error = valid_opcode(line + offset - after_label_offset)) != firstPassError_success) {
+            print_error(current_error, line_num, am_path);
+            error_found = 1;
+            continue;
+        }*/
+
     }
     print_symbol_table(symbol_table);
     fclose(am_file);
@@ -126,7 +140,7 @@ enum project_error valid_data(char *line){
 enum project_error valid_string(char *string) {
     char * string_without_spaces, *start_quote, *end_quote;
     if(is_empty_line(string)) return firstPassError_string_empty_line;
-    string_without_spaces = word_without_spaces(string);
+    string_without_spaces = str_without_spaces(string);
 
     start_quote = string_without_spaces, end_quote = string_without_spaces+strlen(string_without_spaces)-1;
 
@@ -196,7 +210,7 @@ enum project_error encode_string(char* string) {
     short encoded_char;
     int i;
 
-    string_without_spaces = word_without_spaces(string);
+    string_without_spaces = str_without_spaces(string);
     string_arguments = substring(string_without_spaces, 1, strlen(string_without_spaces) - 2);
 
 
@@ -225,6 +239,27 @@ int append_to_data_image(short encoded_value) {
     data_image[DC++] = encoded_value;
     return 0;
 }
+
+/*enum project_error valid_opcode(char * opcode_line) {
+    op_code current_op_code; int opcode_offset = 0;
+    char * opcode_name = NULL, * opcode_arguments;
+    opcode_offset = get_first_word(opcode_line, opcode_name);
+
+    current_op_code = OPCODES[opcode_num(opcode_name)];
+
+    /*valid arg num #1#
+    opcode_arguments = str_without_spaces(opcode_line + opcode_offset);
+
+    /*operand does not fit to #1#
+
+
+    /*#1#
+    /*#1#
+    /*#1#
+    /*#1#
+    return firstPassError_success;
+}*/
+
 
 void print_symbol_table(hash_table table) { /*TODO: sort the table?*/
     int i;

@@ -5,25 +5,24 @@
 #include "globals.h"
 #include "errors_handle.h"
 #include "general_functions.h"
-
 /* Define the opcodes */
 op_code OPCODES[] = {
-        {"mov",  2, "0123", "123"},
-        {"cmp",  2, "0123", "0123"},
-        {"add",  2, "0123", "123"},
-        {"sub",  2, "0123", "123"},
-        {"lea",  2, "1", "123"},
-        {"clr",  1, "", "123"},
-        {"not",  1, "", "123"},
-        {"inc",  1, "", "123"},
-        {"dec",  1, "", "123"},
-        {"jmp",  1, "", "12"},
-        {"bne",  1, "", "12"},
-        {"red",  1, "", "123"},
-        {"prn",  1, "", "0123"},
-        {"jsr",  1, "", "12"},
-        {"rts",  0, "", ""},
-        {"stop", 0, "", ""}
+    {"mov",  2, "0123", "123"},
+    {"cmp",  2, "0123", "0123"},
+    {"add",  2, "0123", "123"},
+    {"sub",  2, "0123", "123"},
+    {"lea",  2, "1", "123"},
+    {"clr",  1, "", "123"},
+    {"not",  1, "", "123"},
+    {"inc",  1, "", "123"},
+    {"dec",  1, "", "123"},
+    {"jmp",  1, "", "12"},
+    {"bne",  1, "", "12"},
+    {"red",  1, "", "123"},
+    {"prn",  1, "", "0123"},
+    {"jsr",  1, "", "12"},
+    {"rts",  0, "", ""},
+    {"stop", 0, "", ""}
 };
 /* Define the registers */
 char *REGS[] = {"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7"};
@@ -83,10 +82,11 @@ int register_num(char *str) {
     return -1; /* Return -1 if the string does not match any known registers */
 }
 /*gets the first word in the line*/
-void get_first_word(char * line, char * first_word) {
+int get_first_word(char * line, char * first_word) {
     /* Allocate enough space for the first word */
     int offset = 0;
     sscanf(line, "%s%n", first_word, &offset);
+    return offset;
 }
 
 int legal_label(char *str, int *error_code) {
@@ -157,9 +157,9 @@ int is_empty_line(const char *line) {
     return 1;  /* Line is empty or only contains whitespace */
 }
 
-char* word_without_spaces(char *word) {
-    char *start_ptr = word;
-    char *end_ptr = word + strlen(word) - 1;
+char* str_without_spaces(char *string) {
+    char *start_ptr = string;
+    char *end_ptr = string + strlen(string) - 1;
 
     while (isspace(*start_ptr)) start_ptr++;
     while (end_ptr > start_ptr && isspace(*end_ptr)) end_ptr--;
