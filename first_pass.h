@@ -3,6 +3,7 @@
 #include "hash_table.h"
 #include "general_functions.h"
 #include "errors_handle.h"
+#include "colors.h"
 #include "lexer.h"
 
 extern int DC;
@@ -23,9 +24,9 @@ short code_image[MAX_MEMORY_SPACE];
 short data_image[MAX_MEMORY_SPACE];
 
 int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table);
-enum project_error valid_symbol(char *word, hash_table macro_table);
+enum project_error valid_symbol(char *symbol_name, hash_table macro_table);
 enum project_error valid_data(char *line);
-enum project_error valid_string(char *line, char *string_chars);
+enum project_error valid_string(char *string);
 enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, hash_table symbol_table);
 enum project_error encode_data(char* data_arguments); /*TODO: is_label arg?*/
 enum project_error encode_string(char* string_argument);

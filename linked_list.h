@@ -10,8 +10,9 @@ struct Node {
 typedef struct Node *Node;
 
 void * search_linked(Node root, char* key);
+
 Node create_node(char *key, void *value);
-void insert_node(Node * root, char *key, char *value);
+void insert_node(Node * root, char *key, void *value);
 void *get_value(Node source);
 Node get_next(Node source);
 void set_next(Node source, Node next);

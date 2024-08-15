@@ -6,9 +6,8 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
     FILE * am_file;
     char line[MAX_LINE_LENGTH], first_word[MAX_LINE_LENGTH], symbol_name[MAX_LABEL_LENGTH];
     int error_found = 0;
-    enum project_error current_error;
+    enum project_error current_error = GENERIC_NO_E;
     int symbol_flag, offset, after_label_offset, line_num = 0;
-    char * string_args = 0;
 
     am_file = open_new_file(am_path, ".am", "r");
     /* Initialize  symbol table */
@@ -59,7 +58,7 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
 
         }
         if(strcmp(first_word, ".string") == 0){
-            if((current_error = valid_string(line + offset,string_args)) != firstPassError_success) {
+            if((current_error = valid_string(line + offset)) != firstPassError_success) {
                 print_error(current_error, line_num, am_path);
                 error_found = 1;
                 continue;
@@ -70,38 +69,29 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 add_symbol(symbol_name, DATA_FLAG, symbol_table);
             }
 
-            /*if((current_error = encode_string(string_args)) != firstPassError_success) {
-                print_error(current_error, line_num, am_path);
-                error_found = 1;
-                continue;
-            }*/
+            encode_string(line + offset);
         }
 
 
-        /* TODO
-        current_error = firstPassError_label_empty_line;
-        */
-
         /*CODE IMAGE SECTION*/
     }
+    print_symbol_table(symbol_table);
     fclose(am_file);
-    /* At this point, the symbol table should be filled with all labels and their addresses. */
-    /* You might want to print the symbol table for debugging purposes.
-    print_symbol_table(sym_table);
-    destroy_symbol_table(sym_table);*/
 
     return error_found;
 
 }
 
 enum project_error valid_symbol(char *symbol_name, hash_table macro_table) {
-    int word_len = strlen(symbol_name);
     int i;
+    int symbol_name_len;
+    symbol_name_len = strlen(symbol_name);
+
     /*check valid len*/
-    if(word_len > 32) return firstPassError_label_invalid_length;
+    if(symbol_name_len > 32) return firstPassError_label_invalid_length;
     if(is_instruction(symbol_name)) return firstPassError_label_invalid_name_is_inst;
     if (!isalpha(symbol_name[0])) return firstPassError_label_invalid_name_starts_with_numbers;
-    for (i = 1; i < word_len - 1; i++) {
+    for (i = 1; i < symbol_name_len - 1; i++) {
         if (!isalnum(symbol_name[i]) && symbol_name[i] != '_') {
             return firstPassError_label_invalid_name;
         }
@@ -114,7 +104,7 @@ enum project_error valid_symbol(char *symbol_name, hash_table macro_table) {
 
 enum project_error valid_data(char *line){
     const char *ptr = line;
-    if(is_empty_line(line)) return firstPassError_string_empty_line;
+    if(is_empty_line(line)) return firstPassError_data_empty_line;
 
     while (*ptr) {  /* Loop to check all the numbers after ".data" */
         while (isspace(*ptr)) ptr++;    /* Skip any whitespace */
@@ -133,23 +123,19 @@ enum project_error valid_data(char *line){
     return firstPassError_success;; /* Valid instruction */
 }
 
-enum project_error valid_string(char *line, char *string_chars) {
-    char *start_ptr = line;
-    char *end_ptr = line+strlen(line)-1;
+enum project_error valid_string(char *string) {
+    char * string_without_spaces, *start_quote, *end_quote;
+    if(is_empty_line(string)) return firstPassError_string_empty_line;
+    string_without_spaces = word_without_spaces(string);
 
-    if(is_empty_line(line)) return firstPassError_string_empty_line;
+    start_quote = string_without_spaces, end_quote = string_without_spaces+strlen(string_without_spaces)-1;
 
-    while (isspace(*start_ptr)) start_ptr++;
-    while (isspace(*end_ptr)) end_ptr--;
+    if (*start_quote != '\"') return firstPassError_string_expected_quotes;
+    if (*end_quote != '\"') return firstPassError_string_expected_end_quotes;
 
-    string_chars = substring(line, *start_ptr, *end_ptr); /*store string content in order to use it in encode*/
-
-    if (*start_ptr != '\"') return firstPassError_string_expected_quotes;
-    if (*end_ptr != '\"') return firstPassError_string_expected_end_quotes;
-
-    while (start_ptr < end_ptr) {
-        if (!isprint(*start_ptr)) return firstPassError_string_not_printable;
-        start_ptr ++;
+    while (start_quote < end_quote) {
+        if (!isprint(*start_quote)) return firstPassError_string_not_printable;
+        start_quote ++;
     }
     return firstPassError_success;
 }
@@ -197,7 +183,7 @@ enum project_error encode_data(char* data_arguments) {
         data_short_is_binary = short_to_binary_string(data_encoded);
         append_to_data_image(data_encoded); /*Adds the new short to the data image array*/
         DC++; /*updates the data counter*/
-        printf("number %s\ndata encoded: -------%s-------\n",number_token, data_short_is_binary);
+        printf(""CYAN"number %s\ndata encoded: -------%s-------\n" RESET " ",number_token, data_short_is_binary);
         number_token = strtok(NULL, ","); /* Get the next argument */
     }
 
@@ -205,12 +191,29 @@ enum project_error encode_data(char* data_arguments) {
     return firstPassError_success;  /* Return success if arguments are found and processed */
 }
 
-enum project_error encode_string(char* string_arguments) {
-    int string_arg_count = 0;
-    short string_encoded = 0;
+enum project_error encode_string(char* string) {
+    char *string_without_spaces, *string_arguments;
+    short encoded_char;
+    int i;
+
+    string_without_spaces = word_without_spaces(string);
+    string_arguments = substring(string_without_spaces, 1, strlen(string_without_spaces) - 2);
 
 
+    for (i = 0; i < strlen(string_arguments); i++) {
+        encoded_char = (short)string_arguments[i]; /* Convert character to its ASCII value */
+        append_to_data_image(encoded_char); /* Add the ASCII value to the data image */
+        DC++; /* Update the data counter */
+        printf(""CYAN"Character: %c, Encoded ASCII: %s\n" RESET, string_arguments[i], short_to_binary_string(encoded_char));
+    }
 
+    /* Add the null terminator '\0' at the end of the string */
+    encoded_char = 0;
+    append_to_data_image(encoded_char);
+    DC++;
+    printf(""CYAN"Null terminator added: Encoded ASCII: %s\n" RESET, short_to_binary_string(encoded_char));
+
+    free(string_arguments);
     return firstPassError_success;
 }
 
@@ -223,31 +226,22 @@ int append_to_data_image(short encoded_value) {
     return 0;
 }
 
-void print_symbol_table(hash_table table) {
+void print_symbol_table(hash_table table) { /*TODO: sort the table?*/
     int i;
-    Symbol symbol;
+    Node current;
 
-    printf("| Symbol Name | Count | Flag |\n");
+    printf("| %-11s | %-5s | %-4s |\n", "Symbol Name", "Count", "Flag");
     printf("|-------------|-------|------|\n");
 
     for (i = 0; i < TABLE_SIZE; i++) {
-        if (table[i] != NULL) {
-            Node current = table[i];
-            while (current != NULL) {
-                symbol = (Symbol )(current->value);
-
-                printf("Debug: Symbol Address: %p, Count Address: %p, Flag Address: %p\n",
-                        symbol, &symbol->count, &symbol->flag);
-
-                if (symbol != NULL) {
-                    printf("| %s | %d | %d |\n", current->key, symbol->count, symbol->flag);
-                } else {
-                    printf("| %-10s | NULL  | NULL |\n", current->key);
-                }
-
-                current = current->next;
-            }
+        current = table[i];
+        while (current != NULL) {
+            Symbol sym = (Symbol)current->value;
+            printf("| " BOLD GREEN "%-11s" RESET " | " BOLD BLUE "%-5d" RESET " | " BOLD MAGENTA "%-4d" RESET " |\n",
+                   current->key,
+                   sym->count,
+                   sym->flag);
+            current = current->next;
         }
     }
 }
-
