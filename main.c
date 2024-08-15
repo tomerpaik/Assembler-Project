@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
         /*Free allocated memory*/
         free(am_path);
         free_table(macro_table);
+        free_table(symbol_table);
     }
 
     printf("end\n");

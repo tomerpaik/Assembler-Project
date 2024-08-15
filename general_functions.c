@@ -93,3 +93,29 @@ int is_empty_after_key(const char *str) {
     }
     return 0;
 }
+
+/** Converts an integer to a 15-bit binary representation using a 16-bit short */
+short convert_to_15bit_binary(int number) {
+    short binary_value;
+    if (number >= (1 << 14) || number < -(1 << 14)) {
+        return 0;
+    }
+    if (number >= 0) {
+        binary_value = (short)number;
+    } else {
+        binary_value = (short)(number & 0x7FFF);
+    }
+    return binary_value;
+}
+
+/** Converts a 16-bit short to a binary string representation */
+char* short_to_binary_string(short value) {
+    int i;
+    char* binary_str = (char*)handle_malloc(17);
+    binary_str[16] = '\0';
+    for (i = 15; i >= 0; i--) {
+        binary_str[15 - i] = (value & (1 << i)) ? '1' : '0';
+    }
+
+    return binary_str;
+}

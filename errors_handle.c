@@ -40,6 +40,7 @@ project_errors errors[] = {
     {firstPassError_data_argument_expected, "argument expected"},
     {firstPassError_data_oor, "data argument out of range for a byte"},
     {firstPassError_data_empty_line, "data instuction is empty"},
+    {firstPassError_data_argument_out_of_range, "data argument is out of range of 15"},
     /*.string errors*/
     {firstPassError_string_expected_quotes, "expected '\"' to start the string"},
     {firstPassError_string_expected_end_quotes, "expected '\"' to terminate the string"},

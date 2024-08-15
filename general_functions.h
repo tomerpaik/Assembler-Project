@@ -18,4 +18,6 @@ FILE *open_new_file(char *file_name,char *ending, char *mode);
 char *add_new_file(char *file_name, char *ending);
 void* my_strdup(const char* src);
 int is_empty_after_key(const char *str);
+short convert_to_15bit_binary(int number);
+char* short_to_binary_string(short value);
 #endif
