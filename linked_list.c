@@ -16,12 +16,12 @@ Node create_node(char *key, void *value) {
     }
 
     new->key = my_strdup(key);
-    new->value = my_strdup(value);
+    new->value = value;
     new->next = NULL;
 
     return new;
 }
-void insert_node(Node * root, char *key, char *value) {
+void insert_node(Node * root, char *key, void *value) {
     Node new_node = create_node(key, value);
 
     if (*root == NULL) {

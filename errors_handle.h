@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "colors.h"
 
 enum  project_error {
      GENERIC_NO_E,

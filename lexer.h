@@ -114,4 +114,6 @@ int is_valid_ascci(char c);
 
 int is_empty_line(const char *line);
 
+char* word_without_spaces(char * word);
+
 #endif

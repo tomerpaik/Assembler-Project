@@ -156,3 +156,13 @@ int is_empty_line(const char *line) {
     }
     return 1;  /* Line is empty or only contains whitespace */
 }
+
+char* word_without_spaces(char *word) {
+    char *start_ptr = word;
+    char *end_ptr = word + strlen(word) - 1;
+
+    while (isspace(*start_ptr)) start_ptr++;
+    while (end_ptr > start_ptr && isspace(*end_ptr)) end_ptr--;
+
+    return substring(start_ptr, 0, end_ptr - start_ptr + 1);
+}

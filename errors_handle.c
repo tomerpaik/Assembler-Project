@@ -95,7 +95,7 @@ project_errors errors[] = {
  * takes message to display, line of error, and file the error was found in
  */
 void print_error(enum project_error code, int srcline, char srcfile[]) {
-    printf("Error in %s, line: %d says: ---[%s]---\n", srcfile, srcline, errors[code].message);
+    printf(""RED"Error in %s, line: %d says: ---[%s]---\n"RESET"", srcfile, srcline, errors[code].message);
 }
 
 void print_generic_error(enum project_error code) {
