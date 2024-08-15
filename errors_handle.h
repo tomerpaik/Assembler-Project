@@ -46,6 +46,7 @@ enum  project_error {
      firstPassError_data_argument_expected,   /* argument expected in data */
      firstPassError_data_oor, /* the data argument was out of range for a byte */
      firstPassError_data_empty_line, /*after .data line is empty */
+     firstPassError_data_argument_out_of_range,
 
     /* .string errors */
      firstPassError_string_expected_quotes,   /* quotes missing after .string */
