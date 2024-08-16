@@ -49,6 +49,9 @@ project_errors errors[] = {
     {firstPassError_string_not_printable, "string is not printable"},
     {firstPassError_string_empty_line, "string instuction is empty"},
     /*.extern/entry errors*/
+    {firstPassError_extern_invalid_lbl_name, "the .extern label is not a valid name for a label"},
+    {firstPassError_extern_label_exists, "the label is already defined in the file"},
+    {firstPassError_extern_exists, "this label was already declared as extern (warning)"},/*TODO: warning*/
 
     /*commands errors*/
     {firstPassError_command_not_found, "invalid command"},

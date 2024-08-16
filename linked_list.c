@@ -8,7 +8,7 @@
 
 Node create_node(char *key, void *value) {
     Node new;
-    new = (Node)handle_malloc(sizeof(struct Node));
+    new = (Node)handel_malloc(sizeof(struct Node));
 
     if (new == NULL) {
         fprintf(stderr, "Node Memory allocation failed\n");

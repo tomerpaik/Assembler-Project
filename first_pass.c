@@ -13,14 +13,11 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
     /* Initialize  symbol table */
     while (fgets(line, MAX_LINE_LENGTH, am_file)) {
         line_num++;
-        /*printf("line number: %d line is: %s", line_num, line);*/
-
+        if (is_comment_empty_line(line)) continue; /*IF line is a comment or a empty sentence SKIP to the next line*/
         /*initial variables*/
         symbol_flag = 0;
         offset = 0;
-
         sscanf(line, "%s%n", first_word, &offset);
-
         printf("line: %d, first word: %s\n", line_num, first_word);
         /*check if word is a symbol*/
         if (first_word[strlen(first_word) - 1] == ':') {
@@ -30,7 +27,6 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 error_found = 1;
                 continue;
             }
-
             symbol_flag = 1;
             sscanf(line + offset, "%s%n", first_word, &after_label_offset);
             offset += after_label_offset;
@@ -43,19 +39,15 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 error_found = 1;
                 continue;
             }
-
             if(symbol_flag){
                 add_symbol(symbol_name, DATA_FLAG, symbol_table);
 
             }
-
-
             if((current_error = encode_data(line + offset)) != firstPassError_success) {
                 print_error(current_error, line_num, am_path);
                 error_found = 1;
                 continue;
             }
-
         }
         else if(strcmp(first_word, ".string") == 0){
             if((current_error = valid_string(line + offset)) != firstPassError_success) {
@@ -71,7 +63,19 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
 
             encode_string(line + offset);
         }
-
+        /*ENTRY/EXTERN SECTION*/
+        else if(strcmp(first_word, ".extern") == 0) {
+            if((current_error = handel_extern(line + offset, symbol_table, macro_table)) != firstPassError_success) {
+                print_error(current_error, line_num, am_path);
+                if (current_error != firstPassError_extern_exists) {
+                    error_found = 1;
+                }
+                continue;
+            }
+        }
+        else if(strcmp(first_word, ".entry") == 0) {
+            continue;
+        }
 
         /*CODE IMAGE SECTION*/
         else if(opcode_num(first_word) == -1) {
@@ -82,14 +86,8 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
 
         }
 
-        /*if((current_error = valid_opcode(line + offset - after_label_offset)) != firstPassError_success) {
-            print_error(current_error, line_num, am_path);
-            error_found = 1;
-            continue;
-        }*/
-
     }
-    print_symbol_table(symbol_table);
+    /*DEBUG:*/print_symbol_table(symbol_table);
     fclose(am_file);
 
     return error_found;
@@ -156,7 +154,7 @@ enum project_error valid_string(char *string) {
 
 enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, hash_table symbol_table) {
     Symbol new_symbol;
-    new_symbol = (Symbol)handle_malloc(sizeof(struct symbol));
+    new_symbol = (Symbol)handel_malloc(sizeof(struct symbol));
 
     if (is_in_table(symbol_table, symbol_name)) return firstPassError_label_name_taken;
 
@@ -165,6 +163,9 @@ enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, has
     }
     if (type_flag == OPCODE_FLAG) {
         new_symbol->count = IC;
+    }
+    if (type_flag == EXTERN_FLAG || type_flag == ENTRY_FLAG) {
+        new_symbol->count = 0;
     }
     /*TODO: extern / entry*/
     new_symbol->flag = type_flag;
@@ -236,30 +237,43 @@ int append_to_data_image(short encoded_value) {
     if (DC >= MAX_MEMORY_SPACE) {
         return -1;
     }
-    data_image[DC++] = encoded_value;
+    data_image[DC+1] = encoded_value;
     return 0;
 }
 
-/*enum project_error valid_opcode(char * opcode_line) {
-    op_code current_op_code; int opcode_offset = 0;
-    char * opcode_name = NULL, * opcode_arguments;
-    opcode_offset = get_first_word(opcode_line, opcode_name);
+int append_to_code_image(short encoded_value) {
+    if (IC >= MAX_MEMORY_SPACE) {
+        return -1;
+    }
+    data_image[IC+1] = encoded_value;
+    return 0;
+}
 
-    current_op_code = OPCODES[opcode_num(opcode_name)];
+enum project_error handel_extern(char * extern_arguments, hash_table symbol_table, hash_table macro_table) {
+    enum project_error symbol_validation_error = 0;
+    char * symbol_name;
+    symbol_name = str_without_spaces(extern_arguments);
 
-    /*valid arg num #1#
-    opcode_arguments = str_without_spaces(opcode_line + opcode_offset);
+    if ((symbol_validation_error = valid_symbol(symbol_name, macro_table)) != firstPassError_success)return symbol_validation_error;
+    if (is_in_table(symbol_table, symbol_name)) return firstPassError_extern_label_exists;
+    if (get_symbol_flag(symbol_table, symbol_name) == EXTERN_FLAG) return firstPassError_extern_exists;
 
-    /*operand does not fit to #1#
+    add_symbol(symbol_name, EXTERN_FLAG, symbol_table);
 
-
-    /*#1#
-    /*#1#
-    /*#1#
-    /*#1#
     return firstPassError_success;
-}*/
+}
 
+enum project_error valid_entry(char * enrty_label) {
+    return firstPassError_success;
+}
+
+enum symbol_flag get_symbol_flag(hash_table symbol_table, char *symbol_name) {
+    Symbol symbol = search_table(symbol_table, symbol_name);
+    if (symbol != NULL) {
+        return symbol->flag;
+    }
+    return -1;
+}
 
 void print_symbol_table(hash_table table) { /*TODO: sort the table?*/
     int i;

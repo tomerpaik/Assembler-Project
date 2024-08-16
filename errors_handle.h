@@ -58,6 +58,9 @@ enum  project_error {
      firstPassError_string_empty_line, /*after .string line is empty */
 
     /* .extern errors */
+    firstPassError_extern_invalid_lbl_name,  /* the .extern parameter is not a valid name for a label */
+    firstPassError_extern_label_exists,  /* the label is already defined in the file */
+    firstPassError_extern_exists, /* this label was already declared as extern (warning) */
     /* .entry errors */
 
     /* command errors */
