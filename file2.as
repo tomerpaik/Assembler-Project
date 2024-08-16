@@ -1,5 +1,6 @@
 MAIN: add r3, LIST
 LOOP: prn #48
+
 macr  roy
  THIS IS  roy content
 
@@ -8,7 +9,7 @@ endmacr
 macr  roy1
 
 endmacr
-macr  roy2
+macr  macro1
  cmp r3, #-6
  bne END
 endmacr

@@ -23,5 +23,9 @@ endif
 clean:
 	$(DEL) *.o
 
+# Debug using gdb
+debug: $(EXEC)
+	gdb $(EXEC)
+
 val:
 	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler input

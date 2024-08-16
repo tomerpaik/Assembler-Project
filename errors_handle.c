@@ -18,7 +18,7 @@ project_errors errors[] = {
     {ERROR_CODE_15, "Macros expansion in an .as file failed"},
     {Macro_ETA_MacroCall, "Macro call with extra text"},
     {Macro_nameis_Reg_Op_Inst, "Illegal name for a macro"},
-    {Macro_namestart_with_numbers, "Illegal name for a macro"},
+    {Macro_namestart_with_numbers, "Macro name starts with numbers"},
     {Macro_nameis_oor, "Macro Name is out of range"},
     {firstPassError_success, "No Error Found"},
     /*label errors*/
