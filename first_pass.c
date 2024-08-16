@@ -272,6 +272,9 @@ enum project_error valid_opcode(char *opcode_line) {
         }
     }
     printf("operand1:%s\noperand2:%s\n", operand1, operand2);
+    return firstPassError_success;
+}
+
 int append_to_code_image(short encoded_value) {
     if (IC >= MAX_MEMORY_SPACE) {
         return -1;
@@ -293,7 +296,7 @@ enum project_error handel_extern(char * extern_arguments, hash_table symbol_tabl
 
     return firstPassError_success;
 }
-}
+
 
 enum project_error valid_entry(char * enrty_label) {
     return firstPassError_success;
