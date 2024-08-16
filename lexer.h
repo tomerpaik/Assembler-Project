@@ -7,9 +7,7 @@ typedef struct op_code {
     int arg_num;     /* The number of arguments for the operation */
     char * source_address; /*possible addressing system for source opernad*/
     char * destination_address; /*possible addressing system for target opernad*/
-
 } op_code;
-
 /* Represents different parts of a command */
 typedef struct command_parts {
     char *label;     /* The label associated with the command */
@@ -27,19 +25,9 @@ typedef struct inst_parts {
     int is_extern;     /* Indicates whether the instruction is marked as external */
 } inst_parts;
 
+/* Declaration of the external OPCODES array */
+extern op_code OPCODES[];
 
-/**
- * @brief Checks if the provided string is an instruction.
- *
- * This function compares the provided string with a list of known instructions.
- * If a match is found, the function will return 1, indicating that the string is an instruction.
- * If no match is found, it returns 0.
- *
- * @param str A pointer to a character string representing the instruction to check.
- *
- * @return Returns an integer. If the string matches one of the known instructions, it returns 1.
- *         Otherwise, if the string does not match any instruction or is NULL, it returns 0.
- */
 int is_instruction(char *str);
 
 

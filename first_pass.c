@@ -27,6 +27,7 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 error_found = 1;
                 continue;
             }
+
             symbol_flag = 1;
             sscanf(line + offset, "%s%n", first_word, &after_label_offset);
             offset += after_label_offset;
@@ -39,15 +40,12 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 error_found = 1;
                 continue;
             }
+
             if(symbol_flag){
                 add_symbol(symbol_name, DATA_FLAG, symbol_table);
 
             }
-            if((current_error = encode_data(line + offset)) != firstPassError_success) {
-                print_error(current_error, line_num, am_path);
-                error_found = 1;
-                continue;
-            }
+            encode_data(line + offset);
         }
         else if(strcmp(first_word, ".string") == 0){
             if((current_error = valid_string(line + offset)) != firstPassError_success) {
@@ -83,7 +81,11 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
             print_error(current_error, line_num, am_path);
             error_found = 1;
         }else {
-
+            if((current_error = valid_opcode(line + offset - after_label_offset)) != firstPassError_success) {
+                print_error(current_error, line_num, am_path);
+                error_found = 1;
+                continue;
+            }
         }
 
     }
@@ -188,11 +190,6 @@ enum project_error encode_data(char* data_arguments) {
 
     while (number_token != NULL) {
         num_value = strtol(number_token, NULL, 10);         /* Convert the number string to a long integer */
-        if (num_value < -16384 || num_value > 16383) {         /* Validate the number to ensure it fits within 15 bits (-16384 to 16383) */
-            free(argument_copy);
-            return firstPassError_data_argument_out_of_range;
-        }
-
         data_encoded = convert_to_15bit_binary(num_value);         /* Use the convert_to_15bit_binary function to encode the number */
 
         data_short_is_binary = short_to_binary_string(data_encoded);
@@ -241,6 +238,40 @@ int append_to_data_image(short encoded_value) {
     return 0;
 }
 
+enum project_error valid_opcode(char *opcode_line) {
+    op_code current_op_code;
+    int opcode_offset = 0;
+    char opcode_name[4];
+    char *opcode_arguments;
+    char *operand1 = NULL, *operand2 = NULL;
+    int num_operands = 0;
+    printf("opcode line: %s\n", opcode_line);
+    sscanf(opcode_line, "%s%n", opcode_name, &opcode_offset);   /* Get the opcode name and calculate offset */
+    current_op_code = OPCODES[opcode_num(opcode_name)]; /* Find the opcode in the OPCODES array */
+    opcode_arguments = opcode_line + opcode_offset; /* Get the arguments starting after the opcode */
+    opcode_arguments = str_without_spaces(opcode_arguments); /* Remove leading and trailing spaces from opcode_arguments */
+    /* If the opcode expects no operands and if opcode_arguments is empty */
+    if (current_op_code.arg_num == 0 && strlen(opcode_arguments) > 0) {
+        operand1 = NULL;
+    } else {
+        operand1 = strtok(opcode_arguments, ","); /* Tokenize the operands using comma as a delimiter */
+        if (operand1 != NULL) {
+            operand1 = str_without_spaces(operand1);  /* Remove spaces around operand1 */
+            num_operands++;
+            operand2 = strtok(NULL, ",");
+            if (operand2 != NULL) {
+                operand2 = str_without_spaces(operand2);  /* Remove spaces around operand2 */
+                num_operands++;
+                if (strtok(NULL, ",") != NULL) { /* Check if there are more operands than expected */
+                    return firstPassError_command_too_many_operands;
+                }
+            }
+        }
+        if (current_op_code.arg_num != num_operands) { /* Check if the number of operands matches the expected number */
+            return firstPassError_command_invalid_operands_number;
+        }
+    }
+    printf("operand1:%s\noperand2:%s\n", operand1, operand2);
 int append_to_code_image(short encoded_value) {
     if (IC >= MAX_MEMORY_SPACE) {
         return -1;
@@ -261,6 +292,7 @@ enum project_error handel_extern(char * extern_arguments, hash_table symbol_tabl
     add_symbol(symbol_name, EXTERN_FLAG, symbol_table);
 
     return firstPassError_success;
+}
 }
 
 enum project_error valid_entry(char * enrty_label) {

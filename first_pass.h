@@ -30,6 +30,8 @@ enum project_error valid_string(char *string);
 enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, hash_table symbol_table);
 enum project_error encode_data(char* data_arguments);
 enum project_error encode_string(char* string_argument);
+void print_symbol_table(hash_table table);
+enum project_error valid_opcode(char * opcode_line);
 enum project_error handel_extern(char * extern_arguments, hash_table symbol_table, hash_table macro_table);
 enum project_error valid_entry(char * entry_arguments);
 enum symbol_flag get_symbol_flag(hash_table symbol_table, char *symbol_name);

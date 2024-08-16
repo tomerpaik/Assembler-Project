@@ -64,8 +64,9 @@ enum  project_error {
     /* .entry errors */
 
     /* command errors */
-     firstPassError_command_not_found  /* invalid operator name */
-
+     firstPassError_command_not_found,  /* invalid operator name */
+     firstPassError_command_too_many_operands, /*"too many operators in command"*/
+     firstPassError_command_invalid_operands_number /*invalid operands number*/
 
 };
 typedef struct {
@@ -81,4 +82,5 @@ typedef struct Error {
 
 void print_error(enum project_error code, int srcline, char srcfile[]);
 void print_generic_error(enum project_error code);
+void print_error_custom_message(enum project_error code, int srcline, char srcfile[], char* additional_msg);
 #endif
