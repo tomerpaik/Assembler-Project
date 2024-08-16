@@ -29,7 +29,8 @@ int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_ta
     /*running on the file */
     while (fgets(line, MAX_LINE_LENGTH, inputFile)) {
         line_num++;
-        if(!line_length_valid(line, line_num)) {
+        if(!line_length_valid(line)) {
+            print_warning(GENERIC_LINE_OOR, line_num, file_name);
             continue;
         }
         /*TODO: if no word was found sscanf will return 0 we wiil continue to the next line*/

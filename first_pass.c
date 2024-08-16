@@ -7,7 +7,8 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
     char line[MAX_LINE_LENGTH], first_word[MAX_LINE_LENGTH], symbol_name[MAX_LABEL_LENGTH];
     int error_found = 0;
     enum project_error current_error = 0;
-    int symbol_flag, offset, after_label_offset, line_num = 0;
+    int symbol_flag, offset, after_label_offset=0, line_num = 0;
+    EntryExternContent content;
 
     am_file = open_new_file(am_path, ".am", "r");
     /* Initialize  symbol table */
@@ -27,6 +28,7 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 error_found = 1;
                 continue;
             }
+
 
             symbol_flag = 1;
             sscanf(line + offset, "%s%n", first_word, &after_label_offset);
@@ -54,42 +56,24 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 continue;
             }
             /*add string to datalist*/
-
             if(symbol_flag){
                 add_symbol(symbol_name, DATA_FLAG, symbol_table);
             }
-
             encode_string(line + offset);
         }
         /*ENTRY/EXTERN SECTION*/
-        else if(strcmp(first_word, ".extern") == 0) {
-            if((current_error = handel_extern(line + offset, symbol_table, macro_table)) != firstPassError_success) {
-                print_error(current_error, line_num, am_path);
-                if (current_error != firstPassError_extern_exists) {
-                    error_found = 1;
-                }
-                continue;
-            }
-        }
-        else if(strcmp(first_word, ".entry") == 0) {
-            continue;
-        }
-
-        /*CODE IMAGE SECTION*/
-        else if(opcode_num(first_word) == -1) {
-            current_error = firstPassError_command_not_found;
-            print_error(current_error, line_num, am_path);
-            error_found = 1;
-        }else {
-            if((current_error = valid_opcode(line + offset - after_label_offset)) != firstPassError_success) {
-                print_error(current_error, line_num, am_path);
+        else if(strcmp(first_word, ".entry") == 0 || strcmp(first_word, ".extern") == 0) {
+            content = init_entry_extern_context(first_word, line, offset, line_num, am_path);
+            if(!handle_entry_extern_context(content, symbol_table, macro_table)) {
+                free_entry_extern_context(content);
                 error_found = 1;
                 continue;
             }
+            free_entry_extern_context(content);
         }
-
     }
-    /*DEBUG:*/print_symbol_table(symbol_table);
+    /*DEBUG:*/
+    print_symbol_table(symbol_table);
     fclose(am_file);
 
     return error_found;
@@ -102,17 +86,17 @@ enum project_error valid_symbol(char *symbol_name, hash_table macro_table) {
     symbol_name_len = strlen(symbol_name);
 
     /*check valid len*/
-    if(symbol_name_len > 32) return firstPassError_label_invalid_length;
-    if(is_instruction(symbol_name)) return firstPassError_label_invalid_name_is_inst;
-    if (!isalpha(symbol_name[0])) return firstPassError_label_invalid_name_starts_with_numbers;
+    if(symbol_name_len > 32) return firstPassError_symbol_invalid_length;
+    if(is_instruction(symbol_name)) return firstPassError_symbol_invalid_name_is_inst;
+    if (!isalpha(symbol_name[0])) return firstPassError_symbol_invalid_name_starts_with_numbers;
     for (i = 1; i < symbol_name_len - 1; i++) {
         if (!isalnum(symbol_name[i]) && symbol_name[i] != '_') {
-            return firstPassError_label_invalid_name;
+            return firstPassError_symbol_iliigal_characters;
         }
     }
-    if(opcode_num(symbol_name)>=0) return firstPassError_label_invalid_name_is_opcode;
-    if(register_num(symbol_name)>=0) return firstPassError_label_invalid_name_is_reg;
-    if (is_in_table(macro_table, symbol_name)) return firstPassError_label_macro_name;
+    if(opcode_num(symbol_name)>=0) return firstPassError_symbol_invalid_name_is_opcode;
+    if(register_num(symbol_name)>=0) return firstPassError_symbol_invalid_name_is_reg;
+    if (is_in_table(macro_table, symbol_name)) return firstPassError_symbol_macro_name;
     return firstPassError_success;
 }
 
@@ -158,21 +142,18 @@ enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, has
     Symbol new_symbol;
     new_symbol = (Symbol)handel_malloc(sizeof(struct symbol));
 
-    if (is_in_table(symbol_table, symbol_name)) return firstPassError_label_name_taken;
+    if (is_in_table(symbol_table, symbol_name)) return firstPassError_symbol_name_taken;
 
     if (type_flag == DATA_FLAG) {
         new_symbol->count = DC;
     }
     if (type_flag == OPCODE_FLAG) {
-        new_symbol->count = IC;
+        new_symbol->count = IC+100;
     }
     if (type_flag == EXTERN_FLAG || type_flag == ENTRY_FLAG) {
         new_symbol->count = 0;
     }
-    /*TODO: extern / entry*/
     new_symbol->flag = type_flag;
-
-    printf("Adding Symbol: %s, Count: %d, Flag: %d\n", symbol_name, new_symbol->count, new_symbol->flag);
 
     insert_table(symbol_table, symbol_name, new_symbol);
 
@@ -229,7 +210,6 @@ enum project_error encode_string(char* string) {
     return firstPassError_success;
 }
 
-
 int append_to_data_image(short encoded_value) {
     if (DC >= MAX_MEMORY_SPACE) {
         return -1;
@@ -238,42 +218,6 @@ int append_to_data_image(short encoded_value) {
     return 0;
 }
 
-enum project_error valid_opcode(char *opcode_line) {
-    op_code current_op_code;
-    int opcode_offset = 0;
-    char opcode_name[4];
-    char *opcode_arguments;
-    char *operand1 = NULL, *operand2 = NULL;
-    int num_operands = 0;
-    printf("opcode line: %s\n", opcode_line);
-    sscanf(opcode_line, "%s%n", opcode_name, &opcode_offset);   /* Get the opcode name and calculate offset */
-    current_op_code = OPCODES[opcode_num(opcode_name)]; /* Find the opcode in the OPCODES array */
-    opcode_arguments = opcode_line + opcode_offset; /* Get the arguments starting after the opcode */
-    opcode_arguments = str_without_spaces(opcode_arguments); /* Remove leading and trailing spaces from opcode_arguments */
-    /* If the opcode expects no operands and if opcode_arguments is empty */
-    if (current_op_code.arg_num == 0 && strlen(opcode_arguments) > 0) {
-        operand1 = NULL;
-    } else {
-        operand1 = strtok(opcode_arguments, ","); /* Tokenize the operands using comma as a delimiter */
-        if (operand1 != NULL) {
-            operand1 = str_without_spaces(operand1);  /* Remove spaces around operand1 */
-            num_operands++;
-            operand2 = strtok(NULL, ",");
-            if (operand2 != NULL) {
-                operand2 = str_without_spaces(operand2);  /* Remove spaces around operand2 */
-                num_operands++;
-                if (strtok(NULL, ",") != NULL) { /* Check if there are more operands than expected */
-                    return firstPassError_command_too_many_operands;
-                }
-            }
-        }
-        if (current_op_code.arg_num != num_operands) { /* Check if the number of operands matches the expected number */
-            return firstPassError_command_invalid_operands_number;
-        }
-    }
-    printf("operand1:%s\noperand2:%s\n", operand1, operand2);
-    return firstPassError_success;
-}
 
 int append_to_code_image(short encoded_value) {
     if (IC >= MAX_MEMORY_SPACE) {
@@ -281,25 +225,6 @@ int append_to_code_image(short encoded_value) {
     }
     data_image[IC+1] = encoded_value;
     return 0;
-}
-
-enum project_error handel_extern(char * extern_arguments, hash_table symbol_table, hash_table macro_table) {
-    enum project_error symbol_validation_error = 0;
-    char * symbol_name;
-    symbol_name = str_without_spaces(extern_arguments);
-
-    if ((symbol_validation_error = valid_symbol(symbol_name, macro_table)) != firstPassError_success)return symbol_validation_error;
-    if (is_in_table(symbol_table, symbol_name)) return firstPassError_extern_label_exists;
-    if (get_symbol_flag(symbol_table, symbol_name) == EXTERN_FLAG) return firstPassError_extern_exists;
-
-    add_symbol(symbol_name, EXTERN_FLAG, symbol_table);
-
-    return firstPassError_success;
-}
-
-
-enum project_error valid_entry(char * enrty_label) {
-    return firstPassError_success;
 }
 
 enum symbol_flag get_symbol_flag(hash_table symbol_table, char *symbol_name) {
@@ -310,7 +235,69 @@ enum symbol_flag get_symbol_flag(hash_table symbol_table, char *symbol_name) {
     return -1;
 }
 
-void print_symbol_table(hash_table table) { /*TODO: sort the table?*/
+int handle_entry_extern_context(EntryExternContent context, hash_table symbol_table, hash_table macro_tabel) {
+    char *after_entry_extern_symbol_name;
+    enum project_error current_error;
+
+    after_entry_extern_symbol_name = str_without_spaces(context->line + context->offset);
+
+    if (is_empty_line(context->line + context->offset)) {
+        print_error_custom_message(firstPassError_extern_entry_without_symbol, context->line_num, context->am_path, context->first_word);
+        return 0;
+    }
+
+    if ((current_error = valid_symbol(after_entry_extern_symbol_name, macro_tabel)) != firstPassError_success) {
+        print_error_custom_message(current_error, context->line_num, context->am_path, context->first_word);
+        return 0;
+    }
+
+    if (is_in_table(symbol_table, after_entry_extern_symbol_name)) {
+        if (get_symbol_flag(symbol_table, after_entry_extern_symbol_name) == EXTERN_FLAG) {
+            if (strcmp(context->first_word, ".entry") == 0) {
+                print_error(firstPassError_extern_entry_in_same_file, context->line_num, context->am_path);
+                return 0;
+            } else {
+                print_warning(firstPassError_extern_exists, context->line_num, context->am_path);
+                return 1; /* Not an error, so return 0 */
+            }
+        }
+        if (get_symbol_flag(symbol_table, after_entry_extern_symbol_name) == ENTRY_FLAG) {
+            if (strcmp(context->first_word, ".extern") == 0) {
+                print_error(firstPassError_extern_entry_in_same_file, context->line_num, context->am_path);
+                return 0;
+            }
+        }
+        print_error_custom_message(firstPassError_extern_symbol_exists, context->line_num, context->am_path, context->first_word);
+        return 0;
+    }
+
+    if (strcmp(context->first_word, ".extern") == 0) {
+        add_symbol(after_entry_extern_symbol_name, EXTERN_FLAG, symbol_table);
+    }
+    if (strcmp(context->first_word, ".entry") == 0) {
+        add_symbol(after_entry_extern_symbol_name, ENTRY_FLAG, symbol_table);
+    }
+
+    return 1;
+}
+EntryExternContent init_entry_extern_context(char *first_word, char *line, int offset, int line_num, char *am_path) {
+    EntryExternContent context = handel_malloc(sizeof(*context));
+    /* Initialize the context with the relevant values */
+    context->first_word = first_word;
+    context->line = line;
+    context->offset = offset;
+    context->line_num = line_num;
+    context->am_path = am_path;
+    return context;
+}
+
+void free_entry_extern_context(EntryExternContent context) {
+    if (context != NULL) {
+        free(context);
+    }
+}
+
+void print_symbol_table(hash_table table) {
     int i;
     Node current;
 
@@ -329,3 +316,4 @@ void print_symbol_table(hash_table table) { /*TODO: sort the table?*/
         }
     }
 }
+

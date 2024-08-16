@@ -72,11 +72,11 @@ void * my_strdup(const char* src) {
     return dup; /* Return the duplicated string */
 }
 
-int line_length_valid(char* line, int line_num) {
+int line_length_valid(char* line) {
     int is_valid = 1;
     if(strlen(line) > MAX_LINE_LENGTH) {
         is_valid = 0;
-        printf("In File: Line %d exceeds the maximum allowed length of characters.\n", line_num);
+
     }
 
     return is_valid;
