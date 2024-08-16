@@ -13,7 +13,7 @@ typedef enum {
 }bool;
 
 int line_length_valid(char* line, int line_num);
-void *handle_malloc(long object_size);
+void *handel_malloc(long object_size);
 FILE *open_new_file(char *file_name,char *ending, char *mode);
 char *add_new_file(char *file_name, char *ending);
 void* my_strdup(const char* src);

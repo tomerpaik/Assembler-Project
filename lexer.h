@@ -86,4 +86,6 @@ int is_empty_line(const char *line);
 
 char* str_without_spaces(char * word);
 
+int is_comment_empty_line(char * line);
+
 #endif

@@ -118,7 +118,7 @@ int is_comment(char * line) {
 
 char* substring(char *source, int start, int end) {
     int length = strlen(source);
-    char *substr = (char*)handle_malloc((end + 1) * sizeof(char));
+    char *substr = (char*)handel_malloc((end + 1) * sizeof(char));
     int i;
 
     if (start < 0 || start > length || end < 0) {
@@ -165,4 +165,11 @@ char* str_without_spaces(char *string) {
     while (end_ptr > start_ptr && isspace(*end_ptr)) end_ptr--;
 
     return substring(start_ptr, 0, end_ptr - start_ptr + 1);
+}
+
+int is_comment_empty_line(char * line) {
+    if (is_empty_line(line) || *line == ';') { /*if line starts with ; OR if line is empty */
+        return 1;
+    }
+    return 0;
 }

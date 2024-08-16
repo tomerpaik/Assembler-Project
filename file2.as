@@ -1,6 +1,13 @@
 MAIN: add r3, LIST
 LOOP: prn #48
 
+.extern LABEL
+.extern 1LABEL
+.extern r1
+.extern roy
+.extern mov
+.extern .data
+
 macr  roy
  THIS IS  roy content
 
@@ -22,8 +29,11 @@ endmacr
 END: stop
 roy1
 STR: .string "abcd"
-roy2
 LIST: .data 6, -9
       .data -100
 K: .data 31
 roy
+macro1
+
+.extern STR
+
