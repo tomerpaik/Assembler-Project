@@ -15,12 +15,13 @@ int main(int argc, char *argv[]) {
     while (--argc > 0) {
         hash_table macro_table = {0};
         hash_table symbol_table = {0};
-        printf(""BOLD"********* Starting Pre-Proccesor %s********* \n"RESET"", argv[argc]);
+        printf(""BOLD"********* Starting Pre-Proccesor %s ********* \n"RESET"", argv[argc]);
         if (!pre_assembler(argv[argc], macro_table)){
             /*If it failed, move to the next file.*/
             filePath = add_new_file(argv[argc], ".am");
             remove(filePath);
             free(filePath);
+            printf(""YELLOW"********* Removed .am File After Pre-Assembler Faild %s********* \n"RESET"", argv[argc]);
             continue;
         }
 
@@ -31,6 +32,7 @@ int main(int argc, char *argv[]) {
         /*Execute the first pass, and then the second on the ".am" file.*/
         if (first_pass(am_path, macro_table, symbol_table)) {
             /*If it failed, move to the next file.*/
+            printf(""YELLOW"********* Removed .am File After Pre-Assembler Faild %s********* \n"RESET"", argv[argc]);
             continue;
         }
 
@@ -40,6 +42,6 @@ int main(int argc, char *argv[]) {
         free_table(symbol_table);
     }
 
-    printf("end\n");
+    printf(""BOLD"********* End-Assembler ********* \n"RESET"");
     return 0;
 }
