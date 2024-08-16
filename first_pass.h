@@ -20,6 +20,14 @@ typedef struct symbol{
     enum symbol_flag flag;
 }*Symbol;
 
+typedef struct {
+    char *first_word;
+    char *line;
+    int offset;
+    int line_num;
+    char *am_path;
+} * EntryExternContent;
+
 short code_image[MAX_MEMORY_SPACE];
 short data_image[MAX_MEMORY_SPACE];
 
@@ -31,12 +39,13 @@ enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, has
 enum project_error encode_data(char* data_arguments);
 enum project_error encode_string(char* string_argument);
 void print_symbol_table(hash_table table);
-enum project_error valid_opcode(char * opcode_line);
-enum project_error handel_extern(char * extern_arguments, hash_table symbol_table, hash_table macro_table);
-enum project_error valid_entry(char * entry_arguments);
+enum project_error valid_opcode(char *opcode_line, hash_table symbol_table);
 enum symbol_flag get_symbol_flag(hash_table symbol_table, char *symbol_name);
-
+EntryExternContent init_entry_extern_context(char *first_word, char *line, int offset, int line_num, char *am_path);
+int handle_entry_extern_context(EntryExternContent context, hash_table symbol_table, hash_table macro_tabel);
 int append_to_code_image(short encoded_value);
+void free_entry_extern_context(EntryExternContent context);
+int find_addressing_method(char* operand, hash_table symbol_table);
 /**
  * Appends an encoded short value to the global data_image array.
  * @param encoded_value The short value to append.

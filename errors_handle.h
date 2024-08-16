@@ -7,10 +7,8 @@
 
 enum  project_error {
      GENERIC_NO_E,
+     GENERIC_LINE_OOR,
      GENERIC_Allocation_Faild,
-     ERROR_CODE_2,
-     ERROR_CODE_3,
-     GENERIC_File_NEXIST,
      GENERIC_Line_TooLONG,
      GENERIC_Faild_OpenFile_W,
      GENERIC_Faild_OpenFile_R,
@@ -19,7 +17,6 @@ enum  project_error {
      macro_name_MACR_ENDMACR,
      Macro_ETA_endmacr,
      Macro_double_define,
-     ERROR_CODE_15,
      Macro_ETA_MacroCall,
      Macro_nameis_Reg_Op_Inst,
      Macro_namestart_with_numbers,
@@ -28,18 +25,15 @@ enum  project_error {
      firstPassError_success,   /* no error */
     /* label errors */
      /* invalid label name */
-     firstPassError_label_invalid_name,   /* invalid label name */
-     firstPassError_label_invalid_name_starts_with_numbers,   /*label name starting with number */
-     firstPassError_label_invalid_name_is_inst,   /* label name is insruction */
-     firstPassError_label_invalid_name_is_reg,   /* invalid label name is reg*/
-     firstPassError_label_invalid_name_is_opcode,   /* invalid label name is reg*/
-     firstPassError_label_const_definition,   /* constant defined in a label */
-     firstPassError_label_saved_keyword,  /* the label's name is a saved keyword */
-     firstPassError_label_name_taken, /* name of label taken */
-     firstPassError_label_empty_line, /* label defined on an empty line */
-     firstPassError_label_macro_name, /* there's a macro with the same name as the label */
-     firstPassError_label_no_whitespace, /* missing space after label declaration */
-     firstPassError_label_invalid_length, /*label is too long*/
+
+     firstPassError_symbol_iliigal_characters,   /* invalid label name */
+     firstPassError_symbol_invalid_name_starts_with_numbers,   /*label name starting with number */
+     firstPassError_symbol_invalid_name_is_inst,   /* label name is insruction */
+     firstPassError_symbol_invalid_name_is_reg,   /* invalid label name is reg*/
+     firstPassError_symbol_invalid_name_is_opcode,   /* invalid label name is reg*/
+     firstPassError_symbol_name_taken, /* name of label taken */
+     firstPassError_symbol_macro_name, /* there's a macro with the same name as the label */
+     firstPassError_symbol_invalid_length, /*label is too long*/
 
     /* .data errors */
      firstPassError_data_nan, /* .data argument is not a number */
@@ -58,15 +52,18 @@ enum  project_error {
      firstPassError_string_empty_line, /*after .string line is empty */
 
     /* .extern errors */
-    firstPassError_extern_invalid_lbl_name,  /* the .extern parameter is not a valid name for a label */
-    firstPassError_extern_label_exists,  /* the label is already defined in the file */
+    firstPassError_extern_entry_in_same_file,
+    firstPassError_extern_entry_without_symbol,
+    firstPassError_extern_symbol_exists,  /* the label is already defined in the file */
     firstPassError_extern_exists, /* this label was already declared as extern (warning) */
     /* .entry errors */
 
     /* command errors */
      firstPassError_command_not_found,  /* invalid operator name */
      firstPassError_command_too_many_operands, /*"too many operators in command"*/
-     firstPassError_command_invalid_operands_number /*invalid operands number*/
+     firstPassError_command_invalid_operands_number, /*invalid operands number*/
+     firstPassError_command_invalid_source_adress,
+     firstPassError_command_invalid_dest_adress
 
 };
 typedef struct {
@@ -82,5 +79,6 @@ typedef struct Error {
 
 void print_error(enum project_error code, int srcline, char srcfile[]);
 void print_generic_error(enum project_error code);
+void print_warning(enum project_error code, int srcline, char srcfile[]);
 void print_error_custom_message(enum project_error code, int srcline, char srcfile[], char* additional_msg);
 #endif

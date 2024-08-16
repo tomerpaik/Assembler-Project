@@ -32,7 +32,6 @@ int main(int argc, char *argv[]) {
         /*Execute the first pass, and then the second on the ".am" file.*/
         if (first_pass(am_path, macro_table, symbol_table)) {
             /*If it failed, move to the next file.*/
-            printf(""YELLOW"********* Removed .am File After Pre-Assembler Faild %s********* \n"RESET"", argv[argc]);
             continue;
         }
 

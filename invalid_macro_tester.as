@@ -62,4 +62,5 @@ endmacr
 END: stop
 STR: .string “abcd”
 LIST: .data 6, -9
+OP: cmd f po
  .data -100
