@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "errors_handle.h"
 #include "general_functions.h"
+
 /* Define the opcodes */
 op_code OPCODES[] = {
     {"mov",  2, "0123", "123"},
@@ -24,11 +25,28 @@ op_code OPCODES[] = {
     {"rts",  0, "", ""},
     {"stop", 0, "", ""}
 };
+
 /* Define the registers */
 char *REGS[] = {"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7"};
 
 /* Define the instructions */
 char *INSTRUCTIONS[] = {".data", ".string", ".extern", ".entry"};
+
+int opcode_num(char *str) {
+    int i;
+
+    /* Return -1 if the str is NULL */
+    if (str == NULL) {
+        return -1;
+    }
+    /*check if there is op matching to str*/
+    for (i = 0; i < NUMBER_OF_OPCODES; i++) {
+        if (strcmp(str, OPCODES[i].opcode) == 0) {
+            return i; /* Return the index of the matching opcode */
+        }
+    }
+    return -1; /* Return -1 if the string does not match any known opcodes */
+}
 
 /*check if str is instruction*/
 int is_instruction(char *str) {
@@ -48,22 +66,6 @@ int is_instruction(char *str) {
     return 0; /* Return 0 if the string is not a valid instruction */
 }
 
-
-int opcode_num(char *str) {
-    int i;
-
-    /* Return -1 if the str is NULL */
-    if (str == NULL) {
-        return -1;
-    }
-    /*check if there is op matching to str*/
-    for (i = 0; i < NUMBER_OF_OPCODES; i++) {
-        if (strcmp(str, OPCODES[i].opcode) == 0) {
-            return i; /* Return the index of the matching opcode */
-        }
-    }
-    return -1; /* Return -1 if the string does not match any known opcodes */
-}
 /*if str is a register returns the register number, if not returns: -1*/
 int register_num(char *str) {
     int i;
@@ -87,29 +89,6 @@ int get_first_word(char * line, char * first_word) {
     int offset = 0;
     sscanf(line, "%s%n", first_word, &offset);
     return offset;
-}
-
-int legal_label(char *str, int *error_code) {
-    if (str == NULL) {
-        return 0;
-    }
-
-    /* If str is in one of the following - the label name is not valid */
-    if (strlen(str) > MAX_LABEL_LENGTH || !isalpha(*str) || register_num(str) >= 0) {
-        return 0;
-    }
-
-    if (opcode_num(str) < 0) {
-        while (*(++str) != '\0' && (isalpha(*str) || isdigit(*str))) {;
-        }
-        if (*(str) == ':' && *(str + 1) == '\0') {
-            *str = '\0';
-            return 1;
-        } else {
-        }
-    }
-
-    return 0;
 }
 
 int is_comment(char * line) {

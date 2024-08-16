@@ -31,6 +31,7 @@ enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, has
 enum project_error encode_data(char* data_arguments); /*TODO: is_label arg?*/
 enum project_error encode_string(char* string_argument);
 void print_symbol_table(hash_table table);
+enum project_error valid_opcode(char * opcode_line);
 /**
  * Appends an encoded short value to the global data_image array.
  * @param encoded_value The short value to append.
