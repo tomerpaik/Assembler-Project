@@ -5,8 +5,8 @@
 typedef struct op_code {
     char *opcode;    /* The opcode corresponding to the operation */
     int arg_num;     /* The number of arguments for the operation */
-    char * source_address; /*possible addressing system for source opernad*/
-    char * destination_address; /*possible addressing system for target opernad*/
+    int source_address[6]; /*possible addressing system for source opernad*/
+    int destination_address[6]; /*possible addressing system for target opernad*/
 } op_code;
 /* Represents different parts of a command */
 typedef struct command_parts {
@@ -75,5 +75,13 @@ int is_empty_line(const char *line);
 char* str_without_spaces(char * word);
 
 int is_comment_empty_line(char * line);
+
+/**
+ * Function to find a character in a string.
+ * @param str The string to search within.
+ * @param ch The character to search for.
+ * @return 1 if the character is found, 0 if not found.
+ */
+int find_int_in_array(int *array, int length, int value);
 
 #endif

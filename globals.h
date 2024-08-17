@@ -36,14 +36,4 @@
 
 #define INSTRUCTIONS_COUNT 4
 
-#define SIX_BITS_MAX 63
-
-#define SIX_BITS 6
-
-#define NUM_SEXTETES 2
-
-#define MAX_NUM ((1 << (WORD_LEN-1)) - 1)
-
-#define MIN_NUM (-(1 << (WORD_LEN-1)))
-
 #endif

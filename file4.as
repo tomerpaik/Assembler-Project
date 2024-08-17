@@ -1,9 +1,9 @@
- lea STR kdkd, r6
- inc r6
- mov *r6, K
+ lea STR kdkd, #4 , 54
+ inc
+ clr LBL ksksskn 89383                          ,
  sub r1, r4
  dec K
  jmp LOOP
  stop
- stop 09
-CMD: inc r6
+ rts
+LABEL: lea STR, r5

@@ -7,23 +7,23 @@
 #include "general_functions.h"
 
 /* Define the opcodes */
-op_code OPCODES[] = {
-    {"mov",  2, "0123", "123"},
-    {"cmp",  2, "0123", "0123"},
-    {"add",  2, "0123", "123"},
-    {"sub",  2, "0123", "123"},
-    {"lea",  2, "1", "123"},
-    {"clr",  1, "", "123"},
-    {"not",  1, "", "123"},
-    {"inc",  1, "", "123"},
-    {"dec",  1, "", "123"},
-    {"jmp",  1, "", "12"},
-    {"bne",  1, "", "12"},
-    {"red",  1, "", "123"},
-    {"prn",  1, "", "0123"},
-    {"jsr",  1, "", "12"},
-    {"rts",  0, "", ""},
-    {"stop", 0, "", ""}
+op_code OPCODES[] = {                         /*0  1  2  3  N*/                  /*0  1  2  3  N*/
+    {"mov",  2, {0, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
+    {"cmp",  2, {1, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 0,1,2,3 | destination: 0,1,2,3 */
+    {"add",  2, {0, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
+    {"sub",  2, {0, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
+    {"lea",  2, {0, 1, 1, 1, 0}, {0, 0, 0, 1, 0}},  /* source: 1,2,3  | destination: 1 */
+    {"clr",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
+    {"not",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
+    {"inc",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
+    {"dec",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
+    {"jmp",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 0, 0}},  /* no source operand | destination: 1,2 */
+    {"bne",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 0, 0}},  /* no source operand | destination: 1,2 */
+    {"jsr",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 0, 0}},  /* no source operand | destination: 1,2 */
+    {"red",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
+    {"prn",  1, {0, 0, 0, 0, 1}, {1, 1, 1, 1, 0}},  /* no source operand | destination: 0,1,2,3 */
+    {"rts",  0, {0, 0, 0, 0, 1}, {0, 0, 0, 0, 1}},  /* no source operand | no destination operand */
+    {"stop", 0, {0, 0, 0, 0, 1}, {0, 0, 0, 0, 1}}   /* no source operand | no destination operand */
 };
 
 /* Define the registers */
@@ -152,3 +152,21 @@ int is_comment_empty_line(char * line) {
     }
     return 0;
 }
+
+/**
+ * Function to find a character in a string.
+ * @param str The string to search within.
+ * @param ch The character to search for.
+ * @return 1 if the character is found, 0 if not found.
+ */
+/* Function to find if an integer exists in an array */
+int find_int_in_array(int *array, int length, int value) {
+    int i;
+    for (i = 0; i < length; i++) {
+        if (array[i] == value) {
+            return 1;
+        }
+    }
+    return 0;
+}
+

@@ -63,7 +63,7 @@ void printList(Node const source) {
 
     i=1;
     while (current != NULL) {
-        printf("Key: %s, Value: %s\n", current->key, (char*)(get_value(current)));
+        printf("Key: %s, Value: %d\n", current->key, (int)(get_value(current)));
         current = current->next;
         i++;
     }

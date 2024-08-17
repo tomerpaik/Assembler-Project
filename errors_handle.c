@@ -50,9 +50,11 @@ project_errors errors[] = {
     /*commands errors*/
     {firstPassError_command_not_found, "invalid command"},
     {firstPassError_command_too_many_operands, "too many operators in command"},
-    { firstPassError_command_invalid_operands_number, "invalid operands number for the command"},
     { firstPassError_command_invalid_source_adress, "soucre operand adressing method is not availible for opcode"},
-    { firstPassError_command_invalid_dest_adress, "destination operand adressing method is not availible for opcode"}
+    { firstPassError_command_invalid_dest_adress, "destination operand adressing method is not availible for opcode"},
+    { firstPassError_command_no_operand_expected, "opcode should get no operands"},
+    { firstPassError_command_expected_operand, "opcode should get operands"},
+    { firstPassError_command_invalid_operand, "opcode should get operands"}
 
 };
 
