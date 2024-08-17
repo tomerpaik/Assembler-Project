@@ -27,4 +27,10 @@ add_executable(assembler pre_assembler.c
         general_functions.h
         first_pass.h
         errors_handle.c
+        second_pass.c
+        second_pass.h
+        encode.c
+        encode.h
+        validation.c
+        validation.h
 )

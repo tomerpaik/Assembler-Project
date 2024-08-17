@@ -61,9 +61,11 @@ enum  project_error {
     /* command errors */
      firstPassError_command_not_found,  /* invalid operator name */
      firstPassError_command_too_many_operands, /*"too many operators in command"*/
-     firstPassError_command_invalid_operands_number, /*invalid operands number*/
      firstPassError_command_invalid_source_adress,
-     firstPassError_command_invalid_dest_adress
+     firstPassError_command_invalid_dest_adress,
+     firstPassError_command_no_operand_expected,
+     firstPassError_command_expected_operand,
+     firstPassError_command_invalid_operand
 
 };
 typedef struct {
