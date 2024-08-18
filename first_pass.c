@@ -18,7 +18,9 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
         symbol_flag = 0;
         offset = 0;
         sscanf(line, "%s%n", first_word, &offset);
+        /*
         printf("line: %d, first word: %s\n", line_num, first_word);
+        */
         /*check if word is a symbol*/
         if (first_word[strlen(first_word) - 1] == ':') {
             strcpy(symbol_name, substring(my_strdup(first_word), 0, strlen(first_word)-1));
@@ -27,7 +29,6 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
                 error_found = 1;
                 continue;
             }
-
 
             symbol_flag = 1;
             sscanf(line + offset, "%s%n", first_word, &after_label_offset);
@@ -44,7 +45,6 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
 
             if(symbol_flag){
                 add_symbol(symbol_name, DATA_FLAG, symbol_table);
-
             }
             encode_data(line + offset);
             continue;
@@ -75,22 +75,10 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
         }
 
         /*CODE SECTION*/
-        else if (symbol_flag) {
-            if(is_in_table(symbol_table, symbol_name)) {
-                print_error(GENERIC_NO_E, line_num, am_path);  /*TODO: find right error to asign*/
-                error_found = 1;
-                continue;
-            }
-            add_symbol(symbol_name, OPCODE_FLAG, symbol_table);
-        }
-        if ((current_error = valid_opcode(line + offset, first_word, symbol_table, macro_table)) != firstPassError_success) {
+        if ((current_error = handel_opcode(line + offset, first_word, symbol_table, symbol_name, symbol_flag)) != firstPassError_success) {
             print_error(current_error, line_num, am_path);
             error_found = 1;
-            continue;
-        }else {
-            /*encode*/
         }
-
     }
     /*DEBUG:*/
     print_symbol_table(symbol_table);
@@ -99,85 +87,6 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
     return error_found;
 
 }
-
-enum project_error valid_opcode(char *opcode_operands, char* opcode_name, hash_table symbol_table, hash_table macro_table) {
-    op_code current_op_code;
-    char *source_operand = "NULL", *dest_operand = "NULL";
-    int source_addressing_method = 4, dest_addressing_method = 4; /*RESET addressing_method TO BE NO_METHOD*/
-    int can_encode_flag = 1;
-
-    if (opcode_num(opcode_name) == -1) return firstPassError_command_not_found;
-    current_op_code = OPCODES[opcode_num(opcode_name)]; /* Find the opcode in the OPCODES array */
-
-    if (is_empty_line(opcode_operands) && current_op_code.arg_num > 0)  return firstPassError_command_expected_operand; /*opcode that needs to get operands arg_num > 0*/
-
-    if (current_op_code.arg_num == 2) {
-        source_operand = strtok(opcode_operands, ","); /* Tokenize the operands using comma as a delimiter */
-        if (source_operand != NULL) {
-            source_operand = str_without_spaces(source_operand);  /* Remove spaces around operand1 */
-            dest_operand = str_without_spaces(strtok(NULL, ","));
-            if (strtok(NULL, ",") != NULL) return firstPassError_command_too_many_operands;
-        } else {
-            source_operand = "NULL", dest_operand = "NULL";
-        }
-    } else if (current_op_code.arg_num == 1) {
-        dest_operand = str_without_spaces(opcode_operands);
-    }
-    else if (current_op_code.arg_num == 0 && !is_empty_line(opcode_operands)) return firstPassError_command_no_operand_expected; /* Handle cases where the opcode expects no operands but arguments are present */
-
-    if (strcmp(source_operand, "NULL") != 0) {
-        source_addressing_method = find_addressing_method(source_operand, symbol_table);
-    }
-    if (strcmp(dest_operand, "NULL") != 0) {
-        dest_addressing_method = find_addressing_method(dest_operand, symbol_table);
-    }
-    /* Check if the source addressing method is allowed */
-    if (current_op_code.source_address[source_addressing_method] == 0) return firstPassError_command_invalid_source_adress;
-
-    /* Check if the destination addressing method is allowed */
-    if (current_op_code.destination_address[dest_addressing_method] == 0) return firstPassError_command_invalid_dest_adress;
-
-    if(source_addressing_method == 1) {
-        if (is_in_table(symbol_table, source_operand)) {
-            can_encode_flag = 1;
-        } else {
-            if(valid_symbol(source_operand, macro_table) != firstPassError_success) return firstPassError_command_invalid_operand;
-            /*TODO: add to struct*/
-            can_encode_flag = 0;
-        }
-    }
-    if(dest_addressing_method == 1) {
-
-    }
-
-    return firstPassError_success;
-}
-
-/* Function to find addressing method as an integer */
-int find_addressing_method(char* operand, hash_table symbol_table) {
-    if (operand[0] == '#') {
-        int i = 1;
-        if (operand[i] == '-' || operand[i] == '+') {
-            i++;
-        }
-        while (isdigit(operand[i])) {
-            i++;
-        }
-        if (operand[i] == '\0') {
-            return 0; /* Immediate addressing method */
-        }
-    }
-    if (operand[0] == '*') {
-        if (register_num(operand+1) > -1) {
-            return 2; /* Register indirect addressing method */
-        }
-    }
-    if (register_num(operand) > -1) {
-        return 3; /* Register direct addressing method */
-    }
-    return 1; /* Direct addressing method (symbol) */
-}
-
 
 
 
@@ -236,3 +145,11 @@ void print_symbol_table(hash_table table) {
     }
 }
 
+void print_array(short arr[], int size) {
+    int i;
+    printf("-------------------------------\n");
+    for (i = 0; i < size; i++) {
+        printf(""BOLD""MAGENTA "%d:  %s" RESET "\n", i + 100, short_to_binary_string(arr[i]));
+    }
+    printf("-------------------------------\n");
+}

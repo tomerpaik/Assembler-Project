@@ -13,7 +13,6 @@ int main(int argc, char *argv[]) {
     char *filePath;
 
     while (--argc > 0) {
-        Node entries_list = create_node("", "");
         hash_table macro_table = {0};
         hash_table symbol_table = {0};
         printf(""BOLD"********* Starting Pre-Proccesor %s ********* \n"RESET"", argv[argc]);
@@ -34,10 +33,13 @@ int main(int argc, char *argv[]) {
         /*Execute the first pass, and then the second on the ".am" file.*/
         if (first_pass(am_path, macro_table, symbol_table)) {
             /*If it failed, move to the next file.*/
-            printList(entries_list);
             printf(""YELLOW""BOLD"********* First Pass Faild %s********* \n"RESET"", argv[argc]);
             continue;
         }
+        printf("\n"GREEN"********* CODE IMAGE : %s *********\n"RESET"", argv[argc]);
+        print_array(code_image, IC);
+        printf(""GREEN"********* DATA IMAGE : %s *********\n"RESET"", argv[argc]);
+        print_array(data_image, DC);
 
         printf(""GREEN""BOLD"********* Passed First Pass %s *********\n"RESET"", argv[argc]);
 
@@ -45,7 +47,6 @@ int main(int argc, char *argv[]) {
         free(am_path);
         free_table(macro_table);
         free_table(symbol_table);
-        freeList(entries_list);
     }
 
     printf(""BOLD"********* End-Assembler ********* \n"RESET"");

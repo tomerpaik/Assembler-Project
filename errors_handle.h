@@ -65,7 +65,9 @@ enum  project_error {
      firstPassError_command_invalid_dest_adress,
      firstPassError_command_no_operand_expected,
      firstPassError_command_expected_operand,
-     firstPassError_command_invalid_operand
+     firstPassError_command_invalid_operand,
+     firstPassError_command_code_image_oor,
+     firstPassError_command_code_number_oor
 
 };
 typedef struct {

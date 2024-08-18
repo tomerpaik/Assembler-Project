@@ -54,7 +54,9 @@ project_errors errors[] = {
     { firstPassError_command_invalid_dest_adress, "destination operand adressing method is not availible for opcode"},
     { firstPassError_command_no_operand_expected, "opcode should get no operands"},
     { firstPassError_command_expected_operand, "opcode should get operands"},
-    { firstPassError_command_invalid_operand, "opcode should get operands"}
+    { firstPassError_command_invalid_operand, "opcode should get operands"},
+    { firstPassError_command_code_image_oor, "IC is out of MAX computer range"},
+    { firstPassError_command_code_number_oor, "Immidiate addressing method number is out of range"}
 
 };
 

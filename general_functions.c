@@ -94,16 +94,10 @@ int is_empty_after_key(const char *str) {
 
 /** Converts an integer to a 15-bit binary representation using a 16-bit short */
 short convert_to_15bit_binary(int number) {
-    short binary_value;
     if (number >= (1 << 14) || number < -(1 << 14)) {
         return 0;
     }
-    if (number >= 0) {
-        binary_value = (short)number;
-    } else {
-        binary_value = (short)(number & 0x7FFF);
-    }
-    return binary_value;
+    return (short)number;
 }
 
 /** Converts a 16-bit short to a binary string representation */

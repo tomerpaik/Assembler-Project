@@ -36,4 +36,8 @@
 
 #define INSTRUCTIONS_COUNT 4
 
+#define ABSOLUTE 4
+#define RELOCATABLE 2
+#define EXTERNAL 1
+
 #endif

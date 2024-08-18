@@ -19,9 +19,9 @@ op_code OPCODES[] = {                         /*0  1  2  3  N*/                 
     {"dec",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
     {"jmp",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 0, 0}},  /* no source operand | destination: 1,2 */
     {"bne",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 0, 0}},  /* no source operand | destination: 1,2 */
-    {"jsr",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 0, 0}},  /* no source operand | destination: 1,2 */
     {"red",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
     {"prn",  1, {0, 0, 0, 0, 1}, {1, 1, 1, 1, 0}},  /* no source operand | destination: 0,1,2,3 */
+    {"jsr",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 0, 0}},  /* no source operand | destination: 1,2 */
     {"rts",  0, {0, 0, 0, 0, 1}, {0, 0, 0, 0, 1}},  /* no source operand | no destination operand */
     {"stop", 0, {0, 0, 0, 0, 1}, {0, 0, 0, 0, 1}}   /* no source operand | no destination operand */
 };
