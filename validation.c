@@ -17,7 +17,7 @@ enum project_error valid_symbol(char *symbol_name, hash_table macro_table) {
     if(opcode_num(symbol_name)>=0) return firstPassError_symbol_invalid_name_is_opcode;
     if(register_num(symbol_name)>=0) return firstPassError_symbol_invalid_name_is_reg;
     if (is_in_table(macro_table, symbol_name)) return firstPassError_symbol_macro_name;
-    return firstPassError_success;
+    return Error_Success;
 }
 
 enum project_error valid_data(char *line){
@@ -42,7 +42,7 @@ enum project_error valid_data(char *line){
         } else if (*ptr != '\0') return firstPassError_data_comma_expected; /* Invalid if there's any other character */
 
     }
-    return firstPassError_success;; /* Valid instruction */
+    return Error_Success;; /* Valid instruction */
 }
 
 enum project_error valid_string(char *string) {
@@ -59,7 +59,10 @@ enum project_error valid_string(char *string) {
         if (!isprint(*start_quote)) return firstPassError_string_not_printable;
         start_quote ++;
     }
-    return firstPassError_success;
+
+    free(string_without_spaces);
+    free(end_quote);
+    return Error_Success;
 }
 
 int handel_entry_extern(EntryExternContent context, hash_table symbol_table, hash_table macro_tabel){
@@ -73,7 +76,7 @@ int handel_entry_extern(EntryExternContent context, hash_table symbol_table, has
         return 0;
     }
 
-    if ((current_error = valid_symbol(after_entry_extern_symbol_name, macro_tabel)) != firstPassError_success) {
+    if ((current_error = valid_symbol(after_entry_extern_symbol_name, macro_tabel)) != Error_Success) {
         print_error_custom_message(current_error, context->line_num, context->am_path, context->first_word);
         return 0;
     }
@@ -169,8 +172,14 @@ enum project_error handel_opcode(char *opcode_operands, char* opcode_name, hash_
     }
 
     encode_opcode(opcode_name, source_operand, dest_operand, source_addressing_method, dest_addressing_method);
+    if (source_operand != NULL && source_operand != opcode_operands) {
+        free(source_operand);
+    }
+    if (dest_operand != NULL && dest_operand != opcode_operands) {
+        free(dest_operand);
+    }
+    return Error_Success;
 
-    return firstPassError_success;
 }
 
 /* Function to find addressing method as an integer */

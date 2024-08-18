@@ -144,6 +144,7 @@ char* str_without_spaces(char *string) {
     while (end_ptr > start_ptr && isspace(*end_ptr)) end_ptr--;
 
     return substring(start_ptr, 0, end_ptr - start_ptr + 1);
+
 }
 
 int is_comment_empty_line(char * line) {

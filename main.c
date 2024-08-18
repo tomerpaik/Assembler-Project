@@ -15,6 +15,9 @@ int main(int argc, char *argv[]) {
     while (--argc > 0) {
         hash_table macro_table = {0};
         hash_table symbol_table = {0};
+
+        am_path = argv[argc];
+
         printf(""BOLD"********* Starting Pre-Proccesor %s ********* \n"RESET"", argv[argc]);
         if (!pre_assembler(argv[argc], macro_table)){
             /*If it failed, move to the next file.*/
@@ -22,29 +25,47 @@ int main(int argc, char *argv[]) {
             remove(filePath);
             free(filePath);
             printf(""YELLOW""BOLD"********* Removed .am File After Pre-Assembler Faild %s********* \n"RESET"", argv[argc]);
+            /* Free allocated memory if any */
             continue;
         }
         printf(""GREEN""BOLD"********* Passed Pre-Proccesor %s ********* \n"RESET"", argv[argc]);
 
         printf(""BOLD"********* Starting First Pass %s *********\n"RESET"", argv[argc]);
         /* Generate a new file with the ".am" extension by adding it to the input filename.*/
-        am_path = argv[argc];
 
         /*Execute the first pass, and then the second on the ".am" file.*/
         if (first_pass(am_path, macro_table, symbol_table)) {
             /*If it failed, move to the next file.*/
             printf(""YELLOW""BOLD"********* First Pass Faild %s********* \n"RESET"", argv[argc]);
+            /* Free allocated memory if any */
             continue;
         }
+        printf(""GREEN""BOLD"********* Passed First Pass %s *********\n"RESET"", argv[argc]);
+
         printf("\n"GREEN"********* CODE IMAGE : %s *********\n"RESET"", argv[argc]);
         print_array(code_image, IC);
         printf(""GREEN"********* DATA IMAGE : %s *********\n"RESET"", argv[argc]);
         print_array(data_image, DC);
 
-        printf(""GREEN""BOLD"********* Passed First Pass %s *********\n"RESET"", argv[argc]);
+        printf(""GREEN""BOLD"********* Start Second Pass %s *********\n"RESET"", argv[argc]);
 
-        /*Free allocated memory*/
-        free(am_path);
+        if (second_pass(am_path, symbol_table)) {
+            /*If it failed, move to the next file.*/
+            printf(""YELLOW""BOLD"********* Second Pass Faild %s********* \n"RESET"", argv[argc]);
+            /* Free allocated memory if any */
+            continue;
+        }
+        printf(""GREEN""BOLD"********* Passed Second Pass %s *********\n"RESET"", argv[argc]);
+
+        printf("\n"GREEN"********* CODE IMAGE : %s *********\n"RESET"", argv[argc]);
+        print_array(code_image, IC);
+        printf(""GREEN"********* DATA IMAGE : %s *********\n"RESET"", argv[argc]);
+        print_array(data_image, DC);
+
+        print_symbol_table(symbol_table);
+
+
+        /* Free allocated memory if any */
         free_table(macro_table);
         free_table(symbol_table);
     }

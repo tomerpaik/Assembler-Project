@@ -28,4 +28,4 @@ debug: $(EXEC)
 	gdb $(EXEC)
 
 val:
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler file2
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler test

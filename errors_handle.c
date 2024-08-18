@@ -17,7 +17,7 @@ project_errors errors[] = {
     {Macro_nameis_Reg_Op_Inst, "Illegal name for a macro"},
     {Macro_namestart_with_numbers, "Macro name starts with numbers"},
     {Macro_nameis_oor, "Macro Name is out of range"},
-    {firstPassError_success, "No Error Found"},
+    {Error_Success, "No Error Found"},
     /*symbol errors*/
     {firstPassError_symbol_iliigal_characters, "symbol name contains illigal characters"},
     {firstPassError_symbol_invalid_name_starts_with_numbers, "symbol name starting with number"},

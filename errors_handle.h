@@ -22,7 +22,7 @@ enum  project_error {
      Macro_namestart_with_numbers,
      Macro_nameis_oor,
 
-     firstPassError_success,   /* no error */
+     Error_Success,   /* no error */
     /* label errors */
      /* invalid label name */
 

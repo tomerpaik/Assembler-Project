@@ -25,7 +25,7 @@ int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_ta
     int inMacroFlag = 0,  line_num = 0, total_body_length = 0, error_found = 0;
     /*check macro*/
     int macro_name_offset = 0, offset = 0;
-    helpful_empty_str = my_strdup("");
+    helpful_empty_str = "-";
     /*running on the file */
     while (fgets(line, MAX_LINE_LENGTH, inputFile)) {
         line_num++;
@@ -39,7 +39,7 @@ int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_ta
         if (!strcmp(word, MACRO_START)){
             inMacroFlag = 1;
             sscanf(line + offset, "%s%n", macroName, &macro_name_offset);
-            if (is_empty_after_key(str_without_spaces(line+offset))){ /*scanf returns 0 means no name was found*/
+            if (macro_name_offset == 0){ /*scanf returns 0 means no name was found*/
                 print_error(Macro_Without_Name, line_num, file_name);
                 error_found  = 1;
                 inMacroFlag = 0;
@@ -89,7 +89,6 @@ int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_ta
             fputs(line, outputFile);
         }
     }
-    free(helpful_empty_str);
     fclose(inputFile);
     fclose(outputFile);
     return !error_found;

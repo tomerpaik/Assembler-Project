@@ -21,7 +21,11 @@ void encode_data(char* data_arguments) {
         number_token = strtok(NULL, ","); /* Get the next argument */
     }
 
-    free(argument_copy);
+    if (argument_copy != NULL) {
+        free(argument_copy);
+        argument_copy = NULL;
+    }
+
 }
 
 void encode_string(char* string) {
@@ -49,8 +53,16 @@ void encode_string(char* string) {
     printf(""CYAN"Null terminator added: Encoded ASCII: %s\n" RESET, short_to_binary_string(encoded_char));
     */
 
-    free(string_arguments);
+    if (string_arguments != NULL) {
+        free(string_arguments);
+        string_arguments = NULL;
+    }
+    if (string_without_spaces != NULL) {
+        free(string_without_spaces);
+        string_without_spaces = NULL;
+    }
 }
+
 
 void encode_opcode(char *opcode_name, char *source_operand, char *dest_operand, int source_addressing_method, int dest_addressing_method) {
     short general_encoded_word; short source_encoded_word = 0; short dest_encoded_word = 0; int found_reg = 0;

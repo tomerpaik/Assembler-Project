@@ -31,7 +31,7 @@ int is_in_table(hash_table table, char* key) {
 }
 
 void print_table(hash_table table) {
-    int i = 0;
+    int i;
     for (i = 0; i < TABLE_SIZE; i++) {
         if (table[i] != NULL) {
             Node current = table[i];
