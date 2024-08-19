@@ -1,6 +1,5 @@
-#include "errors_handle.h"
-
-#include "finish_encode.h"
+#include "../Headers/errors_handle.h"
+#include <stdio.h>
 
 
 project_errors errors[] = {

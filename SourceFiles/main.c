@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../Headers/main.h"
 
 /**
  * This is the main function that processes the input files.

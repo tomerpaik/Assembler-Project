@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include "lexer.h"
-#include "globals.h"
-#include "errors_handle.h"
-#include "general_functions.h"
+#include "../Headers/lexer.h"
 
 /* Define the opcodes */
 op_code OPCODES[] = {                         /*0  1  2  3  N*/                  /*0  1  2  3  N*/

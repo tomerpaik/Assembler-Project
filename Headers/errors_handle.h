@@ -1,9 +1,6 @@
 #ifndef LABRATORY_C_FINAL_PROJECT_ERRORS_H
 #define LABRATORY_C_FINAL_PROJECT_ERRORS_H
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "colors.h"
+#include  "../Headers/colors.h"
 
 enum  project_error {
      GENERIC_NO_E,

@@ -1,8 +1,8 @@
 #ifndef MACRO_TABLE_H
 #define MACRO_TABLE_H
-#include "general_functions.h"
 #define MAX_MACRO_NAME_LENGTH 32
 #define MAX_MACRO_BODY 100
+#include "globals.h"
 #include "linked_list.h"
 
 typedef Node hash_table[TABLE_SIZE];

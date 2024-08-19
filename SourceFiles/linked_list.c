@@ -1,10 +1,4 @@
-#include "linked_list.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-#include "general_functions.h"
-
+#include "../Headers/linked_list.h"
 
 Node create_node(char *key, void *value) {
     Node new;

@@ -1,4 +1,4 @@
-#include "second_pass.h"
+#include "../Headers/second_pass.h"
 int second_pass(char * am_path, hash_table symbol_table) {
     FILE * am_file;
     char line[MAX_LINE_LENGTH], first_word[MAX_LINE_LENGTH]; char * symbol_name = 0;
@@ -17,13 +17,23 @@ int second_pass(char * am_path, hash_table symbol_table) {
 
             offset += after_label_offset;
         }
-        if(strcmp(first_word, ".data") == 0 || strcmp(first_word, ".string") == 0 || strcmp(first_word, ".extern") == 0) {
+        if(strcmp(first_word, ".data") == 0 || strcmp(first_word, ".string") == 0) {
             continue;
         }
+        if ((strcmp(first_word, ".extern") == 0) && !creat_ext) {
+            open_new_file(am_path, ".ext", "w");
+            creat_ext = 1;
+            continue;
+        }
+
         if(strcmp(first_word, ".entry") == 0) {
-            create_ent = 1;
+            if (!create_ent) {
+                open_new_file(am_path, ".ent", "w");
+                create_ent = 1;
+            }
             symbol_name = str_without_spaces(line + offset);
             if(is_in_table(symbol_table, symbol_name)) {
+                append_to_ext_ent_file(am_path, ".ent", symbol_name, get_symbol_count(symbol_table, symbol_name));
                 if (get_symbol_flag(symbol_table, symbol_name) == DATA_FLAG) {
                     update_symbol_flag(symbol_table, symbol_name, ENTRY_FLAG_DATA);
                     continue;
@@ -40,15 +50,13 @@ int second_pass(char * am_path, hash_table symbol_table) {
             }
         } else {
             /*finish encoding*/
-            if ((current_error = handle_operand_symbol(line+offset, symbol_table)) != Error_Success) {
+            if ((current_error = handle_operand_symbol(line+offset, symbol_table, am_path)) != Error_Success) {
                 error_found = 1;
                 print_error(current_error, line_num, am_path);
             }
         }
     }
     create_object_file(am_path);
-
-    /*create output files:*/
 
 
     if (symbol_name != 0) {

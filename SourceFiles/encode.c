@@ -1,5 +1,4 @@
-#include "encode.h"
-
+#include "../Headers/encode.h"
 
 void encode_data(char* data_arguments) {
     short data_encoded = 0;

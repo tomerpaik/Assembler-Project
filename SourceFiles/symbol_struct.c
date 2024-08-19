@@ -1,4 +1,4 @@
-#include "symbol_struct.h"
+#include "../Headers/symbol_struct.h"
 
 enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, hash_table symbol_table) {
     Symbol new_symbol;

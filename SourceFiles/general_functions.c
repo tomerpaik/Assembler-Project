@@ -1,6 +1,4 @@
-#include "general_functions.h"
-#include "errors_handle.h"
-
+#include "../Headers/general_functions.h"
 
 void cleanup() {
     /*TODO: func that frees all alocated vars (shoud get malloc list)*/

@@ -1,5 +1,9 @@
 #ifndef LINKED_LISTS_H
 #define LINKED_LISTS_H
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include "general_functions.h"
 
 struct Node {
     char *key; /* Line identifier */

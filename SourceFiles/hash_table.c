@@ -1,7 +1,5 @@
-#include "hash_table.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include "../Headers/hash_table.h"
+
 
 unsigned int hash(const char* key) {
     unsigned long hash = 5381;

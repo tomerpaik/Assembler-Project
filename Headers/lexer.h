@@ -1,5 +1,10 @@
 #ifndef C_PROJECT_LEXER_H
 #define C_PROJECT_LEXER_H
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include "globals.h"
+#include "general_functions.h"
 
 /* Represents an operation code with its associated opcode and argument count */
 typedef struct op_code {

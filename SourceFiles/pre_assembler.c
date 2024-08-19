@@ -1,7 +1,4 @@
-#include "pre_assembler.h"
-
-#include "first_pass.h"
-
+#include "../Headers/pre_assembler.h"
 int pre_assembler(char * file_name, hash_table macro_table) {
     FILE *as_file , *am_file;
     /*error handleing trouble opening the file*/

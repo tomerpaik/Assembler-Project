@@ -1,8 +1,9 @@
 #ifndef ENCODE_H
 #define ENCODE_H
-#include "globals.h"
+#include <stdlib.h>
+#include <string.h>
+#include "general_functions.h"
 #include "first_pass.h"
-
 void encode_data(char* data_arguments);
 void encode_string(char* string_argument);
 /**

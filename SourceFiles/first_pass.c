@@ -1,4 +1,7 @@
-#include "first_pass.h"
+#include "../Headers/first_pass.h"
+
+#include <stdio.h>
+#include <string.h>
 int DC = 0;
 int IC = 0;
 

@@ -1,15 +1,7 @@
 FLAGS := gcc -ansi -pedantic -Wall -g
 OFLAGS = -c -o $@
-CFILES := $(wildcard ./*.c)
-OFILES := $(patsubst %.c, %.o, $(CFILES))
-
-all: $(OFILES)
-	$(FLAGS) $^ -o assembler
-
-%.o: %.c %.h
-	$(FLAGS) $< $(OFLAGS)
-
-.PHONEY: clean val
+CFILES := $(wildcard SourceFiles/*.c)
+OFILES := $(patsubst SourceFiles/%.c, %.o, $(CFILES))
 
 # Detect OS
 ifeq ($(OS),Windows_NT)
@@ -20,12 +12,17 @@ else
     DEL := rm -f
 endif
 
-clean:
-	$(DEL) *.o
+# Targets
+all: $(OFILES)
+	$(FLAGS) $^ -o assembler
 
-# Debug using gdb
-debug: $(EXEC)
-	gdb $(EXEC)
+%.o: SourceFiles/%.c Headers/%.h
+	$(FLAGS) $< $(OFLAGS)
+
+.PHONY: clean val
+
+clean:
+	$(DEL) *.o assembler
 
 val:
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler test
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler file1

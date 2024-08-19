@@ -2,7 +2,6 @@
 #define MACRO_DEFINER_H
 #include "hash_table.h"
 #include "general_functions.h"
-#include "globals.h"
 #include "lexer.h"
 
 /* Function to combine two strings */
