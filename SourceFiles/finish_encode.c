@@ -9,10 +9,9 @@ void encode_symbol(hash_table symbol_table, char *symbol_name, int symbol_adress
     short encoded_symbol_address;
 
     encoded_symbol_address = (get_symbol_count(symbol_table, symbol_name)+ symbol_adress + 100) << 3;
-
     if (get_symbol_flag(symbol_table, symbol_name) == EXTERN_FLAG) {
-        append_to_ext_ent_file(file_name, ".ext", symbol_name, IC+100);
         encoded_word = EXTERNAL;
+        append_to_ext_ent_file(file_name, ".ext", symbol_name, IC+100);
     }else {
         encoded_word = encoded_symbol_address | RELOCATABLE;
     }
@@ -44,8 +43,11 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
         dest_operand = source_operand;
 
     }
+    printf(""GREEN"SRC METHOD %d\n", decoded.source_addressing);
     /* Skip the first word */
+
     IC++;
+
 
     if ((decoded.source_addressing == 2 || decoded.source_addressing == 3) &&
         (decoded.dest_addressing == 2 || decoded.dest_addressing ==3)){/*Double Register Line*/
@@ -63,6 +65,7 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
             /*printf(""ORANGE"Encoded source operand: %s\n"RESET"", source_operand);*/
         } else if(decoded.source_addressing != 4) {
             IC++;
+            printf("operands: %s", operands);
         }
 
         /* Handle destination operand */
@@ -74,6 +77,7 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
             /*printf(""ORANGE"Encoded destination operand: %s\n"RESET, dest_operand);*/
         } else if(decoded.dest_addressing !=4){ /*dont skip a non method operand*/
             IC++;
+            printf("operands: %s", operands);
         }
     }
     /* Free memory if allocated */

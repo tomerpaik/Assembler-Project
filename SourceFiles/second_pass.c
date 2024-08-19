@@ -12,21 +12,23 @@ int second_pass(char * am_path, hash_table symbol_table) {
         if (is_comment_empty_line(line)) continue; /*IF line is a comment or a empty sentence SKIP to the next line*/
         sscanf(line, "%s%n", first_word, &offset);
 
-        if (first_word[strlen(first_word) - 1] == ':') {
+        if (first_word[strlen(first_word) - 1] == ':') { /*found symbol*/
             sscanf(line + offset, "%s%n", first_word, &after_label_offset);
 
             offset += after_label_offset;
         }
-        if(strcmp(first_word, ".data") == 0 || strcmp(first_word, ".string") == 0) {
-            continue;
-        }
+
         if ((strcmp(first_word, ".extern") == 0) && !creat_ext) {
             open_new_file(am_path, ".ext", "w");
             creat_ext = 1;
+            printf("SKIPING EXTERNNNNNN\n");
+            continue;
+        }
+        if(strcmp(first_word, ".data") == 0 || strcmp(first_word, ".string") == 0 || (strcmp(first_word, ".extern") == 0)) {
             continue;
         }
 
-        if(strcmp(first_word, ".entry") == 0) {
+        if(strcmp(first_word, ".entry") == 0) { /*found .entry instruction*/
             if (!create_ent) {
                 open_new_file(am_path, ".ent", "w");
                 create_ent = 1;
@@ -43,10 +45,12 @@ int second_pass(char * am_path, hash_table symbol_table) {
                 }else { /*extern*/
                     error_found = 1;
                     print_error(firstPassError_extern_entry_in_same_file, line_num, am_path);
+                    continue;
                 }
             } else {
                 error_found = 1;
                 print_error(SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT, line_num, am_path);
+                continue;
             }
         } else {
             /*finish encoding*/
@@ -64,8 +68,6 @@ int second_pass(char * am_path, hash_table symbol_table) {
     }
     return error_found;
 }
-
-
 
 void update_symbol_table_values(hash_table symbol_table) {
     int i;
