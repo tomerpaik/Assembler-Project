@@ -17,7 +17,7 @@ typedef struct {
 } DecodedWord;
 
 /* Function declarations */
-void encode_symbol(hash_table symbol_table, char *symbol_name);
+void encode_symbol(hash_table symbol_table, char *symbol_name, int symbol_adress);
 DecodedWord decode_opcode_first_word(short encoded_word);
 short reverse_convert_addressing_mode(short mode);
 /* Include other necessary declarations if needed */

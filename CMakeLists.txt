@@ -35,4 +35,6 @@ add_executable(assembler pre_assembler.c
         validation.h
         finish_encode.c
         finish_encode.h
+        symbol_struct.c
+        symbol_struct.h
 )
