@@ -40,12 +40,10 @@ int main(int argc, char *argv[]) {
             /* Free allocated memory if any */
             continue;
         }
+
         printf(""GREEN""BOLD"********* Passed First Pass %s *********\n"RESET"", argv[argc]);
 
-        printf("\n"GREEN"********* CODE IMAGE : %s *********\n"RESET"", argv[argc]);
-        print_array(code_image, IC);
-        printf(""GREEN"********* DATA IMAGE : %s *********\n"RESET"", argv[argc]);
-        print_array(data_image, DC);
+        print_symbol_table(symbol_table);
 
         printf(""GREEN""BOLD"********* Start Second Pass %s *********\n"RESET"", argv[argc]);
 
@@ -55,6 +53,7 @@ int main(int argc, char *argv[]) {
             /* Free allocated memory if any */
             continue;
         }
+
         printf(""GREEN""BOLD"********* Passed Second Pass %s *********\n"RESET"", argv[argc]);
 
         printf("\n"GREEN"********* CODE IMAGE : %s *********\n"RESET"", argv[argc]);
@@ -63,7 +62,6 @@ int main(int argc, char *argv[]) {
         print_array(data_image, DC);
 
         print_symbol_table(symbol_table);
-
 
         /* Free allocated memory if any */
         free_table(macro_table);

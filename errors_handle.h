@@ -71,7 +71,8 @@ enum  project_error {
      firstPassError_command_code_number_oor,
 
      SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST,
-     SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT
+     SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT,
+     SECOND_PASS_ERROR_OPCODE_SYMBOL
 
 };
 typedef struct {
