@@ -20,9 +20,8 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
         symbol_flag = 0;
         offset = 0;
         sscanf(line, "%s%n", first_word, &offset);
-        /*
-        printf("line: %d, first word: %s\n", line_num, first_word);
-        */
+        /*printf("line: %d, first word: %s", line_num, first_word);
+        printf(""CYAN" error found: %d\n"RESET"", error_found);*/
         /*check if word is a symbol*/
         if (first_word[strlen(first_word) - 1] == ':') {
             first_word_copy = my_strdup(first_word);
@@ -96,7 +95,6 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
         substring_symbol_copy = NULL;
     }
     return error_found;
-
 }
 
 
@@ -108,7 +106,7 @@ enum project_error add_symbol(char* symbol_name, enum symbol_flag type_flag, has
     if ((is_in_table(symbol_table, symbol_name) && new_symbol->count == 0)) return firstPassError_symbol_name_taken;
 
     if (type_flag == DATA_FLAG) {
-        new_symbol->count = DC;
+        new_symbol->count = DC+IC+100;
     }
     if (type_flag == OPCODE_FLAG) {
         new_symbol->count = IC+100;
