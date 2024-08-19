@@ -28,11 +28,6 @@
 #define WORD_LEN 12
 
 #define ARE_BITS 2
-
-#define RELOCATABLE_VALUE 2
-
-#define EXTERNAL_VALUE 1
-
 #define INSTRUCTIONS_COUNT 4
 
 #define ABSOLUTE 4

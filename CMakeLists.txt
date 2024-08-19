@@ -33,4 +33,6 @@ add_executable(assembler pre_assembler.c
         encode.h
         validation.c
         validation.h
+        finish_encode.c
+        finish_encode.h
 )

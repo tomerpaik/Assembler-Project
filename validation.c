@@ -94,7 +94,10 @@ int handel_entry_extern(EntryExternContent context, hash_table symbol_table, has
         if (strcmp(context->first_word, ".extern") == 0) {
             print_error_custom_message(firstPassError_extern_symbol_exists, context->line_num, context->am_path, context->first_word);
         }
-        return 0;
+        if (strcmp(context->first_word, ".extern") == 0) {
+            print_error(firstPassError_extern_symbol_in_file, context->line_num, context->am_path);
+            return 0;
+        }
     }
 
     if (strcmp(context->first_word, ".extern") == 0) {
@@ -172,6 +175,7 @@ enum project_error handel_opcode(char *opcode_operands, char* opcode_name, hash_
     }
 
     encode_opcode(opcode_name, source_operand, dest_operand, source_addressing_method, dest_addressing_method);
+
     if (source_operand != NULL && source_operand != opcode_operands) {
         free(source_operand);
     }

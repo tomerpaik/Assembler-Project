@@ -69,6 +69,7 @@ void encode_opcode(char *opcode_name, char *source_operand, char *dest_operand, 
     /* Encode and append the first word of the opcode */
     general_encoded_word = encode_opcode_first_word(opcode_name, source_addressing_method, dest_addressing_method);
     append_to_code_image(general_encoded_word | ABSOLUTE);
+    IC++;
 
     /*printf(""YELLOW"source_operand: %s\n"RESET"", source_operand);
     printf(""YELLOW"dest_operand: %s\n"RESET"", dest_operand);
@@ -96,39 +97,38 @@ void encode_opcode(char *opcode_name, char *source_operand, char *dest_operand, 
                 printf("Error: Invalid source addressing method\n");
                 return;
         }
-        IC++;
         append_to_code_image(source_encoded_word | ABSOLUTE);
+        IC++;
+
     }
 
     /* Handle destination operand encoding */
     if (dest_addressing_method != 4) {
-        if (!found_reg || !(dest_addressing_method == 2 || dest_addressing_method == 3)) {
+        if (found_reg && (dest_addressing_method == 2 || dest_addressing_method == 3)) {
+            dest_encoded_word = encode_opcode_double_register(source_operand, dest_operand, source_addressing_method,dest_addressing_method);
+            append_to_code_image(dest_encoded_word | ABSOLUTE);
+        } else {
             switch (dest_addressing_method) {
                 case 0: /* Immediate addressing */
                     dest_encoded_word = atoi(dest_operand + 1) << 3;
-                    break;
+                break;
                 case 1: /* Direct addressing */
                     dest_encoded_word = 0; /* Handle with appropriate label later */
-                    break;
+                break;
                 case 2: /* Register direct addressing */
                     dest_encoded_word = encode_opcode_register(dest_operand + 1, 0);
-                    break;
+                break;
                 case 3: /* Register indirect addressing */
                     dest_encoded_word = encode_opcode_register(dest_operand, 0); /* Skip the (*) symbol */
-                    break;
+                break;
                 default:
                     printf("Error: Invalid destination addressing method\n");
-                    return;
+                return;
             }
+            append_to_code_image(dest_encoded_word | ABSOLUTE);
             IC++;
-            append_to_code_image(dest_encoded_word | ABSOLUTE);
-        } else {
-            IC--; /* Adjust IC if double register addressing */
-            dest_encoded_word = encode_opcode_double_register(source_operand, dest_operand, source_addressing_method,dest_addressing_method);
-            append_to_code_image(dest_encoded_word | ABSOLUTE);
         }
     }
-    IC++;
 }
 
 short encode_opcode_first_word(char * opcode_name, int source_addressing, int dest_addressing) {

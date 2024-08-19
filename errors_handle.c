@@ -1,5 +1,7 @@
 #include "errors_handle.h"
 
+#include "finish_encode.h"
+
 
 project_errors errors[] = {
     {GENERIC_NO_E,  "No Error"},
@@ -46,6 +48,7 @@ project_errors errors[] = {
     {firstPassError_extern_entry_without_symbol, "No Symbol Name Was Found After "},
     {firstPassError_extern_symbol_exists, "trying to handel extern - the symbol is already defined in the file"},
     {firstPassError_extern_exists, "this symbol was already declared as extern"},
+    {firstPassError_extern_symbol_in_file, "extern symbol is declered in the file"},
 
     /*commands errors*/
     {firstPassError_command_not_found, "invalid command"},
@@ -56,7 +59,10 @@ project_errors errors[] = {
     { firstPassError_command_expected_operand, "opcode should get operands"},
     { firstPassError_command_invalid_operand, "opcode should get operands"},
     { firstPassError_command_code_image_oor, "IC is out of MAX computer range"},
-    { firstPassError_command_code_number_oor, "Immidiate addressing method number is out of range"}
+    { firstPassError_command_code_number_oor, "Immidiate addressing method number is out of range"},
+
+    { SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST, "After Defining all the Symboles in the first pass it is not exist in the file"},
+    { SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT, ".Entry Symbol Is not defined in the file"}
 
 };
 

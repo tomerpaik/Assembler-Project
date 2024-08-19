@@ -56,6 +56,7 @@ enum  project_error {
     firstPassError_extern_entry_without_symbol,
     firstPassError_extern_symbol_exists,  /* the label is already defined in the file */
     firstPassError_extern_exists, /* this label was already declared as extern (warning) */
+    firstPassError_extern_symbol_in_file,
     /* .entry errors */
 
     /* command errors */
@@ -67,7 +68,10 @@ enum  project_error {
      firstPassError_command_expected_operand,
      firstPassError_command_invalid_operand,
      firstPassError_command_code_image_oor,
-     firstPassError_command_code_number_oor
+     firstPassError_command_code_number_oor,
+
+     SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST,
+     SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT
 
 };
 typedef struct {
