@@ -8,6 +8,7 @@ void encode_symbol(hash_table symbol_table, char *symbol_name, int symbol_adress
     short encoded_word;
     short encoded_symbol_address;
 
+    /* Calculate the symbol's address in memory, shifted and adjusted */
     encoded_symbol_address = (get_symbol_count(symbol_table, symbol_name)+ symbol_adress + 100) << 3;
     if (get_symbol_flag(symbol_table, symbol_name) == EXTERN_FLAG) {
         encoded_word = EXTERNAL;
@@ -46,7 +47,7 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
 
     IC++;
 
-
+    /*Check if both operands are registers for double register encoding*/
     if ((decoded.source_addressing == 2 || decoded.source_addressing == 3) &&
         (decoded.dest_addressing == 2 || decoded.dest_addressing ==3)){/*Double Register Line*/
         double_reg = 1;
@@ -83,9 +84,7 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
 
 DecodedWord decode_opcode_first_word(short encoded_word) {
     DecodedWord decoded;
-    /*
-    printf(""CYAN"FIRST WORD: %s\n"RESET"", short_to_binary_string(encoded_word));
-    */
+    /*Extract opcode and addressing modes from the encoded word*/
     decoded.opcode = (encoded_word >> 11) & 0xF;   /* Extract the opcode (bits 12-15, 4 bits) */
     decoded.source_addressing = reverse_convert_addressing_mode((encoded_word >> 7) & 0xF);   /* Extract the source addressing mode (bits 8-11, 4 bits) */
     decoded.dest_addressing = reverse_convert_addressing_mode((encoded_word >> 3) & 0xF);     /* Extract the destination addressing mode (bits 4-7, 4 bits) */

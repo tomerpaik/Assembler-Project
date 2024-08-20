@@ -13,7 +13,7 @@
 /* Maximum length of a label in command line  */
 #define MAX_LABEL_LENGTH 31
 
-/* Maximum length of a single command line  */
+#define MAX_MACRO_NAME_LENGTH 31
 
 /* Default IC value */
 #define IC_INIT_VALUE 100

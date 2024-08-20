@@ -70,11 +70,6 @@ void encode_opcode(char *opcode_name, char *source_operand, char *dest_operand, 
     append_to_code_image(general_encoded_word | ABSOLUTE);
     IC++;
 
-    /*printf(""YELLOW"source_operand: %s\n"RESET"", source_operand);
-    printf(""YELLOW"dest_operand: %s\n"RESET"", dest_operand);
-    printf(""YELLOW"source_addressing_method: %d\n"RESET"", source_addressing_method);
-    printf(""YELLOW"dest_addressing_method: %d\n"RESET"", dest_addressing_method);*/
-
     /* Handle source operand encoding */
     if (source_addressing_method != 4) {
         switch (source_addressing_method) {
@@ -186,7 +181,6 @@ short encode_opcode_double_register(char * source_reg, char * dest_reg, int sour
     encoded_word = source_register_number << 5 | dest_register_number << 2;
     return encoded_word;
 }
-
 /**
  * Converts an addressing mode to its binary representation.
  * @param mode: The addressing mode (0, 1, 2, or 3).
@@ -196,8 +190,6 @@ short convert_addressing_mode(int mode) {
     return (1 << mode);
 }
 
-
-
 int append_to_data_image(short encoded_value) {
     if (IC + DC >= MAX_MEMORY_SPACE-100) {
         return -1;
@@ -205,7 +197,6 @@ int append_to_data_image(short encoded_value) {
     data_image[DC] = encoded_value;
     return 0;
 }
-
 
 int append_to_code_image(short encoded_value) {
     if (IC + DC >= MAX_MEMORY_SPACE-100) {

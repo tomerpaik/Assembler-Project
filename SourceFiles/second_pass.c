@@ -17,12 +17,13 @@ int second_pass(char * am_path, hash_table symbol_table) {
 
             offset += after_label_offset;
         }
-
+        /*Create .ext file if .extern is found and file is not created yet*/
         if ((strcmp(first_word, ".extern") == 0) && !creat_ext) {
             open_new_file(am_path, ".ext", "w");
             creat_ext = 1;
             continue;
         }
+        /*Skip data and extern instructions as they are handled in the first pass*/
         if(strcmp(first_word, ".data") == 0 || strcmp(first_word, ".string") == 0 || (strcmp(first_word, ".extern") == 0)) {
             continue;
         }
@@ -61,7 +62,6 @@ int second_pass(char * am_path, hash_table symbol_table) {
     }
     create_object_file(am_path);
 
-
     if (symbol_name != 0) {
         free(symbol_name);
     }
@@ -78,11 +78,10 @@ void update_symbol_table_values(hash_table symbol_table) {
 
         while (current != NULL) {
             sym = (Symbol)current->value;
-
+            /*Update the count for data symbols after the first pass*/
             if (get_symbol_flag(symbol_table, current->key) == DATA_FLAG || get_symbol_flag(symbol_table, current->key) == ENTRY_FLAG_DATA) {
                 sym->count += IC + 100;
             }
-
             current = current->next; /* Move to the next node */
         }
     }
@@ -96,15 +95,17 @@ void create_object_file(char * file_name) {
         printf("Failed to open the file.\n");
         return;
     }
+    /*Write IC and DC values at the top of the file*/
     fprintf(file, "   %d %d\n", IC, DC);
+    /*Write the code image to the object file*/
     for (i = 0; i < IC; i++) {
         positive_value = code_image[i] & 0x7FFF;
         fprintf(file, "%04d %05o\n", i+100, positive_value);
     }
+    /*Write the data image to the object file*/
     for (i = 0; i < DC; i++) {
         positive_value = data_image[i] & 0x7FFF;
         fprintf(file, "%04d %05o\n", IC+i+100, positive_value);
     }
     fclose(file);
-
 }

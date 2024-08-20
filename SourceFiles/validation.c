@@ -209,5 +209,3 @@ int find_addressing_method(char* operand) {
     }
     return 1; /* Direct addressing method (symbol) */
 }
-
-
