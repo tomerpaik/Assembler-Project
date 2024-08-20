@@ -21,7 +21,6 @@ int second_pass(char * am_path, hash_table symbol_table) {
         if ((strcmp(first_word, ".extern") == 0) && !creat_ext) {
             open_new_file(am_path, ".ext", "w");
             creat_ext = 1;
-            printf("SKIPING EXTERNNNNNN\n");
             continue;
         }
         if(strcmp(first_word, ".data") == 0 || strcmp(first_word, ".string") == 0 || (strcmp(first_word, ".extern") == 0)) {
@@ -73,8 +72,6 @@ void update_symbol_table_values(hash_table symbol_table) {
     int i;
     Node current;
     Symbol sym;
-    printf("UPDATING DATA VALUES\n");
-
 
     for (i = 0; i < TABLE_SIZE; i++) {
         current = symbol_table[i];
