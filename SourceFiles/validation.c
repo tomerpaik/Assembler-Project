@@ -61,7 +61,6 @@ enum project_error valid_string(char *string) {
     }
 
     free(string_without_spaces);
-    free(end_quote);
     return Error_Success;
 }
 
@@ -176,10 +175,10 @@ enum project_error handel_opcode(char *opcode_operands, char* opcode_name, hash_
 
     encode_opcode(opcode_name, source_operand, dest_operand, source_addressing_method, dest_addressing_method);
 
-    if (source_operand != NULL && source_operand != opcode_operands) {
+    if (strcmp(source_operand, "NULL") != 0 && source_operand != opcode_operands) {
         free(source_operand);
     }
-    if (dest_operand != NULL && dest_operand != opcode_operands) {
+    if (strcmp(dest_operand, "NULL") != 0 && dest_operand != opcode_operands) {
         free(dest_operand);
     }
     return Error_Success;

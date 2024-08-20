@@ -15,7 +15,6 @@ void encode_symbol(hash_table symbol_table, char *symbol_name, int symbol_adress
     }else {
         encoded_word = encoded_symbol_address | RELOCATABLE;
     }
-    printf(""BLUE"ENCODED SYMBOL TO THE ARRAY: %s\n"RESET"", short_to_binary_string(encoded_word));
     append_to_code_image(encoded_word); /* without i++ in order to override current 0000... default value */
     IC++;
 }
@@ -43,7 +42,6 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
         dest_operand = source_operand;
 
     }
-    printf(""GREEN"SRC METHOD %d\n", decoded.source_addressing);
     /* Skip the first word */
 
     IC++;
@@ -65,7 +63,6 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
             /*printf(""ORANGE"Encoded source operand: %s\n"RESET"", source_operand);*/
         } else if(decoded.source_addressing != 4) {
             IC++;
-            printf("operands: %s", operands);
         }
 
         /* Handle destination operand */
@@ -77,16 +74,9 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
             /*printf(""ORANGE"Encoded destination operand: %s\n"RESET, dest_operand);*/
         } else if(decoded.dest_addressing !=4){ /*dont skip a non method operand*/
             IC++;
-            printf("operands: %s", operands);
         }
     }
     /* Free memory if allocated */
-    if (strcmp(dest_operand, "NULL") != 0) {
-        free(dest_operand);
-    }
-    if (strcmp(source_operand, "NULL") != 0) {
-        free(source_operand);
-    }
     return Error_Success;
 }
 
