@@ -1,9 +1,5 @@
 #include "../Headers/general_functions.h"
 
-void cleanup() {
-    /*TODO: func that frees all alocated vars (shoud get malloc list)*/
-}
-
 void *handel_malloc(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
@@ -74,9 +70,7 @@ int line_length_valid(char* line) {
     int is_valid = 1;
     if(strlen(line) > MAX_LINE_LENGTH) {
         is_valid = 0;
-
     }
-
     return is_valid;
 }
 
@@ -90,7 +84,7 @@ int is_empty_after_key(const char *str) {
     return 0;
 }
 
-/** Converts an integer to a 15-bit binary representation using a 16-bit short */
+/* Converts an integer to a 15-bit binary representation using a 16-bit short */
 short convert_to_15bit_binary(int number) {
     if (number >= (1 << 14) || number < -(1 << 14)) {
         return 0;
@@ -98,7 +92,7 @@ short convert_to_15bit_binary(int number) {
     return (short)number;
 }
 
-/** Converts a 16-bit short to a binary string representation */
+/* Converts a 16-bit short to a binary string representation */
 char* short_to_binary_string(short value) {
     int i;
     char* binary_str = (char*)handel_malloc(17);
@@ -106,6 +100,5 @@ char* short_to_binary_string(short value) {
     for (i = 15; i >= 0; i--) {
         binary_str[15 - i] = (value & (1 << i)) ? '1' : '0';
     }
-
     return binary_str;
 }

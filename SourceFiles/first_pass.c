@@ -95,6 +95,3 @@ int first_pass(char * am_path, hash_table macro_table, hash_table symbol_table) 
     }
     return error_found;
 }
-
-
-
