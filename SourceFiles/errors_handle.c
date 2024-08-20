@@ -74,15 +74,12 @@ project_errors errors[] = {
 void print_error(enum project_error code, int srcline, char srcfile[]) {
     printf(""RED"Error in %s, line: %d says: ---[%s]---\n"RESET"", srcfile, srcline, errors[code].message);
 }
-
 void print_warning(enum project_error code, int srcline, char srcfile[]) {
     printf(""YELLOW"Warning in %s, line: %d says: ---[%s]---\n"RESET"", srcfile, srcline, errors[code].message);
 }
-
 void print_generic_error(enum project_error code) {
     printf("GENERIC %s\n", errors[code].message);
 }
-
 void print_error_custom_message(enum project_error code, int srcline, char srcfile[], char* additional_msg) {
     printf(""RED"Error in %s, line: %d says: ---[%s: %s]---\n"RESET"", srcfile, srcline, errors[code].message, additional_msg);
 }

@@ -25,4 +25,4 @@ clean:
 	$(DEL) *.o assembler
 
 val:
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler test
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler t1

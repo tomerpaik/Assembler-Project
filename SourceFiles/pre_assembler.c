@@ -27,10 +27,10 @@ int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_ta
     while (fgets(line, MAX_LINE_LENGTH, inputFile)) {
         line_num++;
         if(!line_length_valid(line)) {
-            print_warning(GENERIC_LINE_OOR, line_num, file_name);
+            print_error(GENERIC_LINE_OOR, line_num, file_name);
+            error_found  = 1;
             continue;
         }
-        /*TODO: if no word was found sscanf will return 0 we wiil continue to the next line*/
         sscanf(line, "%s%n", word, &offset);
         if(is_empty_line(line)) memset(word, 0, MAX_LINE_LENGTH); /*RESET WORD if it is an empty line beacause using empty line in a sscanf does not modify the word */
         if (!strcmp(word, MACRO_START)){

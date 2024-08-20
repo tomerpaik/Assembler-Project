@@ -72,7 +72,7 @@ void * my_strdup(const char* src) {
 
 int line_length_valid(char* line) {
     int is_valid = 1;
-    if(strlen(line) > MAX_LINE_LENGTH) {
+    if(strlen(line) >= MAX_LINE_LENGTH-1) {
         is_valid = 0;
 
     }
