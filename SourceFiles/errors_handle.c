@@ -66,7 +66,6 @@ project_errors errors[] = {
 
 };
 
-
 /*
  * prints error message
  * takes message to display, line of error, and file the error was found in

@@ -77,17 +77,6 @@ int register_num(char *str) {
     }
     return -1; /* Return -1 if the string does not match any known registers */
 }
-/*gets the first word in the line*/
-int get_first_word(char * line, char * first_word) {
-    /* Allocate enough space for the first word */
-    int offset = 0;
-    sscanf(line, "%s%n", first_word, &offset);
-    return offset;
-}
-
-int is_comment(char * line) {
-    return 0;
-}
 
 char* substring(char *source, int start, int end) {
     int length = strlen(source);
@@ -108,10 +97,6 @@ char* substring(char *source, int start, int end) {
 
     substr[i] = '\0';
     return substr;
-}
-
-int is_valid_ascci(char c) {
-    return (c >= 32 && c <= 126);
 }
 
 /**
@@ -147,21 +132,3 @@ int is_comment_empty_line(char * line) {
     }
     return 0;
 }
-
-/**
- * Function to find a character in a string.
- * @param str The string to search within.
- * @param ch The character to search for.
- * @return 1 if the character is found, 0 if not found.
- */
-/* Function to find if an integer exists in an array */
-int find_int_in_array(int *array, int length, int value) {
-    int i;
-    for (i = 0; i < length; i++) {
-        if (array[i] == value) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
