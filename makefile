@@ -25,5 +25,5 @@ clean:
 	$(DEL) *.o assembler
 
 val:
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler full_valid_test invalid_macro_tester
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all ./assembler full_valid_test
 

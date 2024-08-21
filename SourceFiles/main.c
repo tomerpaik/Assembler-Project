@@ -1,12 +1,24 @@
 #include "../Headers/main.h"
 
-/**
- * This is the main function that processes the input files.
+/***************************************************
+ * Project: FINAL - ASSEMBLER
+ * Authors: ROY KAGAN ID: 327077988, TOMER PAIKOWSKEY ID: 329816060
+ * Course: LABORATORY "MAABADA" 20465, Fall Semester: 2024b
+ * University: OPEN UNIVERSITY
  *
- * @param argc The number of command-line arguments.
- * @param argv An array of strings containing the command-line arguments.
- * @return Returns 0 on successful completion.
- */
+ *        INPUT: .AS FILE -->
+ * PRE-ASSEMBLER: EXPANDS MACROS --> .AM FILE
+ * FIRST PASS: VALIDATES INPUT CONTENT AND PERFORMS INITIAL ENCODING FOR DATA, FIRST COMMAND WORD
+ * SECOND PASS: COMPLETES ENCODING (RESOLVES SYMBOLS USED AS COMMAND OPERANDS)
+ *              --> OUTPUT: .ENT FILE, .EXT FILE, .OB FILE
+ *
+ * Additional Instructions:
+ * Valid test cases are included in the folder `final_tests_valid`.
+ * These files demonstrate the assembler's capabilities and can be run for validation.
+ *
+ * Thank you very much, Roni. It was a great experience
+ ***************************************************/
+
 
 int main(int argc, char *argv[]) {
     char *am_path;

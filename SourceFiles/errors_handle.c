@@ -63,6 +63,7 @@ project_errors errors[] = {
     { firstPassError_command_code_number_oor, "Immidiate addressing method number is out of range"},
     { firstPassError_command_command_arg, "opcode can get only 1 operands"},
     { firstPassError_command_expected_reg, "after (*) shoud be a register name"},
+    { firstPassError_command_expected_number, "after (#) shoud be a number"},
 
     { SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST, "After Defining all the Symboles in the first pass it is not exist in the file"},
     { SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT, ".Entry Symbol Is not defined in the file"},
