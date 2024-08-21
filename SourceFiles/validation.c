@@ -237,6 +237,8 @@ int find_addressing_method(char* operand) {
         }
         if (operand[i] == '\0') {
             return 0; /* Immediate addressing method */
+        }else {
+            print_generic_error(firstPassError_command_expected_number);
         }
     }
     if (operand[0] == '*') {

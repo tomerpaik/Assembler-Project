@@ -90,6 +90,7 @@ enum project_error {
     firstPassError_command_code_number_oor, /**< Immediate addressing method number is out of range */
     firstPassError_command_command_arg,
     firstPassError_command_expected_reg,
+    firstPassError_command_expected_number,
 
     SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST, /**< Symbol operand does not exist in the second pass */
     SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT, /**< .Entry Symbol is not defined in the file */

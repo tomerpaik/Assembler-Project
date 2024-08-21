@@ -62,9 +62,15 @@ int second_pass(char * am_path, hash_table symbol_table) {
     if (!error_found) {
         create_object_file(am_path);
     }
-    fclose(am_file);
-    fclose(ext_file);
-    fclose(ent_file);
+    if (am_file != NULL) {
+        fclose(am_file);
+    }
+    if (ext_file != NULL) {
+        fclose(ext_file);
+    }
+    if (ent_file != NULL) {
+        fclose(ent_file);
+    }
     return error_found;
 }
 
