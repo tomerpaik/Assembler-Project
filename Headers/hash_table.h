@@ -82,4 +82,4 @@ void print_table(hash_table table);
  */
 void free_table(hash_table table);
 
-#endif /* MACRO_TABLE_H */
+#endif

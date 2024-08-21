@@ -28,20 +28,6 @@ int is_in_table(hash_table table, char* key) {
     return 0;
 }
 
-void print_table(hash_table table) {
-    int i;
-    for (i = 0; i < TABLE_SIZE; i++) {
-        if (table[i] != NULL) {
-            Node current = table[i];
-            printf("Bucket %d:\n", i);
-            while (current != NULL) {
-                printf("  Key: %s, Value: %s\n", current->key, (char*)current->value);
-                current = current->next;
-            }
-        }
-    }
-}
-
 void update_table_value(hash_table table, char* key, char* new_value) {
     unsigned int index = hash(key);
     Node temp = table[index];

@@ -4,11 +4,6 @@ Node create_node(char *key, void *value) {
     Node new;
     new = (Node)handel_malloc(sizeof(struct Node));
 
-    if (new == NULL) {
-        fprintf(stderr, "Node Memory allocation failed\n");
-        exit(1);
-    }
-
     new->key = my_strdup(key);
     new->value = value;
     new->next = NULL;
@@ -49,18 +44,6 @@ Node get_next(Node const source) {
 }
 void set_next(Node const source, Node const next) {
     source->next = next;
-}
-
-void printList(Node const source) {
-    int i;
-    Node current = source->next; /*skeep the first */
-
-    i=1;
-    while (current != NULL) {
-        printf("Key: %s, Value: %d\n", current->key, (int)(get_value(current)));
-        current = current->next;
-        i++;
-    }
 }
 
 void freeList(Node root) {

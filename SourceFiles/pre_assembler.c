@@ -9,19 +9,21 @@ int pre_assembler(char * file_name, hash_table macro_table) {
     am_file = open_new_file(file_name, ".am", "w");
 
     if (process_macros(as_file, am_file, file_name, macro_table)) {
+        fclose(am_file);
+        fclose(as_file);
         return 1;
     }
-    /*DEBUG:print_macro_table(macro_table);*/
-    fclose(as_file);
+
     fclose(am_file);
+    fclose(as_file);
+    /*DEBUG:print_macro_table(macro_table);*/
+
     return 0;
 }
 int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_table macroTable){
     /*Initialize Varibals*/
     char line[MAX_LINE_LENGTH], word[MAX_LINE_LENGTH], macroName[MAX_MACRO_NAME_LENGTH], *helpful_empty_str = NULL;
-    int inMacroFlag = 0,  line_num = 0, total_body_length = 0, error_found = 0;
-    /*check macro*/
-    int macro_name_offset = 0, offset = 0;
+    int inMacroFlag = 0,  line_num = 0, total_body_length = 0, error_found = 0; int macro_name_offset = 0, offset = 0;
     helpful_empty_str = "-";
     /*running on the file */
     while (fgets(line, MAX_LINE_LENGTH, inputFile)) {
@@ -86,8 +88,6 @@ int process_macros(FILE * inputFile, FILE * outputFile,char * file_name, hash_ta
             fputs(line, outputFile);
         }
     }
-    fclose(inputFile);
-    fclose(outputFile);
     return !error_found;
 }
 int is_valid_macro_name(char *name, int line_num, char * file_name) {
@@ -109,10 +109,6 @@ int is_valid_macro_name(char *name, int line_num, char * file_name) {
 void add_to_macro_body(hash_table table, char *line, char *macroName, int *macro_len) {
     char *macro_val, *after_realloc_body;  int new_len;
     macro_val = (char*)search_table(table, macroName);
-    if (macro_val == NULL) {
-        printf("Error: Macro not found\n");
-        return;
-    }
 
     new_len = *macro_len + strlen(line) + 1;
     after_realloc_body = realloc(macro_val, new_len);
@@ -128,7 +124,6 @@ void add_to_macro_body(hash_table table, char *line, char *macroName, int *macro
 }
 
 void print_macro_table(hash_table table) {
-    /*TODO: sort the table?*/
     int i;
     Node current;
     printf("| %-11s | %-20s |\n", "Macro Name", "Body");

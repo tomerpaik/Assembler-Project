@@ -57,6 +57,7 @@ FILE * open_new_file(char *file_name, char *ending, char * mode) {
 void * my_strdup(const char* src) {
     char* dup;
     size_t len;
+    if (src == NULL) return NULL;
     /* Calculate the length of the source string, including the null terminator */
     len = strlen(src) + 1;
     /* Allocate memory for the duplicated string */
@@ -102,3 +103,5 @@ char* short_to_binary_string(short value) {
     }
     return binary_str;
 }
+
+void free2(char *ptr1, char *ptr2);

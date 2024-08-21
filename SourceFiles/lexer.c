@@ -2,11 +2,11 @@
 
 /* Define the opcodes */
 op_code OPCODES[] = {                         /*0  1  2  3  N*/                  /*0  1  2  3  N*/
-    {"mov",  2, {0, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
+    {"mov",  2, {1, 1, 1, 1, 0}, {0, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
     {"cmp",  2, {1, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 0,1,2,3 | destination: 0,1,2,3 */
-    {"add",  2, {0, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
-    {"sub",  2, {0, 1, 1, 1, 0}, {1, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
-    {"lea",  2, {0, 1, 1, 1, 0}, {0, 0, 0, 1, 0}},  /* source: 1,2,3  | destination: 1 */
+    {"add",  2, {1, 1, 1, 1, 0}, {0, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
+    {"sub",  2, {1, 1, 1, 1, 0}, {0, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 0,1,2,3 */
+    {"lea",  2, {0, 1, 0, 0, 0}, {0, 1, 1, 1, 0}},  /* source: 1,2,3  | destination: 1 */
     {"clr",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
     {"not",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */
     {"inc",  1, {0, 0, 0, 0, 1}, {0, 1, 1, 1, 0}},  /* no source operand | destination: 1,2,3 */

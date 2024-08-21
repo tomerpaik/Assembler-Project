@@ -52,6 +52,7 @@ enum project_error {
     firstPassError_symbol_name_taken, /**< A symbol with this name already exists */
     firstPassError_symbol_macro_name, /**< Can't define a symbol with the same name as a macro */
     firstPassError_symbol_invalid_length, /**< Symbol name is too long */
+    firstPassError_symbol_empty_line,
 
     /* .data-related errors */
     firstPassError_data_nan, /**< Arguments of a data instruction must be immediate numbers or constants */
@@ -83,9 +84,12 @@ enum project_error {
     firstPassError_command_invalid_dest_adress, /**< Destination operand addressing method is not available for opcode */
     firstPassError_command_no_operand_expected, /**< Opcode should not receive operands */
     firstPassError_command_expected_operand, /**< Opcode should receive operands */
+    firstPassError_command_expected_more_operand, /**< Opcode should receive operands */
     firstPassError_command_invalid_operand, /**< Opcode received invalid operands */
     firstPassError_command_code_image_oor, /**< IC is out of MAX computer range */
     firstPassError_command_code_number_oor, /**< Immediate addressing method number is out of range */
+    firstPassError_command_command_arg,
+    firstPassError_command_expected_reg,
 
     SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST, /**< Symbol operand does not exist in the second pass */
     SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT, /**< .Entry Symbol is not defined in the file */

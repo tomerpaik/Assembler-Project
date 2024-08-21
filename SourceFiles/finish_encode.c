@@ -20,31 +20,33 @@ void encode_symbol(hash_table symbol_table, char *symbol_name, int symbol_adress
     IC++;
 }
 
-enum project_error handle_operand_symbol(char *operands, hash_table symbol_table, char * file_name) {
+enum project_error handle_operand_symbol(char *operands, hash_table symbol_table, char *file_name) {
     DecodedWord decoded;
-    char* source_operand;
-    char* temp_dest;
+    char *source_operand = NULL;
+    char *temp_dest;
     int label_save = IC;
-    char* dest_operand = "NULL";
+    char *dest_operand = NULL;
     int double_reg = 0;
-
+    int free_source = 0;  /* Track if we need to free source_operand */
+    int free_dest = 0;    /* Track if we need to free dest_operand */
     /* Decode the first word in the code image */
     decoded = decode_opcode_first_word(code_image[IC]);
     /* Extract and process the operands */
     source_operand = strtok(operands, ",");
     if (source_operand != NULL) {
         source_operand = str_without_spaces(source_operand);
+        free_source = 1;  /* We should free this later */
         temp_dest = strtok(NULL, ",");
         if (temp_dest != NULL) {
             dest_operand = str_without_spaces(temp_dest);
+            free_dest = 1;  /* We should free this later */
         }
     }
     if (decoded.source_addressing == 4) {
         dest_operand = source_operand;
-
+        free_dest = 0;  /* Avoid freeing dest_operand as it's the same as source_operand */
     }
     /* Skip the first word */
-
     IC++;
 
     /*Check if both operands are registers for double register encoding*/
@@ -61,8 +63,7 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
                 return SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST;
             }
             encode_symbol(symbol_table, source_operand, label_save, file_name);
-            /*printf(""ORANGE"Encoded source operand: %s\n"RESET"", source_operand);*/
-        } else if(decoded.source_addressing != 4) {
+        } else if (decoded.source_addressing != 4) {
             IC++;
         }
 
@@ -72,12 +73,14 @@ enum project_error handle_operand_symbol(char *operands, hash_table symbol_table
                 return SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST;
             }
             encode_symbol(symbol_table, dest_operand, label_save, file_name);
-            /*printf(""ORANGE"Encoded destination operand: %s\n"RESET, dest_operand);*/
-        } else if(decoded.dest_addressing !=4){ /*dont skip a non method operand*/
+        } else if (decoded.dest_addressing != 4) {
             IC++;
         }
     }
-    /* Free memory if allocated */
+    /* Free dynamically allocated memory */
+    if (free_source) free(source_operand);
+    if (free_dest) free(dest_operand);
+
     return Error_Success;
 }
 

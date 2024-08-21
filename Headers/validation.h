@@ -118,4 +118,5 @@ int find_addressing_method(char* operand);
  */
 enum project_error handel_opcode(char *opcode_operands, char* opcode_name, hash_table symbol_table, char * symbol_name, int symbol_flag);
 
+char* process_operand(char** operand_str, int* addressing_metho);
 #endif /* VALIDATION_H */

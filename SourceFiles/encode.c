@@ -14,9 +14,6 @@ void encode_data(char* data_arguments) {
 
         append_to_data_image(data_encoded); /*Adds the new short to the data image array*/
         DC++; /*updates the data counter*/
-        /*
-        printf(""CYAN"number %s\ndata encoded: -------%s-------\n" RESET " ",number_token, data_short_is_binary);
-        */
         number_token = strtok(NULL, ","); /* Get the next argument */
     }
 
@@ -39,18 +36,12 @@ void encode_string(char* string) {
         encoded_char = (short)string_arguments[i]; /* Convert character to its ASCII value */
         append_to_data_image(encoded_char); /* Add the ASCII value to the data image */
         DC++; /* Update the data counter */
-        /*
-        printf(""CYAN"Character: %c, Encoded ASCII: %s\n" RESET, string_arguments[i], short_to_binary_string(encoded_char));
-    */
     }
 
     /* Add the null terminator '\0' at the end of the string */
     encoded_char = 0;
     DC++;
     append_to_data_image(encoded_char);
-    /*
-    printf(""CYAN"Null terminator added: Encoded ASCII: %s\n" RESET, short_to_binary_string(encoded_char));
-    */
 
     if (string_arguments != NULL) {
         free(string_arguments);
@@ -88,7 +79,7 @@ void encode_opcode(char *opcode_name, char *source_operand, char *dest_operand, 
                 source_encoded_word = encode_opcode_register(source_operand, 1); /* Skip the (*) symbol */
                 break;
             default:
-                printf("Error: Invalid source addressing method\n");
+                printf("Error: Invalid source addressing method\n"); /* does not occur */
                 return;
         }
         append_to_code_image(source_encoded_word | ABSOLUTE);
@@ -135,14 +126,6 @@ short encode_opcode_first_word(char * opcode_name, int source_addressing, int de
             break;
         }
     }
-    /* Encode the first word:
-     * Bits 0-3: Opcode
-     * Bits 4-5: Source addressing mode
-     * Bits 6-7: Destination addressing mode
-     */
-    /*
-    printf(""CYAN"OPCODE %s\n"RESET"", short_to_binary_string(opcode_number));
-    */
     name_encoded = opcode_number << 11;
     source_addressing_method_encoded = (convert_addressing_mode(source_addressing) << 7);
     dest_addressing_method_encoded = (convert_addressing_mode(dest_addressing) << 3);

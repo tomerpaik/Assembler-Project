@@ -92,6 +92,7 @@ int handel_entry_extern(EntryExternContent context, hash_table symbol_table, has
         }
         if (strcmp(context->first_word, ".extern") == 0) {
             print_error_custom_message(firstPassError_extern_symbol_exists, context->line_num, context->am_path, context->first_word);
+            return 0;
         }
         if (strcmp(context->first_word, ".extern") == 0) {
             print_error(firstPassError_extern_symbol_in_file, context->line_num, context->am_path);
@@ -102,6 +103,8 @@ int handel_entry_extern(EntryExternContent context, hash_table symbol_table, has
     if (strcmp(context->first_word, ".extern") == 0) {
         add_symbol(after_entry_extern_symbol_name, EXTERN_FLAG, symbol_table);
     }
+
+    free(after_entry_extern_symbol_name);
 
     return 1;
 }
@@ -122,68 +125,105 @@ void free_entry_extern_context(EntryExternContent context) {
     }
 }
 
+char* process_operand(char** operand_str, int* addressing_method) {
+    char* operand = NULL;
 
-enum project_error handel_opcode(char *opcode_operands, char* opcode_name, hash_table symbol_table, char * symbol_name, int symbol_flag) {
+    if (*operand_str != NULL) {
+        operand = str_without_spaces(*operand_str);
+        *addressing_method = find_addressing_method(operand);
+    }
+
+    return operand;
+}
+
+void free2(char *ptr1, char *ptr2) {
+    if (ptr1 != NULL) {
+        free(ptr1);
+    }
+    if (ptr2 != NULL) {
+        free(ptr2);
+    }
+}
+
+enum project_error handel_opcode(char *opcode_operands, char* opcode_name, hash_table symbol_table, char *symbol_name, int symbol_flag) {
     op_code current_op_code;
-    char *source_operand = "NULL", *dest_operand = "NULL";
-    int source_addressing_method = 4, dest_addressing_method = 4; /*RESET addressing_method TO BE NO_METHOD*/
+    char *source_operand = NULL, *dest_operand = NULL, *temp_hand_operand = NULL;
+    int source_addressing_method = 4, dest_addressing_method = 4;
 
-    if (opcode_num(opcode_name) == -1) return firstPassError_command_not_found;
+    if (opcode_num(opcode_name) == -1) {
+        free2(source_operand, dest_operand);
+        return firstPassError_command_not_found;
+    }
     current_op_code = OPCODES[opcode_num(opcode_name)]; /* Find the opcode in the OPCODES array */
 
-    if (is_empty_line(opcode_operands) && current_op_code.arg_num > 0)  return firstPassError_command_expected_operand; /*opcode that needs to get operands arg_num > 0*/
+    if (is_empty_line(opcode_operands) && current_op_code.arg_num > 0) {
+        free2(source_operand, dest_operand);
+        return firstPassError_command_expected_operand;
+    }
 
-    if (current_op_code.arg_num == 2) {
-        source_operand = strtok(opcode_operands, ","); /* Tokenize the operands using comma as a delimiter */
-        if (source_operand != NULL) {
-            source_operand = str_without_spaces(source_operand);  /* Remove spaces around operand1 */
-            dest_operand = str_without_spaces(strtok(NULL, ","));
-            if (strtok(NULL, ",") != NULL) return firstPassError_command_too_many_operands;
-        } else {
-            source_operand = "NULL", dest_operand = "NULL";
+    /* Process based on the number of operands */
+    if (current_op_code.arg_num >= 1) {
+        temp_hand_operand = strtok(opcode_operands, ","); /* Tokenize the first operand */
+        if (current_op_code.arg_num == 2) {
+            source_operand = process_operand(&temp_hand_operand, &source_addressing_method);
+            temp_hand_operand = strtok(NULL, ",");
+            if (temp_hand_operand == NULL) {
+                free2(source_operand, dest_operand);
+                return firstPassError_command_expected_more_operand;
+            }
+            dest_operand = process_operand(&temp_hand_operand, &dest_addressing_method);
+
+            if (strtok(NULL, ",") != NULL) {
+                free2(source_operand, dest_operand);
+                return firstPassError_command_too_many_operands;
+            }
+        } else if (current_op_code.arg_num == 1) {
+            dest_operand = process_operand(&temp_hand_operand, &dest_addressing_method);
+
+            if (strtok(NULL, ",") != NULL) {
+                free2(source_operand, dest_operand);
+                return firstPassError_command_command_arg;
+            }
         }
-    } else if (current_op_code.arg_num == 1) {
-        dest_operand = str_without_spaces(opcode_operands);
+    } else if (current_op_code.arg_num == 0 && !is_empty_line(opcode_operands)) {
+        free2(source_operand, dest_operand);
+        return firstPassError_command_no_operand_expected;
     }
-    else if (current_op_code.arg_num == 0 && !is_empty_line(opcode_operands)) return firstPassError_command_no_operand_expected; /* Handle cases where the opcode expects no operands but arguments are present */
 
-    if (strcmp(source_operand, "NULL") != 0) {
-        source_addressing_method = find_addressing_method(source_operand);
-    }
-    if (strcmp(dest_operand, "NULL") != 0) {
-        dest_addressing_method = find_addressing_method(dest_operand);
-    }
     /* Check if the source addressing method is allowed */
-    if (current_op_code.source_address[source_addressing_method] == 0) return firstPassError_command_invalid_source_adress;
+    if (source_operand != NULL && current_op_code.source_address[source_addressing_method] == 0) {
+        free2(source_operand, dest_operand);
+        return firstPassError_command_invalid_source_adress;
+    }
 
     /* Check if the destination addressing method is allowed */
-    if (current_op_code.destination_address[dest_addressing_method] == 0) return firstPassError_command_invalid_dest_adress;
+    if (dest_operand != NULL && current_op_code.destination_address[dest_addressing_method] == 0) {
+        free2(source_operand, dest_operand);
+        return firstPassError_command_invalid_dest_adress;
+    }
 
-    if (source_addressing_method == 0) {
-        if (atoi(source_operand + 1) < -(1 << 11) || atoi(source_operand + 1) >= (1 << 11)) {
+    /* Check for number out of range */
+    if ((source_addressing_method == 0 || dest_addressing_method == 0)) {
+        int value = (source_addressing_method == 0) ? atoi(source_operand + 1) : atoi(dest_operand + 1);
+        if (value < -(1 << 11) || value >= (1 << 11)) {
+            free2(source_operand, dest_operand);
             return firstPassError_command_code_number_oor;
         }
     }
-    if (dest_addressing_method == 0) {
-        if (atoi(source_operand + 1) < -(1 << 11) || atoi(source_operand + 1) >= (1 << 11)) {
-            return firstPassError_command_code_number_oor;
-        }
-    }
+
     if (symbol_flag) {
         add_symbol(symbol_name, OPCODE_FLAG, symbol_table);
     }
 
     encode_opcode(opcode_name, source_operand, dest_operand, source_addressing_method, dest_addressing_method);
 
-    if (strcmp(source_operand, "NULL") != 0 && source_operand != opcode_operands) {
-        free(source_operand);
-    }
-    if (strcmp(dest_operand, "NULL") != 0 && dest_operand != opcode_operands) {
-        free(dest_operand);
-    }
+    /* Free dynamically allocated memory */
+    free2(source_operand, dest_operand);
     return Error_Success;
-
 }
+
+
+
 
 /* Function to find addressing method as an integer */
 int find_addressing_method(char* operand) {
@@ -203,6 +243,7 @@ int find_addressing_method(char* operand) {
         if (register_num(operand+1) > -1) {
             return 2; /* Register indirect addressing method */
         }
+        print_generic_error(firstPassError_command_expected_reg);
     }
     if (register_num(operand) > -1) {
         return 3; /* Register direct addressing method */

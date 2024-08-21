@@ -20,12 +20,14 @@ int main(int argc, char *argv[]) {
 
         printf(""BOLD"********* Starting Pre-Proccesor %s ********* \n"RESET"", argv[argc]);
         if (!pre_assembler(argv[argc], macro_table)){
-            /*If it failed, move to the next file.*/
+            /*If it failed, remove .am.*/
             filePath = add_new_file(argv[argc], ".am");
             remove(filePath);
             free(filePath);
-            printf(""YELLOW""BOLD"********* Removed .am File After Pre-Assembler Faild %s********* \n"RESET"", argv[argc]);
-            /* Free allocated memory if any */
+
+            free_table(macro_table);
+            free_table(symbol_table);
+            printf(""ORANGE"********* Removed .am File After Pre-Assembler Faild %s ********* \n"RESET"", argv[argc]);
             continue;
         }
 
@@ -35,8 +37,9 @@ int main(int argc, char *argv[]) {
         /*Execute the first pass, and then the second on the ".am" file.*/
         if (first_pass(am_path, macro_table, symbol_table)) {
             /*If it failed, move to the next file.*/
-            printf(""YELLOW""BOLD"********* First Pass Faild %s********* \n"RESET"", argv[argc]);
-            /* Free allocated memory if any */
+            free_table(macro_table);
+            free_table(symbol_table);
+            printf(""ORANGE"********* First Pass Faild %s ********* \n"RESET"", argv[argc]);
             continue;
         }
 
@@ -44,13 +47,15 @@ int main(int argc, char *argv[]) {
 
         if (second_pass(am_path, symbol_table)) {
             /*If it failed, move to the next file.*/
-            printf(""YELLOW""BOLD"********* Second Pass Faild %s********* \n"RESET"", argv[argc]);
-            /* Free allocated memory if any */
+            free_table(macro_table);
+            free_table(symbol_table);
+            printf(""ORANGE"********* Second Pass Faild %s ********* \n"RESET"", argv[argc]);
             continue;
         }
 
         free_table(macro_table);
         free_table(symbol_table);
+        printf(""BOLD"********* Done Assembling %s ********* \n\n"RESET"", argv[argc]);
     }
 
     printf(""BOLD"********* End-Assembler ********* \n"RESET"");

@@ -74,4 +74,13 @@ enum symbol_flag get_symbol_count(hash_table symbol_table, char *symbol_name);
  */
 void update_symbol_flag(hash_table symbol_table, char *symbol_name, enum symbol_flag new_symbol_flag);
 
+
+/**
+ * DEBUG
+ *
+ *
+ */
+char* get_flag_name(enum symbol_flag flag);
+void print_symbol_table(hash_table table);
+
 #endif /* SYMBOL_STRUCT_H */

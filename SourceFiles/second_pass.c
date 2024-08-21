@@ -1,6 +1,6 @@
 #include "../Headers/second_pass.h"
 int second_pass(char * am_path, hash_table symbol_table) {
-    FILE * am_file;
+    FILE *am_file, *ext_file = NULL,  *ent_file = NULL;
     char line[MAX_LINE_LENGTH], first_word[MAX_LINE_LENGTH]; char * symbol_name = 0;
     int error_found = 0; int creat_ext = 0; int create_ent = 0; enum project_error current_error = 0;
     int offset, after_label_offset=0, line_num = 0;
@@ -19,7 +19,7 @@ int second_pass(char * am_path, hash_table symbol_table) {
         }
         /*Create .ext file if .extern is found and file is not created yet*/
         if ((strcmp(first_word, ".extern") == 0) && !creat_ext) {
-            open_new_file(am_path, ".ext", "w");
+            ext_file = open_new_file(am_path, ".ext", "w");
             creat_ext = 1;
             continue;
         }
@@ -30,7 +30,7 @@ int second_pass(char * am_path, hash_table symbol_table) {
 
         if(strcmp(first_word, ".entry") == 0) { /*found .entry instruction*/
             if (!create_ent) {
-                open_new_file(am_path, ".ent", "w");
+                ent_file = open_new_file(am_path, ".ent", "w");
                 create_ent = 1;
             }
             symbol_name = str_without_spaces(line + offset);
@@ -38,19 +38,18 @@ int second_pass(char * am_path, hash_table symbol_table) {
                 append_to_ext_ent_file(am_path, ".ent", symbol_name, get_symbol_count(symbol_table, symbol_name));
                 if (get_symbol_flag(symbol_table, symbol_name) == DATA_FLAG) {
                     update_symbol_flag(symbol_table, symbol_name, ENTRY_FLAG_DATA);
-                    continue;
+                    free(symbol_name);
                 }
-                if (get_symbol_flag(symbol_table, symbol_name) == OPCODE_FLAG) {
+                else if (get_symbol_flag(symbol_table, symbol_name) == OPCODE_FLAG) {
                     update_symbol_flag(symbol_table, symbol_name, ENTRY_FLAG_OPCODE);
+                    free(symbol_name);
                 }else { /*extern*/
                     error_found = 1;
                     print_error(firstPassError_extern_entry_in_same_file, line_num, am_path);
-                    continue;
                 }
             } else {
                 error_found = 1;
                 print_error(SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT, line_num, am_path);
-                continue;
             }
         } else {
             /*finish encoding*/
@@ -60,11 +59,12 @@ int second_pass(char * am_path, hash_table symbol_table) {
             }
         }
     }
-    create_object_file(am_path);
-
-    if (symbol_name != 0) {
-        free(symbol_name);
+    if (!error_found) {
+        create_object_file(am_path);
     }
+    fclose(am_file);
+    fclose(ext_file);
+    fclose(ent_file);
     return error_found;
 }
 
@@ -91,10 +91,6 @@ void create_object_file(char * file_name) {
     unsigned short positive_value ;
     FILE *file = open_new_file(file_name, ".ob","w");
     int i;
-    if (file == NULL) {
-        printf("Failed to open the file.\n");
-        return;
-    }
     /*Write IC and DC values at the top of the file*/
     fprintf(file, "   %d %d\n", IC, DC);
     /*Write the code image to the object file*/

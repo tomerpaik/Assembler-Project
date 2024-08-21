@@ -28,6 +28,7 @@ project_errors errors[] = {
     {firstPassError_symbol_name_taken, "a symbol with this name already exists"},
     {firstPassError_symbol_macro_name, "can't define a symbol with the same name as a macro"},
     {firstPassError_symbol_invalid_length, "symbol long is out off range"},
+    {firstPassError_symbol_empty_line, "symbol content is empty"},
     /*.data errors*/
     {firstPassError_data_nan, "arguments of a data instruction must be immediate numbers or constants"},
     {firstPassError_data_comma_expected, "comma expected between arguments"},
@@ -56,9 +57,12 @@ project_errors errors[] = {
     { firstPassError_command_invalid_dest_adress, "destination operand adressing method is not availible for opcode"},
     { firstPassError_command_no_operand_expected, "opcode should get no operands"},
     { firstPassError_command_expected_operand, "opcode should get operands"},
+    { firstPassError_command_expected_more_operand, "opcode should get 2 operands"},
     { firstPassError_command_invalid_operand, "opcode should get operands"},
     { firstPassError_command_code_image_oor, "IC is out of MAX computer range"},
     { firstPassError_command_code_number_oor, "Immidiate addressing method number is out of range"},
+    { firstPassError_command_command_arg, "opcode can get only 1 operands"},
+    { firstPassError_command_expected_reg, "after (*) shoud be a register name"},
 
     { SECOND_PASS_ERROR_COMMAND_SYMBOL_OPERAND_NEXIST, "After Defining all the Symboles in the first pass it is not exist in the file"},
     { SECOND_PASS_ERROR_ENTRY_SYMBOL_NEXSIT, ".Entry Symbol Is not defined in the file"},
@@ -77,7 +81,7 @@ void print_warning(enum project_error code, int srcline, char srcfile[]) {
     printf(""YELLOW"Warning in %s, line: %d says: ---[%s]---\n"RESET"", srcfile, srcline, errors[code].message);
 }
 void print_generic_error(enum project_error code) {
-    printf("GENERIC %s\n", errors[code].message);
+    printf(""RED"GENERIC %s\n"RESET"", errors[code].message);
 }
 void print_error_custom_message(enum project_error code, int srcline, char srcfile[], char* additional_msg) {
     printf(""RED"Error in %s, line: %d says: ---[%s: %s]---\n"RESET"", srcfile, srcline, errors[code].message, additional_msg);

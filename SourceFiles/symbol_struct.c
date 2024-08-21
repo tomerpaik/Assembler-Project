@@ -42,3 +42,41 @@ void update_symbol_flag(hash_table symbol_table, char *symbol_name, enum symbol_
     Symbol symbol = search_table(symbol_table, symbol_name);
     symbol->flag = new_symbol_flag;
 }
+
+
+void print_symbol_table(hash_table table) {
+    int i;
+    Node current;
+
+    printf("| %-11s | %-5s | %-6s |\n", "Symbol Name", "Count", "Flag");
+    printf("|-------------|-------|-------|\n");
+
+    for (i = 0; i < TABLE_SIZE; i++) {
+        current = table[i];
+        while (current != NULL) {
+            Symbol sym = (Symbol)current->value;
+            printf("| " BOLD GREEN "%-11s" RESET " | " BOLD BLUE "%-5d" RESET " | " BOLD MAGENTA "%-6s" RESET " |\n",
+                   current->key,
+                   sym->count,
+                   get_flag_name(sym->flag));
+            current = current->next;
+        }
+    }
+}
+
+char* get_flag_name(enum symbol_flag flag) {
+    switch (flag) {
+        case DATA_FLAG:
+            return "DATA";
+        case OPCODE_FLAG:
+            return "OPCODE";
+        case EXTERN_FLAG:
+            return "EXTERN";
+        case ENTRY_FLAG_OPCODE:
+            return "ENTRY_OPCODE";
+        case ENTRY_FLAG_DATA:
+            return "ENTRY_DATA";
+        default:
+            return "---";
+    }
+}
